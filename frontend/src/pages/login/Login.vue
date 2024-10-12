@@ -9,14 +9,14 @@
     </div>
     <div class="login">
       <a-form @submit="onSubmit" :form="form">
-        <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;">
+        <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" @change="onTabChange" style="padding: 0 2px;">
           <a-tab-pane tab="账户密码登录" key="1">
             <a-alert type="error" :closable="true" v-show="error" :message="error" showIcon style="margin-bottom: 24px;" />
             <a-form-item>
               <a-input
                 autocomplete="autocomplete"
                 size="large"
-                placeholder="admin"
+                placeholder="用户名"
                 v-decorator="['name', {rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]"
               >
                 <a-icon slot="prefix" type="user" />
@@ -25,7 +25,7 @@
             <a-form-item>
               <a-input
                 size="large"
-                placeholder="888888"
+                placeholder="密码"
                 autocomplete="autocomplete"
                 type="password"
                 v-decorator="['password', {rules: [{ required: true, message: '请输入密码', whitespace: true}]}]"
@@ -34,12 +34,45 @@
               </a-input>
             </a-form-item>
           </a-tab-pane>
+          <a-tab-pane tab="用户注册" key="2">
+            <a-alert type="error" :closable="true" v-show="error" :message="error" showIcon style="margin-bottom: 24px;" />
+            <a-form-item>
+              <a-input
+                autocomplete="autocomplete"
+                size="large"
+                placeholder="用户名"
+                v-decorator="['name', {rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]"
+              >
+                <a-icon slot="prefix" type="user" />
+              </a-input>
+            </a-form-item>
+            <a-form-item>
+              <a-input
+                size="large"
+                placeholder="密码"
+                autocomplete="autocomplete"
+                type="password"
+                v-decorator="['password', {rules: [{ required: true, message: '请输入密码', whitespace: true}]}]"
+              >
+                <a-icon slot="prefix" type="lock" />
+              </a-input>
+            </a-form-item>
+            <a-form-item>
+              <a-input
+                size="large"
+                placeholder="确认密码"
+                autocomplete="autocomplete"
+                type="password"
+                v-decorator="['confirmedPassword', {rules: [{ required: true, message: '请确认密码', whitespace: true}]}]"
+              >
+                <a-icon slot="prefix" type="lock" />
+              </a-input>
+            </a-form-item>
+          </a-tab-pane>
         </a-tabs>
         <a-form-item>
-          <a-button :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit" type="primary">登录</a-button>
+          <a-button :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit" type="primary">确定</a-button>
         </a-form-item>
-        <router-link style="float: right" to="/dashboard/workplace" >忘记密码</router-link>
-        <router-link style="float: left" to="/dashboard/workplace" >注册账户</router-link>
       </a-form>
     </div>
   </common-layout>
@@ -47,7 +80,7 @@
 
 <script>
 import CommonLayout from '@/layouts/CommonLayout'
-import {login, getRoutesConfig} from '@/services/user'
+import {login, register, getRoutesConfig} from '@/services/user' // 添加 register 服务
 import {setAuthorization} from '@/utils/request'
 import {loadRoutes} from '@/utils/routerUtil'
 import {mapMutations} from 'vuex'
@@ -59,6 +92,7 @@ export default {
     return {
       logging: false,
       error: '',
+      currentTab: '1', // 默认选中登录表单
       form: this.$form.createForm(this)
     }
   },
@@ -69,17 +103,51 @@ export default {
   },
   methods: {
     ...mapMutations('account', ['setUser', 'setPermissions', 'setRoles']),
+    
+    // 选项卡切换
+    onTabChange (key) {
+      this.currentTab = key;
+    },
+    
     onSubmit (e) {
       e.preventDefault()
       this.form.validateFields((err) => {
         if (!err) {
           this.logging = true
-          const name = this.form.getFieldValue('name')
-          const password = this.form.getFieldValue('password')
-          login(name, password).then(this.afterLogin)
+          if (this.currentTab === '1') {
+            // 登录逻辑
+            this.handleLogin()
+          } else if (this.currentTab === '2') {
+            // 注册逻辑
+            this.handleRegister()
+          }
         }
       })
     },
+    
+    // 登录逻辑处理
+    handleLogin() {
+      const name = this.form.getFieldValue('name')
+      const password = this.form.getFieldValue('password')
+      login(name, password).then(this.afterLogin)
+    },
+
+    // 注册逻辑处理
+    handleRegister() {
+      const name = this.form.getFieldValue('name')
+      const password = this.form.getFieldValue('password')
+      const confirmedPassword = this.form.getFieldValue('confirmedPassword')
+
+      if (password !== confirmedPassword) {
+        this.error = '两次密码输入不一致'
+        this.logging = false
+        return
+      }
+
+      register(name, password).then(this.afterLogin)
+    },
+
+    // 登录和注册后处理
     afterLogin(res) {
       this.logging = false
       const loginRes = res.data
@@ -103,6 +171,11 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+/* 样式保持不变 */
+</style>
+
 
 <style lang="less" scoped>
   .common-layout{
