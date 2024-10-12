@@ -52,6 +52,57 @@ const options = {
           ]
         },
         {
+          path: 'jobSeekPage', // 这是针对教师的求职页面
+          name: "广场",
+          meta: {
+            icon: "search",
+            authority: {
+              role: 'teacher'
+            }
+          },
+          component: () => import('@/pages/jobSeekPage')
+        },
+        {
+          path: 'teacherPostPage', // 这是教师发布家教信息的页面
+          name: "发布家教信息",
+          meta: {
+            icon: "form",
+            authority: {
+              role: 'teacher'
+            }
+          },
+        },
+        {
+          path : "hirePage", // 这是针对学生的招聘页面
+          name: "广场",
+          meta: {
+            icon: "search",
+            authority: {
+              role: 'student'
+            }
+          }
+        },
+        {
+          path: 'studentPostPage', // 这是学生发布招聘信息的页面
+          name: "发布招聘信息",
+          meta: {
+            icon: "form",
+            authority: {
+              role: 'student'
+            }
+          }
+        },
+        {
+          path: 'learningMaterials',  // 这是学习资料页面
+          name: "学习资料",
+          meta: {
+            icon: "book",
+            authority: {
+              role: 'student'
+            }
+          }
+        },
+        {
           path: 'form',
           name: '表单页',
           meta: {
@@ -86,6 +137,9 @@ const options = {
           path: 'list',
           name: '列表页',
           meta: {
+            authority: {
+              role: 'admin'
+            },
             icon: 'table'
           },
           component: PageView,
@@ -145,6 +199,9 @@ const options = {
           path: 'details',
           name: '详情页',
           meta: {
+            authority: {
+              role: 'admin'
+            },
             icon: 'profile'
           },
           component: BlankView,
@@ -165,6 +222,9 @@ const options = {
           path: 'result',
           name: '结果页',
           meta: {
+            authority: {
+              role: 'admin'
+            },
             icon: 'check-circle-o',
           },
           component: PageView,
@@ -186,6 +246,9 @@ const options = {
           name: '异常页',
           meta: {
             icon: 'warning',
+            authority: {
+              role: 'admin'
+            }
           },
           component: BlankView,
           children: [
@@ -210,6 +273,9 @@ const options = {
           path: 'components',
           name: '内置组件',
           meta: {
+            authority: {
+              role: 'admin'
+            },
             icon: 'appstore-o'
           },
           component: PageView,
@@ -237,7 +303,7 @@ const options = {
           meta: {
             icon: 'file-excel',
             authority: {
-              permission: 'form'
+              role: 'admin'
             }
           },
           component: () => import('@/pages/form/basic')
@@ -247,6 +313,9 @@ const options = {
           path: 'router/query',
           meta: {
             icon: 'project',
+            authority: {
+              role: 'admin'
+            },
             query: {
               name: '菜单默认参数'
             }
@@ -258,6 +327,9 @@ const options = {
           path: 'router/dynamic/:id',
           meta: {
             icon: 'project',
+            authority: {
+              role: 'admin'
+            }, 
             params: {
               id: 123
             }
@@ -268,6 +340,9 @@ const options = {
           name: 'Ant Design Vue',
           path: 'antdv',
           meta: {
+            authority: {
+              role: 'admin'
+            }, 
             icon: 'ant-design',
             link: 'https://www.antdv.com/docs/vue/introduce-cn/'
           }
@@ -276,6 +351,9 @@ const options = {
           name: '使用文档',
           path: 'document',
           meta: {
+            authority: {
+              role: 'admin'
+            }, 
             icon: 'file-word',
             link: 'https://iczer.gitee.io/vue-antd-admin-docs/'
           }
