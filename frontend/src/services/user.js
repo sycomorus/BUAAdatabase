@@ -18,12 +18,14 @@ export async function login(name, password) {
  * 注册服务
  * @param name 账户名
  * @param password 账户密码
+ * @param role 账户角色
  * @returns {Promise<AxiosResponse<T>>}
  */
-export async function register(name, password) {
+export async function register(name, password, role) {
   return request(REGISTER, METHOD.POST, {
     name: name,
-    password: password
+    password: password,
+    role: role
   })
 }
 

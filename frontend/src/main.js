@@ -4,7 +4,10 @@ import {initRouter} from './router'
 import './theme/index.less'
 import Antd from 'ant-design-vue'
 import Viser from 'viser-vue'
-import '@/mock'
+// 引入 mock 时，添加环境变量判断
+if (process.env.VUE_APP_USE_MOCK === 'true') {
+  require('@/mock') // 只有在需要时才引入 mock
+}
 import store from './store'
 import 'animate.css/source/animate.css'
 import Plugins from '@/plugins'

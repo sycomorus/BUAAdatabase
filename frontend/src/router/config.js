@@ -27,11 +27,6 @@ const options = {
       redirect: '/login',
       children: [
         {
-          path: 'newPage',
-          name: '新页面',
-          component: () => import('@/pages/newPage'),
-        },
-        {
           path: 'dashboard',
           name: 'Dashboard',
           meta: {
@@ -60,6 +55,9 @@ const options = {
           path: 'form',
           name: '表单页',
           meta: {
+            authority: {
+              role: 'admin'
+            },
             icon: 'form',
             page: {
               cacheAble: false
