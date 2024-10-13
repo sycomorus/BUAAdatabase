@@ -133,11 +133,9 @@ export default {
       this.logging = false
       const loginRes = res.data
       if (loginRes.code >= 0) {
-        const { user, permissions, roles } = loginRes.data
-        this.setUser(user)
-        this.setPermissions(permissions)
+        const roles = loginRes.data.roles
         this.setRoles(roles)
-        setAuthorization({ token: loginRes.data.token, expireAt: new Date(loginRes.data.expireAt) })
+        setAuthorization({ token: loginRes.data.token})
         this.$router.push('/dashboard/workplace')
         this.$message.success(loginRes.message, 3)
       } else {
