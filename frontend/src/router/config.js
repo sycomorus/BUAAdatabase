@@ -95,7 +95,7 @@ const options = {
         },
         {
           path: 'studentPostPage', // 这是学生发布招聘信息的页面
-          name: "发布招聘信息",
+          name: "我要招聘",
           meta: {
             icon: "form",
             authority: {

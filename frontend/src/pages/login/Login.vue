@@ -54,7 +54,8 @@
               </a-input>
             </a-form-item>
             <a-form-item>
-              <a-radio-group v-model="role">
+              <a-radio-group
+                v-decorator="['role', { rules: [{ required: true, message: '请选择身份角色' }] }]">
                 <a-radio value="teacher">我是老师</a-radio>
                 <a-radio value="student">我是学生</a-radio>
               </a-radio-group>
