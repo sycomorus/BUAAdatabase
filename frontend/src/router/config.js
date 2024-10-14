@@ -39,12 +39,7 @@ const options = {
           children: [
             {
               path: 'workplace',
-              name: '公告',
-              meta: {
-                page: {
-                  closable: false
-                }
-              },
+              name: '工作台',
               component: () => import('@/pages/dashboard/workplace'),
             },
             {
