@@ -81,7 +81,7 @@ import PageLayout from '@/layouts/PageLayout'
 import locationOptions from '@/assets/json/locationOptions.json'
 
 export default {
-  name: 'BasicForm',
+  name: 'studentPostPage',
   components: { PageLayout },
   data () {
     return {
