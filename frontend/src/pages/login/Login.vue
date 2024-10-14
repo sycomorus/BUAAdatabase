@@ -83,6 +83,7 @@ export default {
     return {
       role: 'student',
       logging: false,
+      name: '',
       errorLogin: '',
       errorRegister: '',
       currentTab: '1',
@@ -96,7 +97,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('account', ['setRoles']),
+    ...mapMutations('account', ['setRoles', 'setUser']),
     onTabChange(key) {
       this.currentTab = key;
     },
@@ -105,9 +106,9 @@ export default {
       this.loginForm.validateFields((err) => {
         if (!err) {
           this.logging = true;
-          const name = this.loginForm.getFieldValue('name');
+          this.name = this.loginForm.getFieldValue('name');
           const password = this.loginForm.getFieldValue('password');
-          login(name, password).then(this.afterLogin);
+          login(this.name, password).then(this.afterLogin);
         }
       });
     },
@@ -116,7 +117,7 @@ export default {
       this.registerForm.validateFields((err) => {
         if (!err) {
           this.logging = true;
-          const name = this.registerForm.getFieldValue('registerName');
+          this.name = this.registerForm.getFieldValue('registerName');
           const password = this.registerForm.getFieldValue('registerPassword');
           const confirmedPassword = this.registerForm.getFieldValue('confirmedPassword');
           const role = this.registerForm.getFieldValue('role');
@@ -125,7 +126,7 @@ export default {
             this.logging = false;
             return;
           }
-          register(name, password, role).then(this.afterRegister);
+          register(this.name, password, role).then(this.afterRegister);
         }
       });
     },
@@ -135,6 +136,8 @@ export default {
       if (loginRes.code >= 0) {
         const roles = loginRes.data.roles
         this.setRoles(roles)
+        const user = { name: this.name}
+        this.setUser(user)
         setAuthorization({ token: loginRes.data.token})
         this.$router.push('/dashboard/workplace')
         this.$message.success("欢迎回来", 3)
@@ -148,6 +151,9 @@ export default {
       if (registerRes.code >= 0) {
         const roles = registerRes.data.roles
         this.setRoles(roles)
+        const user = { name: this.name}
+        this.setUser(user)
+        this.setUser(user)
         setAuthorization({ token: registerRes.data.token})
         this.$router.push('/dashboard/workplace')
         this.$message.success("欢迎加入家教综合服务平台", 3)

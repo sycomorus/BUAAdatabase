@@ -1,4 +1,4 @@
-import {LOGIN, REGISTER, ROUTES} from '@/services/api'
+import {LOGIN, REGISTER, ROUTES, ACTIVITIES} from '@/services/api'
 import {request, METHOD, removeAuthorization} from '@/utils/request'
 
 /**
@@ -27,6 +27,15 @@ export async function register(name, password, role) {
     password: password,
     role: role
   })
+}
+
+/*
+  * 获取用户动态
+  * @param userToken 用户token
+  * @returns {Promise<AxiosResponse<T>>}
+  */
+export async function getActivities(token) {
+  return request(ACTIVITIES, METHOD.GET, token)
 }
 
 

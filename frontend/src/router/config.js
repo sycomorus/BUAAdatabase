@@ -27,29 +27,22 @@ const options = {
       redirect: '/login',
       children: [
         {
-          path: 'dashboard',
-          name: 'Dashboard',
+          path: 'workplace',
+          name: '公告',
           meta: {
             icon: 'dashboard'
           },
-          component: BlankView,
-          children: [
-            {
-              path: 'workplace',
-              name: '工作台',
-              meta: {
-                page: {
-                  closable: false
-                }
-              },
-              component: () => import('@/pages/dashboard/workplace'),
-            },
-            {
-              path: 'analysis',
-              name: '分析页',
-              component: () => import('@/pages/dashboard/analysis'),
+          component: () => import('@/pages/dashboard/workplace'),
+        },
+        {
+          path: 'analysis',
+          name: '分析页',
+          meta: {
+            authority: {
+              role: 'admin'
             }
-          ]
+          },
+          component: () => import('@/pages/dashboard/analysis'),
         },
         {
           path: 'jobSeekPage', // 这是针对教师的求职页面
