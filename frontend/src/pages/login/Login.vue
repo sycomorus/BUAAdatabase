@@ -125,7 +125,7 @@ export default {
             this.logging = false;
             return;
           }
-          register(name, password, role).then(this.afterLogin);
+          register(name, password, role).then(this.afterRegister);
         }
       });
     },
@@ -137,9 +137,22 @@ export default {
         this.setRoles(roles)
         setAuthorization({ token: loginRes.data.token})
         this.$router.push('/dashboard/workplace')
-        this.$message.success(loginRes.message, 3)
+        this.$message.success("欢迎回来", 3)
       } else {
         this.errorLogin = '用户名或密码错误'
+      }
+    },
+    afterRegister(res) {
+      this.logging = false
+      const registerRes = res.data
+      if (registerRes.code >= 0) {
+        const roles = registerRes.data.roles
+        this.setRoles(roles)
+        setAuthorization({ token: registerRes.data.token})
+        this.$router.push('/dashboard/workplace')
+        this.$message.success("欢迎加入家教综合服务平台", 3)
+      } else {
+        this.errorRegister = '用户名已被注册'
       }
     }
   }
