@@ -24,7 +24,6 @@
     "roles": [{"id": "admin"}],  // id表示用户的身份，可选admin,student,teacher
     "token": "Authorization:0.123456789",   // 用户唯一标识id，用于后续与后端进行数据交流
   },
-  "message": "登录失败"    // 返回信息，例如登录失败则返回“登录失败”，用户名不存在则返回“用户名不存在”
 }
 ```
 
@@ -53,7 +52,6 @@
     "roles": [{"id": "admin"}],  // id表示用户的身份，可选admin,student,teacher
     "token": "Authorization:0.123456789",   // 用户唯一标识id，用于后续与后端进行数据交流
   },
-  "message": "注册失败"    // 返回信息
 }
 ```
 

@@ -96,7 +96,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('account', ['setUser', 'setPermissions', 'setRoles']),
+    ...mapMutations('account', ['setRoles']),
     onTabChange(key) {
       this.currentTab = key;
     },

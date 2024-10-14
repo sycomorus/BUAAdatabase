@@ -71,6 +71,7 @@ const options = {
               role: 'teacher'
             }
           },
+          component: () => import('@/pages/teacherPostPage')
         },
         {
           path : "hirePage", // 这是针对学生的招聘页面
@@ -80,7 +81,8 @@ const options = {
             authority: {
               role: 'student'
             }
-          }
+          },
+          component: () => import('@/pages/hirePage')
         },
         {
           path: 'studentPostPage', // 这是学生发布招聘信息的页面
@@ -90,7 +92,8 @@ const options = {
             authority: {
               role: 'student'
             }
-          }
+          },
+          component: () => import('@/pages/studentPostPage')
         },
         {
           path: 'learningMaterials',  // 这是学习资料页面
@@ -100,7 +103,8 @@ const options = {
             authority: {
               role: 'student'
             }
-          }
+          },
+          component: () => import('@/pages/learningMaterials')
         },
         {
           path: 'form',
