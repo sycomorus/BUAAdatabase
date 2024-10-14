@@ -55,7 +55,7 @@
               <a-input placeholder="电话号码（必填）" />
             </a-col>
             <a-col :span="14">
-              <a-input :placeholder="'电子邮件（选填）'" />
+              <a-input :placeholder="'电子邮箱（选填）'" />
             </a-col>
           </a-row>
         </a-form-item>

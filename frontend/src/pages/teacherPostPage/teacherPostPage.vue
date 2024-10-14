@@ -1,5 +1,5 @@
 <template>
-  <page-layout :title="'你可以在这个页面填写并发布招聘信息'" >
+  <page-layout :title="'你可以在这个页面填写并发布求聘信息'" >
     <div style="display: flex; justify-content: center;">
     <a-card :body-style="{padding: '24px 32px'}" :bordered="false" :style="{width: '1200px'}">
       <a-form>
@@ -8,17 +8,17 @@
           :labelCol="{span: 7}"
           :wrapperCol="{span: 10}"
         >
-          <a-input :placeholder="'请输入标题'" />
+        <a-input :placeholder="'请输入标题'" />
         </a-form-item>
         <a-form-item
-          :label="'日期'"
+          :label="'预计工作日期'"
           :labelCol="{span: 7}"
           :wrapperCol="{span: 10}"
         >
           <a-range-picker style="width: 100%" picker= 'month'/>
         </a-form-item>
         <a-form-item
-          :label="'科目'"
+          :label="'教授科目'"
           :labelCol="{span: 7}"
           :wrapperCol="{span: 10}"
         >
@@ -55,7 +55,7 @@
               <a-input placeholder="电话号码（必填）" />
             </a-col>
             <a-col :span="14">
-              <a-input :placeholder="'电子邮件（选填）'" />
+              <a-input :placeholder="'电子邮箱（选填）'" />
             </a-col>
           </a-row>
         </a-form-item>
@@ -64,7 +64,7 @@
           :labelCol="{span: 7}"
           :wrapperCol="{span: 10}"
         >
-          <a-textarea rows="4" :placeholder="'可以在这里描述你的具体要求，薪资水平，学生的学习情况等'"/>
+          <a-textarea rows="4" :placeholder="'可以在这里描述你的学历，预计薪资，获奖情况，家教经验等'"/>
         </a-form-item>
         <a-form-item style="margin-top: 24px" :wrapperCol="{span: 10, offset: 7}">
           <a-button type="primary">{{'提交'}}</a-button>

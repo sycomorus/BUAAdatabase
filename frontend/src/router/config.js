@@ -73,7 +73,7 @@ const options = {
         },
         {
           path: 'teacherPostPage', // 这是教师发布家教信息的页面
-          name: "发布家教信息",
+          name: "我要求聘",
           meta: {
             icon: "form",
             authority: {
