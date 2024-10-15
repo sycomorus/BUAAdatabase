@@ -30,18 +30,16 @@ const options = {
           path: 'dashboard',
           name: 'Dashboard',
           meta: {
-            icon: 'dashboard'
+            icon: 'dashboard',
+            authority: {
+              role: 'admin',
+            }
           },
           component: BlankView,
           children: [
             {
               path: 'workplace',
               name: '工作台',
-              meta: {
-                page: {
-                  closable: false
-                }
-              },
               component: () => import('@/pages/dashboard/workplace'),
             },
             {
@@ -50,6 +48,17 @@ const options = {
               component: () => import('@/pages/dashboard/analysis'),
             }
           ]
+        },
+        {
+          path: 'notice',
+          name: '公告',
+          meta: {
+            icon: 'dashboard',
+            page: {
+              closable: false
+            },
+          },
+          component: () => import('@/pages/notice'),
         },
         {
           path: 'jobSeekPage', // 这是针对教师的求职页面
@@ -71,6 +80,7 @@ const options = {
               role: 'teacher'
             }
           },
+          component: () => import('@/pages/teacherPostPage')
         },
         {
           path : "hirePage", // 这是针对学生的招聘页面
@@ -80,17 +90,19 @@ const options = {
             authority: {
               role: 'student'
             }
-          }
+          },
+          component: () => import('@/pages/hirePage')
         },
         {
           path: 'studentPostPage', // 这是学生发布招聘信息的页面
-          name: "发布招聘信息",
+          name: "我要招聘",
           meta: {
             icon: "form",
             authority: {
               role: 'student'
             }
-          }
+          },
+          component: () => import('@/pages/studentPostPage')
         },
         {
           path: 'learningMaterials',  // 这是学习资料页面
@@ -100,7 +112,8 @@ const options = {
             authority: {
               role: 'student'
             }
-          }
+          },
+          component: () => import('@/pages/learningMaterials')
         },
         {
           path: 'form',

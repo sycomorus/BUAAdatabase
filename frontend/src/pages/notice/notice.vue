@@ -25,9 +25,8 @@ import {mapState} from 'vuex'
 import {request, METHOD} from '@/utils/request'
 
 export default {
-  name: 'WorkPlace',
+  name: 'notice',
   components: {PageLayout},
-  i18n: require('./i18n'),
   data () {
     return {
       loading: true,

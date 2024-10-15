@@ -54,7 +54,8 @@
               </a-input>
             </a-form-item>
             <a-form-item>
-              <a-radio-group v-model="role">
+              <a-radio-group
+                v-decorator="['role', { rules: [{ required: true, message: '请选择身份角色' }] }]">
                 <a-radio value="teacher">我是老师</a-radio>
                 <a-radio value="student">我是学生</a-radio>
               </a-radio-group>
@@ -83,6 +84,7 @@ export default {
     return {
       role: 'student',
       logging: false,
+      name: '',
       errorLogin: '',
       errorRegister: '',
       currentTab: '1',
@@ -96,7 +98,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('account', ['setUser', 'setPermissions', 'setRoles']),
+    ...mapMutations('account', ['setRoles', 'setUser']),
     onTabChange(key) {
       this.currentTab = key;
     },
@@ -105,9 +107,9 @@ export default {
       this.loginForm.validateFields((err) => {
         if (!err) {
           this.logging = true;
-          const name = this.loginForm.getFieldValue('name');
+          this.name = this.loginForm.getFieldValue('name');
           const password = this.loginForm.getFieldValue('password');
-          login(name, password).then(this.afterLogin);
+          login(this.name, password).then(this.afterLogin);
         }
       });
     },
@@ -116,7 +118,7 @@ export default {
       this.registerForm.validateFields((err) => {
         if (!err) {
           this.logging = true;
-          const name = this.registerForm.getFieldValue('registerName');
+          this.name = this.registerForm.getFieldValue('registerName');
           const password = this.registerForm.getFieldValue('registerPassword');
           const confirmedPassword = this.registerForm.getFieldValue('confirmedPassword');
           const role = this.registerForm.getFieldValue('role');
@@ -125,7 +127,7 @@ export default {
             this.logging = false;
             return;
           }
-          register(name, password, role).then(this.afterLogin);
+          register(this.name, password, role).then(this.afterRegister);
         }
       });
     },
@@ -133,15 +135,31 @@ export default {
       this.logging = false
       const loginRes = res.data
       if (loginRes.code >= 0) {
-        const { user, permissions, roles } = loginRes.data
-        this.setUser(user)
-        this.setPermissions(permissions)
+        const roles = loginRes.data.roles
         this.setRoles(roles)
-        setAuthorization({ token: loginRes.data.token, expireAt: new Date(loginRes.data.expireAt) })
-        this.$router.push('/dashboard/workplace')
-        this.$message.success(loginRes.message, 3)
+        const user = { name: this.name}
+        this.setUser(user)
+        setAuthorization({ token: loginRes.data.token})
+        this.$router.push('/notice')
+        this.$message.success("欢迎回来", 3)
       } else {
         this.errorLogin = '用户名或密码错误'
+      }
+    },
+    afterRegister(res) {
+      this.logging = false
+      const registerRes = res.data
+      if (registerRes.code >= 0) {
+        const roles = registerRes.data.roles
+        this.setRoles(roles)
+        const user = { name: this.name}
+        this.setUser(user)
+        this.setUser(user)
+        setAuthorization({ token: registerRes.data.token})
+        this.$router.push('/notice')
+        this.$message.success("欢迎加入家教综合服务平台", 3)
+      } else {
+        this.errorRegister = '用户名已被注册'
       }
     }
   }
