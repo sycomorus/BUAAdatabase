@@ -1,5 +1,5 @@
-import {LOGIN, REGISTER, ROUTES, ACTIVITIES, SEND_POST, SAVE_POST} from '@/services/api'
-import {request, METHOD, removeAuthorization} from '@/utils/request'
+import { LOGIN, REGISTER, ROUTES, ACTIVITIES, SEND_POST, SAVE_POST, GET_SAVED_POST} from '@/services/api'
+import { request, METHOD, removeAuthorization } from '@/utils/request'
 
 /**
  * 登录服务
@@ -40,6 +40,7 @@ export async function getActivities() {
 
 /**
  * 发布帖子
+ * @param id 用户id
  * @param title 标题
  * @param startDate 开始日期
  * @param endDate 结束日期
@@ -51,33 +52,44 @@ export async function getActivities() {
  * @param content 内容
  * @returns {Promise<AxiosResponse<T>>}
  */
-export async function sendPost(title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content) {
+export async function sendPost(id, title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content) {
   return request(SEND_POST, METHOD.POST, {
-    title: title,
-    startDate: startDate,
-    endDate: endDate,
-    subjects: subjects,
-    location: location,
-    fullLocation: fullLocation,
-    teltphoneNumber: teltphoneNumber,
-    emailAddress: emailAddress,
-    content: content
+    id: id,
+    data: {
+      title: title,
+      startDate: startDate,
+      endDate: endDate,
+      subjects: subjects,
+      location: location,
+      fullLocation: fullLocation,
+      teltphoneNumber: teltphoneNumber,
+      emailAddress: emailAddress,
+      content: content
+    }
   })
 }
 
-export async function savePost(title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content) {
+export async function savePost(id, title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content) {
   return request(SAVE_POST, METHOD.POST, {
-    title: title,
-    startDate: startDate,
-    endDate: endDate,
-    subjects: subjects,
-    location: location,
-    fullLocation: fullLocation,
-    teltphoneNumber: teltphoneNumber,
-    emailAddress: emailAddress,
-    content: content
+    id: id,
+    data: {
+      title: title,
+      startDate: startDate,
+      endDate: endDate,
+      subjects: subjects,
+      location: location,
+      fullLocation: fullLocation,
+      teltphoneNumber: teltphoneNumber,
+      emailAddress: emailAddress,
+      content: content
+    }
   })
 }
+
+export async function getSavedPost(id) {
+  return request(`${GET_SAVED_POST}?id=${id}`, METHOD.GET);
+}
+
 
 
 export async function getRoutesConfig() {

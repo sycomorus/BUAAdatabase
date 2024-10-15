@@ -5,7 +5,9 @@ import '@/mock/user/login'
 import '@/mock/workplace'
 import '@/mock/goods'
 import '@/mock/list'
-import '@/mock/post'
+import '@/mock/post/sendPost'
+import '@/mock/post/savePost'
+import '@/mock/post/getSavedPost'
 
 // 设置全局延时
 Mock.setup({

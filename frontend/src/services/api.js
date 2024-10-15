@@ -9,6 +9,5 @@ module.exports = {
   ACTIVITIES: `${BASE_URL}/activities`,
   SEND_POST: `${BASE_URL}/sendPost`,
   SAVE_POST: `${BASE_URL}/savePost`,
-  GOODS: `${BASE_URL}/goods`,
-  GOODS_COLUMNS: `${BASE_URL}/columns`,
+  GET_SAVED_POST: `${BASE_URL}/getSavedPost`,
 }

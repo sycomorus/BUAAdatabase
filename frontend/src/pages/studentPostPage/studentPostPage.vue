@@ -41,7 +41,7 @@
           </a-form-item>
           <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 10, offset: 7 }">
             <a-button type="primary" @click="handleSubmit">{{ '提交' }}</a-button>
-            <a-button style="margin-left: 8px">{{ '保存' }}</a-button>
+            <a-button style="margin-left: 8px" @click="handleSave">{{ '保存' }}</a-button>
           </a-form-item>
         </a-form>
       </a-card>
@@ -50,12 +50,19 @@
 </template>
 
 <script>
+import { sendPost, savePost, getSavedPost } from '@/services/user'
 import PageLayout from '@/layouts/PageLayout'
 import locationOptions from '@/assets/json/locationOptions.json'
+import { mapState } from 'vuex'
+import moment from 'moment';
 
 export default {
-  name: 'studentPostPage',
+  name: 'teacherPostPage',
+  computed: {
+    ...mapState('account', { currUser: 'user' }),
+  },
   components: { PageLayout },
+
   data() {
     return {
       subjectOptions: [
@@ -79,18 +86,94 @@ export default {
   },
   created() {
     this.locationOptions = locationOptions; // 在组件创建时加载 JSON 数据
+    this.fetchSavedPost(); // 加载保存的草稿
   },
   methods: {
+    async fetchSavedPost() {
+      try {
+        const response = await getSavedPost(this.currUser.id);
+        const resdata = response.data;
+
+        if (resdata.code !== -1) {
+          const { title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content } = resdata.data;
+          this.postForm.setFieldsValue({
+            title,
+            dateRange: [startDate ? moment(startDate) : null, endDate ? moment(endDate) : null],
+            subjects,
+            location,
+            fullLocation,
+            teltphoneNumber,
+            emailAddress,
+            content,
+          });
+        }
+      } catch (error) {
+        console.error('获取草稿失败', error);
+      }
+    },
+    // 提交表单
     handleSubmit() {
       // 验证表单字段
       this.postForm.validateFields((errors, values) => {
         if (!errors) {
           // 表单验证通过，提交数据
           console.log('表单数据:', values);
+          // 输出时间范围
+          const title = values.title;
+          const dateRange = values.dateRange;
+          const startDate = dateRange[0].format('YYYY-MM-DD');
+          const endDate = dateRange[1].format('YYYY-MM-DD');
+          const subjects = values.subjects;
+          const location = values.location;
+          const fullLocation = values.fullLocation;
+          const teltphoneNumber = values.teltphoneNumber;
+          const emailAddress = values.emailAddress;
+          const content = values.content;
+          sendPost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content).then(this.afterPost)
         } else {
           console.log('表单验证错误:', errors);
         }
       });
+    },
+    afterPost(res) {
+      const resdate = res.data;
+      if (resdate.code >= 0) {
+        this.$message.success('发布成功');
+        this.postForm.resetFields(); // 清空表单
+      } else {
+        this.$message.error('发布失败，可能出现了网络波动');
+      }
+    },
+    // 保存表单数据到草稿
+    handleSave() {
+      // 验证表单字段，这里允许部分字段为空
+      // 不进行表单验证，直接获取表单数据
+      const values = this.postForm.getFieldsValue();
+      console.log('表单数据:', values);
+
+      // 获取各个字段的值
+      const title = values.title || '';  // 如果字段为空，赋默认值 ''
+      const dateRange = values.dateRange || [];
+      const startDate = dateRange.length ? dateRange[0].format('YYYY-MM-DD') : '';
+      const endDate = dateRange.length ? dateRange[1].format('YYYY-MM-DD') : '';
+      const subjects = values.subjects || [];
+      const location = values.location || [];
+      const fullLocation = values.fullLocation || '';
+      const teltphoneNumber = values.teltphoneNumber || '';
+      const emailAddress = values.emailAddress || '';
+      const content = values.content || '';
+
+      // 调用 savePost API，保存为草稿
+      savePost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content).then(this.afterSave);
+    },
+
+    afterSave(res) {
+      const resdata = res.data;
+      if (resdata.code >= 0) {
+        this.$message.success('保存成功');
+      } else {
+        this.$message.error('保存失败，可能出现了网络波动');
+      }
     }
   }
 }
