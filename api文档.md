@@ -67,17 +67,17 @@
 
 ```json
 {
-    'id': '',    // 用户独有的标识符id
-    'data': {
-      'title': '',  // 文章标题
-      'startDate': '',  // 开始日期，注意格式为YYYY-MM-DD 
-      'endDate': '',    // 结束日期，注意格式为YYYY-MM-DD
-      'subjects':[],    // 已选科目，格式为['数学','英语'，'语文']
-      'location': [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
-      'fullLocation': ''  // 详细地址
-      'teltphoneNumber': '',  // 电话号码
-      'emailAddress': '',   // 电子邮箱地址
-      'content': ''      // 帖子内容
+    "id": "",    // 用户独有的标识符id
+    "data": {
+      "title": "",  // 文章标题
+      "startDate": "",  // 开始日期，注意格式为YYYY-MM-DD 
+      "endDate": "",    // 结束日期，注意格式为YYYY-MM-DD
+      "subjects":[],    // 已选科目，格式为['数学','英语'，'语文']
+      "location": [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
+      "fullLocation": "",  // 详细地址
+      "teltphoneNumber": "",  // 电话号码
+      "emailAddress": "",   // 电子邮箱地址
+      "content": ""      // 帖子内容
     }
 }
 ```
@@ -86,7 +86,7 @@
 
 ```json
 {
-	'code': 0   // 0成功，-1表示失败
+	"code": 0   // 0成功，-1表示失败
 }
 ```
 
@@ -98,17 +98,17 @@
 
 ```json
 {
-    'id': '',    // 用户独有的标识符id
-    'data': {
-      'title': '',  // 文章标题
-      'startDate': '',  // 开始日期，注意格式为YYYY-MM-DD 
-      'endDate': '',    // 结束日期，注意格式为YYYY-MM-DD
-      'subjects':[],    // 已选科目，格式为['数学','英语'，'语文']
-      'location': [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
-      'fullLocation': ''  // 详细地址
-      'teltphoneNumber': '',  // 电话号码
-      'emailAddress': '',   // 电子邮箱地址
-      'content': ''      // 帖子内容
+    "id": "",    // 用户独有的标识符id
+    "data": {
+      "title": "",  // 文章标题
+      "startDate": "",  // 开始日期，注意格式为YYYY-MM-DD 
+      "endDate": "",    // 结束日期，注意格式为YYYY-MM-DD
+      "subjects":[],    // 已选科目，格式为['数学','英语'，'语文']
+      "location": [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
+      "fullLocation": "",  // 详细地址
+      "teltphoneNumber": "",  // 电话号码
+      "emailAddress": "",   // 电子邮箱地址
+      "content": ""      // 帖子内容
     }
 }
 ```
@@ -117,7 +117,7 @@
 
 ```json
 {
-	'code': 0   // 0成功，-1表示失败
+	"code": 0   // 0成功，-1表示失败
 }
 ```
 
@@ -129,7 +129,7 @@
 
 ```json
 {
-	'id': 1  // 用户独有的标识符id
+	"id": 1  // 用户独有的标识符id
 }
 ```
 
@@ -137,18 +137,18 @@
 
 ```json
 {
-    'code': 0     // 0成功，-1表示失败
-    'data': {
-        'title': '',  // 文章标题
-        'startDate': '',  // 开始日期，注意格式为YYYY-MM-DD 
-        'endDate': '',    // 结束日期，注意格式为YYYY-MM-DD
-        'subjects':[],    // 已选科目，格式为['数学','英语'，'语文']
-        'location': [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
-        'fullLocation': ''  // 详细地址
-        'teltphoneNumber': '',  // 电话号码
-        'emailAddress': '',   // 电子邮箱地址
-        'content': ''      // 帖子内容
-	}
+    "code": 0,     // 0成功，-1表示失败
+    "data": {
+      "title": "",  // 文章标题
+      "startDate": "",  // 开始日期，注意格式为YYYY-MM-DD 
+      "endDate": "",    // 结束日期，注意格式为YYYY-MM-DD
+      "subjects":[],    // 已选科目，格式为['数学','英语'，'语文']
+      "location": [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
+      "fullLocation": "",  // 详细地址
+      "teltphoneNumber": "",  // 电话号码
+      "emailAddress": "",   // 电子邮箱地址
+      "content": ""      // 帖子内容
+    }
 }
 ```
 
