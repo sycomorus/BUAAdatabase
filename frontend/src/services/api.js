@@ -7,6 +7,7 @@ module.exports = {
   ROUTES: `${BASE_URL}/routes`,
   REGISTER: `${BASE_URL}/register`,
   ACTIVITIES: `${BASE_URL}/activities`,
-  GOODS: `${BASE_URL}/goods`,
-  GOODS_COLUMNS: `${BASE_URL}/columns`,
+  SEND_POST: `${BASE_URL}/sendPost`,
+  SAVE_POST: `${BASE_URL}/savePost`,
+  GET_SAVED_POST: `${BASE_URL}/getSavedPost`,
 }

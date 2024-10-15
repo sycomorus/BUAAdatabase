@@ -10,12 +10,15 @@ Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/login`, 'post', ({body}) => {
   if (name === 'admin' && password === '888888') {
     success = true
     result.data.roles = [{id: 'admin'}]
+    result.data.id = '0'
   } else if (name === 'teacher' && password === '888888') {
     success = true
     result.data.roles = [{id: 'teacher'}]
+    result.data.id = '1'
   } else if (name == 'student' && password == '888888') {
     success = true
     result.data.roles = [{id: 'student'}]
+    result.data.id = '2'
   }
   else {
     success = false
