@@ -10,8 +10,8 @@
 
 ```json
 {
-    "username": str
-	"passage": str
+  "username": "",
+	"passage": ""
 }
 ```
 
@@ -38,9 +38,9 @@
 
 ```json
 {
-	"username": str
-	"passage": str
-	"role": student // 可选student或者teacher
+	"username": "",
+	"passage": "",
+	"role": "" // 可选student或者teacher
 }
 ```
 
