@@ -137,7 +137,7 @@ export default {
       if (loginRes.code >= 0) {
         const roles = loginRes.data.roles
         this.setRoles(roles)
-        const user = { name: this.name}
+        const user = { name: this.name, id: loginRes.data.id}
         this.setUser(user)
         setAuthorization({ token: loginRes.data.token})
         this.$router.push('/notice')
@@ -152,8 +152,7 @@ export default {
       if (registerRes.code >= 0) {
         const roles = registerRes.data.roles
         this.setRoles(roles)
-        const user = { name: this.name}
-        this.setUser(user)
+        const user = { name: this.name, id: registerRes.data.id}
         this.setUser(user)
         setAuthorization({ token: registerRes.data.token})
         this.$router.push('/notice')

@@ -22,7 +22,8 @@
   "code": 0,   // 0表示登录成功，-1表示登录失败
   "data": {
     "roles": [{"id": "admin"}],  // id表示用户的身份，可选admin,student,teacher
-    "token": "Authorization:0.123456789",   // 用户唯一标识id，用于后续与后端进行数据交流
+    "token": "Authorization:0.123456789",   // 用于后续与后端进行数据交流，随机数即可
+    "id" : "123456789" // 用户id
   },
 }
 ```
@@ -50,7 +51,8 @@
   "code": 0,   // 0表示注册成功，-1表示注册失败
   "data": {
     "roles": [{"id": "admin"}],  // id表示用户的身份，可选admin,student,teacher
-    "token": "Authorization:0.123456789",   // 用户唯一标识id，用于后续与后端进行数据交流
+    "token": "Authorization:0.123456789",   // 用于后续与后端进行数据交流，随机数即可
+    "id" : "123456789" // 用户id
   },
 }
 ```

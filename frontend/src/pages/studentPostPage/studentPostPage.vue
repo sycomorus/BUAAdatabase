@@ -19,7 +19,7 @@
             <a-row :gutter="20"> <!-- 设置列间间隔为16像素 -->
               <a-col :span="10">
                 <a-cascader :options="locationOptions" placeholder="请选择地址" change-on-select
-                v-decorator="['location', { rules: [{ required: true, type: 'array', message: '请选择地址', validateTrigger: 'onSubmit' }] }]"/>
+                v-decorator="['location', { rules: [{ required: true, type: 'array', message: ' ', validateTrigger: 'onSubmit' }] }]"/>
               </a-col>
               <a-col :span="14">
                 <a-input :placeholder="'请输入详细地址'" v-decorator="['fullLocation', { rules: [{ required: true, message: ' ', whitespace: true}], validateTrigger: 'onSubmit'}]"/>

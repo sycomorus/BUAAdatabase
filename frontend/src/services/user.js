@@ -1,4 +1,4 @@
-import {LOGIN, REGISTER, ROUTES, ACTIVITIES} from '@/services/api'
+import {LOGIN, REGISTER, ROUTES, ACTIVITIES, SEND_POST, SAVE_POST} from '@/services/api'
 import {request, METHOD, removeAuthorization} from '@/utils/request'
 
 /**
@@ -34,8 +34,49 @@ export async function register(name, password, role) {
   * @param userToken 用户token
   * @returns {Promise<AxiosResponse<T>>}
   */
-export async function getActivities(token) {
-  return request(ACTIVITIES, METHOD.GET, token)
+export async function getActivities() {
+  return request(ACTIVITIES, METHOD.GET)
+}
+
+/**
+ * 发布帖子
+ * @param title 标题
+ * @param startDate 开始日期
+ * @param endDate 结束日期
+ * @param subjects 科目
+ * @param location 地点
+ * @param fullLocation 详细地址
+ * @param teltphoneNumber 联系电话
+ * @param emailAddress 邮箱
+ * @param content 内容
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export async function sendPost(title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content) {
+  return request(SEND_POST, METHOD.POST, {
+    title: title,
+    startDate: startDate,
+    endDate: endDate,
+    subjects: subjects,
+    location: location,
+    fullLocation: fullLocation,
+    teltphoneNumber: teltphoneNumber,
+    emailAddress: emailAddress,
+    content: content
+  })
+}
+
+export async function savePost(title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content) {
+  return request(SAVE_POST, METHOD.POST, {
+    title: title,
+    startDate: startDate,
+    endDate: endDate,
+    subjects: subjects,
+    location: location,
+    fullLocation: fullLocation,
+    teltphoneNumber: teltphoneNumber,
+    emailAddress: emailAddress,
+    content: content
+  })
 }
 
 
