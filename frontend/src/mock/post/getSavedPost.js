@@ -17,7 +17,7 @@ Mock.mock(/\/getSavedPost\//, 'get', (options) => {
                 subjects: ['语文', '数学'],
                 location: ['北京', '海淀区'],
                 fullLocation: '中关村大街',
-                teltphoneNumber: '1234567890',
+                telephoneNumber: '1234567890',
                 emailAddress: 'example@test.com',
                 content: '具备5年教学经验，擅长语文与数学教学。',
             },
@@ -32,7 +32,7 @@ Mock.mock(/\/getSavedPost\//, 'get', (options) => {
                 subjects: ['英语', '数学'],
                 location: ['上海', '浦东新区'],
                 fullLocation: '陆家嘴',
-                teltphoneNumber: '1234567890',
+                telephoneNumber: '1234567890',
                 emailAddress: '',
             }
         }

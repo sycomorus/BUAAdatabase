@@ -75,7 +75,7 @@
       "subjects":[],    // 已选科目，格式为['数学','英语'，'语文']
       "location": [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
       "fullLocation": "",  // 详细地址
-      "teltphoneNumber": "",  // 电话号码
+      "telephoneNumber": "",  // 电话号码
       "emailAddress": "",   // 电子邮箱地址
       "content": ""      // 帖子内容
     }
@@ -106,7 +106,7 @@
       "subjects":[],    // 已选科目，格式为['数学','英语'，'语文']
       "location": [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
       "fullLocation": "",  // 详细地址
-      "teltphoneNumber": "",  // 电话号码
+      "telephoneNumber": "",  // 电话号码
       "emailAddress": "",   // 电子邮箱地址
       "content": ""      // 帖子内容
     }
@@ -145,7 +145,7 @@
       "subjects":[],    // 已选科目，格式为['数学','英语'，'语文']
       "location": [],   // 地址，格式如['湖南省','衡阳市','雁峰区']，总之是包含三级行政规划的列表
       "fullLocation": "",  // 详细地址
-      "teltphoneNumber": "",  // 电话号码
+      "telephoneNumber": "",  // 电话号码
       "emailAddress": "",   // 电子邮箱地址
       "content": ""      // 帖子内容
     }

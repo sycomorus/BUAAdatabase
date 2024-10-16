@@ -29,7 +29,7 @@
           <a-form-item :label="'联系方式'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
             <a-row :gutter="20">
               <a-col :span="10">
-                <a-input placeholder="电话号码（必填）" v-decorator="['teltphoneNumber', { rules: [{ required: true, message: ' ', whitespace: true}], validateTrigger: 'onSubmit'}]"/>
+                <a-input placeholder="电话号码（必填）" v-decorator="['telephoneNumber', { rules: [{ required: true, message: ' ', whitespace: true}], validateTrigger: 'onSubmit'}]"/>
               </a-col>
               <a-col :span="14">
                 <a-input placeholder="电子邮箱（选填)" v-decorator="['emailAddress', { rules: [{ required: false, message: ' ', whitespace: true}], validateTrigger: 'onSubmit'}]"/>
@@ -95,14 +95,14 @@ export default {
         const resdata = response.data;
 
         if (resdata.code !== -1) {
-          const { title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content } = resdata.data;
+          const { title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, emailAddress, content } = resdata.data;
           this.postForm.setFieldsValue({
             title,
             dateRange: [startDate ? moment(startDate) : null, endDate ? moment(endDate) : null],
             subjects,
             location,
             fullLocation,
-            teltphoneNumber,
+            telephoneNumber,
             emailAddress,
             content,
           });
@@ -126,10 +126,10 @@ export default {
           const subjects = values.subjects;
           const location = values.location;
           const fullLocation = values.fullLocation;
-          const teltphoneNumber = values.teltphoneNumber;
+          const telephoneNumber = values.telephoneNumber;
           const emailAddress = values.emailAddress;
           const content = values.content;
-          sendPost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content).then(this.afterPost)
+          sendPost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, emailAddress, content).then(this.afterPost)
         } else {
           console.log('表单验证错误:', errors);
         }
@@ -159,12 +159,12 @@ export default {
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || '';
-      const teltphoneNumber = values.teltphoneNumber || '';
+      const telephoneNumber = values.telephoneNumber || '';
       const emailAddress = values.emailAddress || '';
       const content = values.content || '';
 
       // 调用 savePost API，保存为草稿
-      savePost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content).then(this.afterSave);
+      savePost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, emailAddress, content).then(this.afterSave);
     },
 
     afterSave(res) {

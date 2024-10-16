@@ -55,7 +55,7 @@ export async function getActivities() {
  * @param subjects 科目
  * @param location 地点
  * @param fullLocation 详细地址
- * @param teltphoneNumber 联系电话
+ * @param telephoneNumber 联系电话
  * @param emailAddress 邮箱
  * @param content 内容
  * @returns {Promise<AxiosResponse<T>>}
@@ -68,7 +68,7 @@ export async function sendPost(
   subjects,
   location,
   fullLocation,
-  teltphoneNumber,
+  telephoneNumber,
   emailAddress,
   content
 ) {
@@ -81,7 +81,7 @@ export async function sendPost(
       subjects: subjects,
       location: location,
       fullLocation: fullLocation,
-      teltphoneNumber: teltphoneNumber,
+      telephoneNumber: telephoneNumber,
       emailAddress: emailAddress,
       content: content,
     },
@@ -96,7 +96,7 @@ export async function savePost(
   subjects,
   location,
   fullLocation,
-  teltphoneNumber,
+  telephoneNumber,
   emailAddress,
   content
 ) {
@@ -109,7 +109,7 @@ export async function savePost(
       subjects: subjects,
       location: location,
       fullLocation: fullLocation,
-      teltphoneNumber: teltphoneNumber,
+      telephoneNumber: telephoneNumber,
       emailAddress: emailAddress,
       content: content,
     },
