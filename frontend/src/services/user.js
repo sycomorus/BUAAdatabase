@@ -1,5 +1,13 @@
-import { LOGIN, REGISTER, ROUTES, ACTIVITIES, SEND_POST, SAVE_POST, GET_SAVED_POST} from '@/services/api'
-import { request, METHOD, removeAuthorization } from '@/utils/request'
+import {
+  LOGIN,
+  REGISTER,
+  ROUTES,
+  ACTIVITIES,
+  SEND_POST,
+  SAVE_POST,
+  GET_SAVED_POST,
+} from "@/services/api";
+import { request, METHOD, removeAuthorization } from "@/utils/request";
 
 /**
  * 登录服务
@@ -10,8 +18,8 @@ import { request, METHOD, removeAuthorization } from '@/utils/request'
 export async function login(name, password) {
   return request(LOGIN, METHOD.POST, {
     name: name,
-    password: password
-  })
+    password: password,
+  });
 }
 
 /**
@@ -25,17 +33,17 @@ export async function register(name, password, role) {
   return request(REGISTER, METHOD.POST, {
     name: name,
     password: password,
-    role: role
-  })
+    role: role,
+  });
 }
 
 /*
-  * 获取用户动态
-  * @param userToken 用户token
-  * @returns {Promise<AxiosResponse<T>>}
-  */
+ * 获取用户动态
+ * @param userToken 用户token
+ * @returns {Promise<AxiosResponse<T>>}
+ */
 export async function getActivities() {
-  return request(ACTIVITIES, METHOD.GET)
+  return request(ACTIVITIES, METHOD.GET);
 }
 
 /**
@@ -52,7 +60,18 @@ export async function getActivities() {
  * @param content 内容
  * @returns {Promise<AxiosResponse<T>>}
  */
-export async function sendPost(id, title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content) {
+export async function sendPost(
+  id,
+  title,
+  startDate,
+  endDate,
+  subjects,
+  location,
+  fullLocation,
+  teltphoneNumber,
+  emailAddress,
+  content
+) {
   return request(SEND_POST, METHOD.POST, {
     id: id,
     data: {
@@ -64,12 +83,23 @@ export async function sendPost(id, title, startDate, endDate, subjects, location
       fullLocation: fullLocation,
       teltphoneNumber: teltphoneNumber,
       emailAddress: emailAddress,
-      content: content
-    }
-  })
+      content: content,
+    },
+  });
 }
 
-export async function savePost(id, title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content) {
+export async function savePost(
+  id,
+  title,
+  startDate,
+  endDate,
+  subjects,
+  location,
+  fullLocation,
+  teltphoneNumber,
+  emailAddress,
+  content
+) {
   return request(SAVE_POST, METHOD.POST, {
     id: id,
     data: {
@@ -81,32 +111,30 @@ export async function savePost(id, title, startDate, endDate, subjects, location
       fullLocation: fullLocation,
       teltphoneNumber: teltphoneNumber,
       emailAddress: emailAddress,
-      content: content
-    }
-  })
+      content: content,
+    },
+  });
 }
 
 export async function getSavedPost(id) {
   return request(`${GET_SAVED_POST}?id=${id}`, METHOD.GET);
 }
 
-
-
 export async function getRoutesConfig() {
-  return request(ROUTES, METHOD.GET)
+  return request(ROUTES, METHOD.GET);
 }
 
 /**
  * 退出登录
  */
 export function logout() {
-  localStorage.removeItem(process.env.VUE_APP_ROUTES_KEY)
-  localStorage.removeItem(process.env.VUE_APP_PERMISSIONS_KEY)
-  localStorage.removeItem(process.env.VUE_APP_ROLES_KEY)
-  removeAuthorization()
+  localStorage.removeItem(process.env.VUE_APP_ROUTES_KEY);
+  localStorage.removeItem(process.env.VUE_APP_PERMISSIONS_KEY);
+  localStorage.removeItem(process.env.VUE_APP_ROLES_KEY);
+  removeAuthorization();
 }
 export default {
   login,
   logout,
-  getRoutesConfig
-}
+  getRoutesConfig,
+};
