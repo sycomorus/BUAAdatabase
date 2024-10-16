@@ -15,11 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include,re_path
 from myapp.views import home
 
 urlpatterns = [
     path('', home, name='home'),  # 添加根路径 URL 配置
     path('admin/', admin.site.urls),
-    path('api/', include('myapp.urls')),  # 包含 myapp 应用的 URL 路由
+    re_path(r'^api/', include('myapp.urls')),  # 包含 myapp 应用的 URL 路由
 ]

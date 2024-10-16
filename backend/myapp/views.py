@@ -5,6 +5,7 @@ import json
 import random
 from datetime import datetime, timedelta
 
+@csrf_exempt
 def home(request):
     return HttpResponse("Welcome to the Home Page")
 
@@ -74,7 +75,7 @@ def register(request):
     else:
         return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
 
-
+@csrf_exempt
 def get_routes_config(request):
     if request.method == 'GET':
         routes_config = [
