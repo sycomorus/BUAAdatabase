@@ -53,22 +53,24 @@ def register(request):
         try:
             # 检查用户是否已经存在
             user = User.objects.get(username=username)
-            result=result={'data':{}}
+            result={'data':{}}
             result['code'] = -1
             return JsonResponse(result)
         except User.DoesNotExist:
             # 创建用户
+            result={'data':{}}
             if role == "admin":
                 identity = 0
+                result['data']['roles']=[{'id': 'admin'}]
             elif role == "teacher":
                 identity = 1
+                result['data']['roles']=[{'id': 'teacher'}]
             elif role == "student":
                 identity = 2
+                result['data']['roles']=[{'id': 'student'}]
             user = User(username=username, password=password, identity=identity, registration_date=datetime.now())
             user.save()
-            result={'data':{}}
             result['code'] = 0
-            result['data']['roles']=[{'id': 'admin'}]
             result['data']['token']="Authorization:" + str(random.random())
             result['data']['id'] = str(user.id)
             return JsonResponse(result)
