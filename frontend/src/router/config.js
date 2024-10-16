@@ -65,9 +65,9 @@ const options = {
           name: "广场",
           meta: {
             icon: "team",
-            authority: {
-              role: 'teacher'
-            }
+            // authority: {
+            //   role: 'teacher', 
+            // }
           },
           component: () => import('@/pages/jobSeekPage')
         },
