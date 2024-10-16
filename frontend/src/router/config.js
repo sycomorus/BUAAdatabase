@@ -64,7 +64,7 @@ const options = {
           path: 'jobSeekPage', // 这是针对教师的求职页面
           name: "广场",
           meta: {
-            icon: "search",
+            icon: "team",
             authority: {
               role: 'teacher'
             }
@@ -86,7 +86,7 @@ const options = {
           path : "hirePage", // 这是针对学生的招聘页面
           name: "广场",
           meta: {
-            icon: "search",
+            icon: "team",
             authority: {
               role: 'student'
             }
