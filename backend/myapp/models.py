@@ -42,12 +42,18 @@ class Tutor(models.Model):
 
 # 招聘帖表
 class RecruitmentPost(models.Model):
-    post_id = models.BigAutoField(primary_key=True)
-    title = models.CharField(max_length=255)
-    creator_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    creation_date = models.DateField()
-    salary = models.IntegerField()
-    content = models.TextField()
+    post_id = models.BigAutoField(primary_key=True,default=-1)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE,default=-1)
+    tags=models.JSONField(default=list,blank=True)
+    title = models.CharField(max_length=255,default='title')
+    startDate = models.DateField(default='2021-01-01')
+    endDate = models.DateField(default='2021-01-01')
+    subjects = models.JSONField(default=list,blank=True)
+    location = models.CharField(max_length=255,default='location')
+    fullLocation = models.CharField(max_length=255,default='fullLocation')
+    telephoneNumber = models.CharField(max_length=255,default='telephoneNumber')
+    emailAddress = models.EmailField(max_length=255,default='emailAddress')
+    content = models.TextField(default='content')
 
     def __str__(self):
         return self.title
