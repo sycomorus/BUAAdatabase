@@ -21,11 +21,13 @@ def login(request):
             # 查询数据库中是否存在对应的用户
             user = User.objects.get(username=username, password=password)  # 注意：直接存储明文密码并不安全
             if user.identity == 0:
-                result['data']['roles'] = [{str(user.identity): 'admin'}]
+                result['data']['roles'] = [{'id': 'admin'}]
             elif user.identity == 1:
-                result['data']['roles'] = [{str(user.identity): 'teacher'}]
+                result['data']['roles'] = [{'id': 'teacher'}]
             elif user.identity == 2:
-                result['data']['roles'] = [{str(user.identity): 'student'}]
+                result['data']['roles'] = [{'id': 'student'}]
+            else:
+                raise Exception("Unknown identity")
             result['data']['id'] = str(user.id)
 
             # 登录成功
@@ -36,9 +38,6 @@ def login(request):
             # 用户不存在或密码错误
             result['code'] = -1
             result['message'] = "账户名或密码错误"
-
-
-        print(result['data']['roles'])
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
@@ -69,7 +68,7 @@ def register(request):
             user.save()
             result={'data':{}}
             result['code'] = 0
-            result['data']['roles']=[{str(user.identity): 'admin'}]
+            result['data']['roles']=[{'id': 'admin'}]
             result['data']['token']="Authorization:" + str(random.random())
             result['data']['id'] = str(user.id)
             return JsonResponse(result)
