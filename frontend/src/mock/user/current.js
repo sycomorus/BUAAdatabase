@@ -6,6 +6,6 @@ const welcome = Mock.mock({
   message: '@WELCOME'
 })
 
-Mock.mock('/user/welcome', 'get', () => {
+Mock.mock('/user/welcome/', 'get', () => {
   return welcome
 })

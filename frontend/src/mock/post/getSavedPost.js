@@ -2,7 +2,7 @@
 import Mock from 'mockjs'
 
 // 模拟获取保存表单数据的接口
-Mock.mock(/\/getSavedPost/, 'get', (options) => {
+Mock.mock(/\/getSavedPost\//, 'get', (options) => {
     // 解析 URL 获取查询参数
     const url = new URL(options.url, window.location.origin);
     const id = url.searchParams.get('id');

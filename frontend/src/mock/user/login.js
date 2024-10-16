@@ -1,7 +1,7 @@
 import Mock from "mockjs";
 import "@/mock/extend";
 
-Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/login`, "post", ({ body }) => {
+Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/login/`, "post", ({ body }) => {
   let result = { data: {} };
   const { name, password } = JSON.parse(body);
 
