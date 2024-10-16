@@ -25,3 +25,5 @@ backend/myapp/__pycache__/
 *.sln
 package-lock.json
 .env.production.local
+backend/backend/__pycache__/
+backend/db.sqlite3
