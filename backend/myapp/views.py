@@ -4,7 +4,7 @@ from django.http import HttpResponse
 import json
 import random
 from datetime import datetime, timedelta
-from .models import User
+from .models import User, RecruitmentPost
 
 @csrf_exempt
 def home(request):
@@ -19,7 +19,7 @@ def login(request):
         result = {'data': {}}
         try:
             # 查询数据库中是否存在对应的用户
-            user = User.objects.get(username=username, password=password)  # 注意：直接存储明文密码并不安全
+            user = User.objects.get(username=username, password=password)
             if user.identity == 0:
                 result['data']['roles'] = [{'id': 'admin'}]
             elif user.identity == 1:
@@ -68,7 +68,10 @@ def register(request):
             elif role == "student":
                 identity = 2
                 result['data']['roles']=[{'id': 'student'}]
-            user = User(username=username, password=password, identity=identity, registration_date=datetime.now())
+            user = User(username=username, 
+                        password=password, 
+                        identity=identity, 
+                        registration_date=datetime.now())
             user.save()
             result['code'] = 0
             result['data']['token']="Authorization:" + str(random.random())
@@ -88,17 +91,32 @@ def sendPost(request):
         subjects=body.get('data').get('subjects')
         location=body.get('data').get('location')
         fullLocation=body.get('data').get('fullLocation')
-        telephoneNumber=body.get('data').get('teltphoneNumber')
+        telephoneNumber=body.get('data').get('telephoneNumber')
         email=body.get('data').get('emailAddress')
         content=body.get('data').get('content')
         try:
             # 创建招聘帖
-            recruitmentPost = RecruitmentPost(title=title, creator_id=creator_id, creation_date=creation_date, salary=salary, content=content)
+            print("in")
+            recruitmentPost = RecruitmentPost(
+                user_id=User.objects.get(id=id),
+                title=title,
+                startDate=startDate,
+                endDate=endDate,
+                subjects=subjects,
+                location=location,
+                fullLocation=fullLocation,
+                telephoneNumber=telephoneNumber,
+                emailAddress=email,
+                content=content,
+                tags=subjects
+            )
+            print("out")
             recruitmentPost.save()
             result={'data':{}}
             result['code'] = 0
             return JsonResponse(result)
-        except:
+        except Exception as e:
+            print(e)
             result={'data':{}}
             result['code'] = -1
             return JsonResponse(result)
