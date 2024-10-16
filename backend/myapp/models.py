@@ -42,7 +42,7 @@ class Tutor(models.Model):
 
 # 招聘帖表
 class RecruitmentPost(models.Model):
-    post_id = models.BigAutoField(primary_key=True,default=-1)
+    post_id = models.BigAutoField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE,default=-1)
     tags=models.JSONField(default=list,blank=True)
     title = models.CharField(max_length=255,default='title')
