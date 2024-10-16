@@ -1,72 +1,107 @@
 <template>
   <page-layout :title="'广场'">
     <div>
-      <!-- 其他代码保持不变 -->
+      <div :class="['search-head', layout, pageWidth]">
+        <div class="search-input">
+          <a-input-search
+            class="search-ipt"
+            style="width: 600px"
+            placeholder="请输入搜索内容"
+            size="large"
+            enterButton="搜索"
+            v-model="searchQuery"
+            @search="searchPosts" 
+          >
+            <a-icon slot="prefix" type="search" />
+          </a-input-search>
+        </div>
+      </div>
+      <div class="search-content">
+        <router-view />
+      </div>
       <a-card :bordered="false">
         <a-list itemLayout="vertical">
-          <a-list-item :key="n" v-for="n in 10">
-            <a-list-item-meta title="Alipay">
+          <a-list-item :key="post.id" v-for="post in posts" :title="post.title">
+            <a-list-item-meta :title="post.title">
               <div slot="description">
-                <a-tag>Ant Design</a-tag>
-                <a-tag>设计语言</a-tag>
-                <a-tag>蚂蚁金服</a-tag>
+                <a-tag v-for="tag in post.tags" :key="tag">{{ tag }}</a-tag>
               </div>
             </a-list-item-meta>
             <div class="content">
-              <div class="detail" :class="{ 'expanded': showFullContent }">
-                {{ !shouldShowReadMore || showFullContent ? fullContent : truncatedContent }}
+              <div class="detail" :class="{ 'expanded': showFullContent === post.id }">
+                {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content : post.content.slice(0, 60) + '...' }}
               </div>
-              <div class="read-more" v-if="shouldShowReadMore && !showFullContent">
-                <a @click="showFullContent = true">查看更多</a>
+              <div class="read-more" v-if="shouldShowReadMore(post.content) && showFullContent !== post.id">
+                <a @click="showFullContent = post.id">查看更多</a>
               </div>
-              <div class="read-less" v-if="showFullContent">
-                <a @click="showFullContent = false">收起</a>
+              <div class="read-less" v-if="showFullContent === post.id">
+                <a @click="showFullContent = null">收起</a>
               </div>
               <div class="author">
-                <a>ICZER</a>
-                <em>2018-08-05 22:23</em>
-                <em>湖南省|衡阳市|雁峰区</em>
+                <a>{{ post.author }}</a>
+                <em>{{ post.date }}</em>
+                <em>{{ post.location }}</em>
               </div>
             </div>
           </a-list-item>
         </a-list>
         <div class="pagination-container">
-          <a-pagination :current="current1" :show-size-changer=false :total="50" @showSizeChange="onShowSizeChange" />
+          <a-pagination :current="currentPage" :show-size-changer="false" :total="totalPosts" @change="onPageChange" />
         </div>
       </a-card>
     </div>
   </page-layout>
 </template>
 
-
 <script>
 import { mapState } from 'vuex'
 import PageLayout from '@/layouts/PageLayout'
+import { getPosts } from '@/services/user'
 
 export default {
   name: 'jobSeekPage',
   components: { PageLayout },
   computed: {
     ...mapState('setting', ['layout', 'pageWidth']),
-    truncatedContent() {
-      return this.fullContent.slice(0, 80) + '...'; // 截断的文字
-    },
-    shouldShowReadMore() {
-      // 判断是否需要显示“查看更多”按钮
-      return this.fullContent.length > this.contentLimit;
-    }
+    ...mapState('account', { currUser: 'user' })
+  },
+  created() {
+    this.fetchPosts();
   },
   data() {
     return {
-      current1: 3,
-      showFullContent: false, // 控制是否展示全部内容
-      fullContent: '段落示意：蚂蚁金服设计平台 ant.design，用dasdasdnwoqwd打打网球顶起顶起哦带你去哦我的看你发你as达到五千大军迫切的请大家轻拍的情节都跑擦技术大神解答商品定价阿松排第几',
-      contentLimit: 80 // 显示“查看更多”按钮的文本长度限制
+      currentPage: 1, // 当前页码
+      totalPosts: 0, // 总帖子数量
+      posts: [], // 帖子列表
+      showFullContent: null, // 控制显示完整内容的帖子ID
+      searchQuery: '', // 搜索内容
     }
   },
   methods: {
-    onShowSizeChange(current, pageSize) {
-      console.log(current, pageSize);
+    fetchPosts() {
+      // 调用 getPosts 方法，获取当前用户的帖子列表，添加 searchQuery
+      getPosts(this.currUser.id, this.currentPage, this.searchQuery)
+        .then(response => {
+          this.posts = response.data.posts; // 将返回的帖子列表存储到 posts 中
+          this.totalPosts = response.data.total; // 获取总帖子数用于分页
+        })
+        .catch(error => {
+          console.error('获取帖子信息失败:', error);
+        });
+    },
+    searchPosts() {
+      // 当用户点击搜索按钮时，重新获取数据
+      this.currentPage = 1;
+      this.fetchPosts();
+    },
+    shouldShowReadMore(content) {
+      // 判断是否需要显示“查看更多”按钮
+      return content.length > 60;
+    },
+    onPageChange(page) {
+      // 当用户点击分页时，更新当前页面并重新获取数据
+      this.currentPage = page;
+      this.fetchPosts();
     }
   }
 }
