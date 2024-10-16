@@ -1,14 +1,12 @@
 from django.db import models
 
-from django.db import models
-
 # 用户表
 class User(models.Model):
     id = models.BigAutoField(primary_key=True)
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    identity = models.IntegerField()  # 0: 管理员,1: 学生, 2: 家教
+    identity = models.IntegerField()  # 0: 管理员,1: 家教, 2: 学生
     registration_date = models.DateField()
 
     def __str__(self):
