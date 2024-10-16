@@ -6,10 +6,10 @@ activities.forEach(item => {
   item.template = templates[item.activity.type](item.user, item.activity)
 })
 
-Mock.mock('/work/activity', 'get', () => {
+Mock.mock('/work/activity/', 'get', () => {
   return activities
 })
 
-Mock.mock('/work/team', 'get', () => {
+Mock.mock('/work/team/', 'get', () => {
   return teams
 })

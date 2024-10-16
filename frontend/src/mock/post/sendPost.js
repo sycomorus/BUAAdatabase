@@ -2,7 +2,7 @@
 import Mock from 'mockjs'
 
 // 模拟发送表单数据的接口
-Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/sendPost`, 'post', (options) => {
+Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/sendPost/`, 'post', (options) => {
   const {id, data} = JSON.parse(options.body);
   const {title, startDate, endDate, subjects, location, fullLocation, teltphoneNumber, emailAddress, content} = data;
 

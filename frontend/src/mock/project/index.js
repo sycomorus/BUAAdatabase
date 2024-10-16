@@ -10,6 +10,6 @@ const projectArr = Mock.mock({
   ]
 }).list
 
-Mock.mock('/project', 'get', () => {
+Mock.mock('/project/', 'get', () => {
   return projectArr
 })
