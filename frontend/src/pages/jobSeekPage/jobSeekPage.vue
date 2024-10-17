@@ -2,43 +2,49 @@
   <page-layout :title="'广场'">
     <div>
       <div :class="['search-head', layout, pageWidth]">
-          <div class="search-input">
-            <a-input-search class="search-ipt" style="width: 600px" placeholder="请输入..." size="large" enterButton="搜索">
-              <a-icon slot="prefix" type="search" />
-            </a-input-search>
-          </div>
+        <div class="search-input">
+          <a-input-search class="search-ipt" style="width: 600px" placeholder="请输入搜索内容" size="large" enterButton="搜索"
+            v-model="searchQuery" @search="searchPosts">
+            <a-icon slot="prefix" type="search" />
+          </a-input-search>
+        </div>
       </div>
       <div class="search-content">
         <router-view />
       </div>
-      <search-form />
       <a-card :bordered="false">
         <a-list itemLayout="vertical">
-          <a-list-item :key="n" v-for="n in 10">
-            <a-list-item-meta title="Alipay">
+          <a-list-item :key="post.id" v-for="post in posts" :title="post.title">
+            <a-list-item-meta :title="post.title">
               <div slot="description">
-                <a-tag>Ant Design</a-tag>
-                <a-tag>设计语言</a-tag>
-                <a-tag>蚂蚁金服</a-tag>
+                <a-tag v-for="tag in post.tags" :key="tag">{{ tag }}</a-tag>
               </div>
             </a-list-item-meta>
             <div class="content">
-              <div class="detail">
-                段落示意：蚂蚁金服设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。蚂蚁金服设计平台
-                ant.design，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。
+              <div class="detail" :class="{ 'expanded': showFullContent === post.id }">
+                {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content :
+                  post.content.slice(0, 60) + '...' }}
+              </div>
+              <div class="read-more" v-if="shouldShowReadMore(post.content) && showFullContent !== post.id">
+                <a @click="showFullContent = post.id">查看更多</a>
+              </div>
+              <div class="read-less" v-if="showFullContent === post.id">
+                <a @click="showFullContent = null">收起</a>
               </div>
               <div class="author">
-                <a-avatar size="small" src="https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png" />
-                <a>ICZER</a>发布在
-                <a href="https://github.com/iczer">https://github.com/iczer</a>
-                <em>2018-08-05 22:23</em>
+                <!-- 使用 router-link 跳转到学生主页 -->
+                <router-link :to="{ name: '学生主页', params: { id: post.authorId} }">
+                  {{ post.author }}
+                </router-link>
+                <em>{{ post.date }}</em>
+                <em>{{ post.location }}</em>
               </div>
             </div>
-            <span slot="actions"><a-icon style="margin-right: 8px" type="star-o" />156</span>
-            <span slot="actions"><a-icon style="margin-right: 8px" type="like-o" />1435</span>
-            <span slot="actions"><a-icon style="margin-right: 8px" type="message" />4</span>
           </a-list-item>
         </a-list>
+        <div class="pagination-container">
+          <a-pagination :current="currentPage" :show-size-changer="false" :total="totalPosts" @change="onPageChange" />
+        </div>
       </a-card>
     </div>
   </page-layout>
@@ -46,35 +52,77 @@
 
 <script>
 import { mapState } from 'vuex'
-import SearchForm from './SearchForm'
 import PageLayout from '@/layouts/PageLayout'
+import { getPosts } from '@/services/user'
+
 export default {
   name: 'jobSeekPage',
-  components: { SearchForm, PageLayout},
+  components: { PageLayout },
   computed: {
     ...mapState('setting', ['layout', 'pageWidth']),
+    ...mapState('account', { currUser: 'user' })
+  },
+  created() {
+    this.fetchPosts();
+    console.log(this.currUser.id)
+  },
+  data() {
+    return {
+      currentPage: 1, // 当前页码
+      totalPosts: 0, // 总帖子数量
+      posts: [], // 帖子列表
+      showFullContent: null, // 控制显示完整内容的帖子ID
+      searchQuery: '', // 搜索内容
+    }
   },
   methods: {
-    navigate() {
-      this.$router.push('/jobSeekList')
+    fetchPosts() {
+      // 调用 getPosts 方法，获取当前用户的帖子列表，添加 searchQuery
+      getPosts(this.currUser.id, this.currentPage, this.searchQuery)
+        .then(response => {
+          this.posts = response.data.posts; // 将返回的帖子列表存储到 posts 中
+          this.totalPosts = response.data.total; // 获取总帖子数用于分页
+        })
+        .catch(error => {
+          console.error('获取帖子信息失败:', error);
+        });
+    },
+    searchPosts() {
+      // 当用户点击搜索按钮时，重新获取数据
+      this.currentPage = 1;
+      this.fetchPosts();
+    },
+    shouldShowReadMore(content) {
+      // 判断是否需要显示“查看更多”按钮
+      return content.length > 60;
+    },
+    onPageChange(page) {
+      // 当用户点击分页时，更新当前页面并重新获取数据
+      this.currentPage = page;
+      this.fetchPosts();
     }
   }
 }
 </script>
 
+
 <style lang="less" scoped>
+.page-layout {
+    padding: 20px;
+}
 .search-head {
   background-color: @base-bg-color;
   margin: -24px;
-  padding-bottom: 20px; /* 增加底部内边距 */ 
-  
+  padding-bottom: 20px;
+  /* 增加底部内边距 */
+
   &.head.fixed {
     margin: -24px 0;
   }
 
   .search-input {
     text-align: center;
-    
+
   }
 }
 
@@ -90,7 +138,17 @@ export default {
 .content {
   .detail {
     line-height: 22px;
-    max-width: 720px;
+    max-width: 900px;
+    overflow: hidden;
+    text-overflow: ellipsis; // 单行或有限行文本显示省略号
+    white-space: normal; // 多行显示
+    transition: max-height 0.3s ease, white-space 0.3s ease;
+
+    &.expanded {
+      max-height: none;
+      overflow: visible; // 展开时取消 overflow 限制
+      text-overflow: clip; // 展开时不再显示省略号
+    }
   }
 
   .author {
@@ -113,5 +171,11 @@ export default {
       margin-left: 16px;
     }
   }
+}
+
+
+.pagination-container {
+  text-align: center;
+  /* 这将使内联块级元素（如 <a-pagination>）居中 */
 }
 </style>

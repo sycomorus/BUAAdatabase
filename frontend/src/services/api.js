@@ -10,4 +10,6 @@ module.exports = {
   SEND_POST: `${BASE_URL}/sendPost/`,
   SAVE_POST: `${BASE_URL}/savePost/`,
   GET_SAVED_POST: `${BASE_URL}/getSavedPost/`,
+  GET_POSTS: `${BASE_URL}/getPosts/`,
+  GET_STUDENT_INFO: `${BASE_URL}/getStudentInfo/`,
 };

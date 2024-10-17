@@ -6,6 +6,8 @@ import {
   SEND_POST,
   SAVE_POST,
   GET_SAVED_POST,
+  GET_POSTS,
+  GET_STUDENT_INFO,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -116,9 +118,32 @@ export async function savePost(
   });
 }
 
+/**
+ * 获取保存的帖子
+ * @param id 用户id
+ * @returns {Promise<AxiosResponse<T>>}
+ */
 export async function getSavedPost(id) {
   return request(`${GET_SAVED_POST}?id=${id}`, METHOD.GET);
 }
+
+
+/*
+  * 获取帖子
+  * @param id 用户id
+  * @param page 页码
+  * @param query 查询
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getPosts(id, page, query) {
+  return request(`${GET_POSTS}?id=${id}&page=${page}&query=${query}`, METHOD.GET);
+}
+
+export async function getStudentInfo(id) {
+  return request(`${GET_STUDENT_INFO}?id=${id}`, METHOD.GET);
+}
+
+
 
 export async function getRoutesConfig() {
   return request(ROUTES, METHOD.GET);

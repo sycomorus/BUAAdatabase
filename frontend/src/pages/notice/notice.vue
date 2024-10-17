@@ -49,4 +49,7 @@ export default {
 
 <style lang="less">
 @import "index";
+.page-layout {
+    padding: 20px;
+}
 </style>

@@ -66,7 +66,7 @@ const options = {
           meta: {
             icon: "team",
             authority: {
-              role: 'teacher'
+              role: 'teacher', 
             }
           },
           component: () => import('@/pages/jobSeekPage')
@@ -114,6 +114,22 @@ const options = {
             }
           },
           component: () => import('@/pages/learningMaterials')
+        },
+        {
+          path: 'user/studentHomePage/:id',
+          name: '学生主页',
+          meta: {
+            invisible: true
+          },
+          component: () => import('@/pages/studentHomePage')
+        },
+        {
+          path : 'user/editStudentHomePage/:id',
+          name: '编辑学生主页',
+          meta: {
+            invisible: true
+          },
+          component: () => import('@/pages/editStudentHomePage')
         },
         {
           path: 'form',
