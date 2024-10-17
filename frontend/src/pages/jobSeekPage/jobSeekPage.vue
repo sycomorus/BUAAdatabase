@@ -33,7 +33,7 @@
               </div>
               <div class="author">
                 <!-- 使用 router-link 跳转到学生主页 -->
-                <router-link :to="{ name: '学生主页', params: { id: post.authorId, author: post.author } }">
+                <router-link :to="{ name: '学生主页', params: { id: post.authorId} }">
                   {{ post.author }}
                 </router-link>
                 <em>{{ post.date }}</em>

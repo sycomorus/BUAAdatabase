@@ -18,7 +18,7 @@ Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/login/`, "post", ({ body }) => {
   } else if (name == "student" && password == "888888") {
     success = true;
     result.data.roles = [{ id: "student" }];
-    result.data.id = "2";
+    result.data.id = "1";
   } else {
     success = false;
   }

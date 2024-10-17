@@ -124,6 +124,14 @@ const options = {
           component: () => import('@/pages/studentHomePage')
         },
         {
+          path : 'user/editStudentHomePage/:id',
+          name: '编辑学生主页',
+          meta: {
+            invisible: true
+          },
+          component: () => import('@/pages/editStudentHomePage')
+        },
+        {
           path: 'form',
           name: '表单页',
           meta: {

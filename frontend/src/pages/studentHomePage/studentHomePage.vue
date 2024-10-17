@@ -1,34 +1,31 @@
 <template>
     <page-layout :title='userName' :desc='userPersonalSignature'>
-        <template slot="extra">
-            <head-info class="split-right" :title='"访问"' content="1237" />
-        </template>
         <a-card :bordered="false" class="user-info-card">
-            <a-row gutter="32">
-                <a-col span="8">
+            <a-row :gutter="16">
+                <a-col :span="8">
                     <div class="user-info-label">性别</div>
                     <div class="user-info-content">{{ userGender }}</div>
                 </a-col>
-                <a-col span="8">
+                <a-col :span="8">
                     <div class="user-info-label">年龄</div>
                     <div class="user-info-content">{{ userAge }}</div>
                 </a-col>
-                <a-col span="8">
+                <a-col :span="8">
                     <div class="user-info-label">年级</div>
                     <div class="user-info-content">{{ userGrade }}</div>
                 </a-col>
             </a-row>
             <a-divider class="custom-divider" />
-            <a-row gutter="32">
-                <a-col span="8">
+            <a-row :gutter="16">
+                <a-col :span="8">
                     <div class="user-info-label">邮箱:</div>
                     <div class="user-info-content">{{ userEmail }}</div>
                 </a-col>
-                <a-col span="8">
+                <a-col :span="8">
                     <div class="user-info-label">电话:</div>
                     <div class="user-info-content">{{ userTelephone }}</div>
                 </a-col>
-                <a-col span="8">
+                <a-col :span="8">
                     <div class="user-info-label">地址:</div>
                     <div class="user-info-content">{{ userAddress }}</div>
                 </a-col>
@@ -49,11 +46,10 @@
 <script>
 import PageLayout from '@/layouts/PageLayout'
 import { getStudentInfo } from '@/services/user'
-import HeadInfo from '@/components/tool/HeadInfo'
 
 export default {
     name: 'studentHomePage',
-    components: { PageLayout, HeadInfo },
+    components: { PageLayout},
     data() {
         return {
             userId: this.$route.params.id, // 获取路由参数中的id
