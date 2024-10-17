@@ -1,5 +1,5 @@
 <template>
-  <page-layout :title="'你可以在这个页面填写并发布求聘信息'">
+  <page-layout :desc="'你可以在这个页面填写并发布求聘信息'" :title="'我要求聘'">
     <div style="display: flex; justify-content: center;">
       <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" :style="{ width: '1200px' }">
         <a-form :form="postForm">
@@ -182,3 +182,9 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.page-layout {
+    padding: 20px;
+}
+</style>

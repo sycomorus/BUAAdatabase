@@ -7,6 +7,7 @@ import {
   SAVE_POST,
   GET_SAVED_POST,
   GET_POSTS,
+  GET_STUDENT_INFO,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -137,6 +138,12 @@ export async function getSavedPost(id) {
 export async function getPosts(id, page, query) {
   return request(`${GET_POSTS}?id=${id}&page=${page}&query=${query}`, METHOD.GET);
 }
+
+export async function getStudentInfo(id) {
+  return request(`${GET_STUDENT_INFO}?id=${id}`, METHOD.GET);
+}
+
+
 
 export async function getRoutesConfig() {
   return request(ROUTES, METHOD.GET);

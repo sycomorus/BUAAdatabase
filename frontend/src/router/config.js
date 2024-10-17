@@ -116,6 +116,14 @@ const options = {
           component: () => import('@/pages/learningMaterials')
         },
         {
+          path: 'user/studentHomePage/:id',
+          name: '学生主页',
+          meta: {
+            invisible: true
+          },
+          component: () => import('@/pages/studentHomePage')
+        },
+        {
           path: 'form',
           name: '表单页',
           meta: {

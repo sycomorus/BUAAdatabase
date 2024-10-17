@@ -3,15 +3,8 @@
     <div>
       <div :class="['search-head', layout, pageWidth]">
         <div class="search-input">
-          <a-input-search
-            class="search-ipt"
-            style="width: 600px"
-            placeholder="请输入搜索内容"
-            size="large"
-            enterButton="搜索"
-            v-model="searchQuery"
-            @search="searchPosts" 
-          >
+          <a-input-search class="search-ipt" style="width: 600px" placeholder="请输入搜索内容" size="large" enterButton="搜索"
+            v-model="searchQuery" @search="searchPosts">
             <a-icon slot="prefix" type="search" />
           </a-input-search>
         </div>
@@ -29,7 +22,8 @@
             </a-list-item-meta>
             <div class="content">
               <div class="detail" :class="{ 'expanded': showFullContent === post.id }">
-                {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content : post.content.slice(0, 60) + '...' }}
+                {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content :
+                  post.content.slice(0, 60) + '...' }}
               </div>
               <div class="read-more" v-if="shouldShowReadMore(post.content) && showFullContent !== post.id">
                 <a @click="showFullContent = post.id">查看更多</a>
@@ -38,7 +32,10 @@
                 <a @click="showFullContent = null">收起</a>
               </div>
               <div class="author">
-                <a>{{ post.author }}</a>
+                <!-- 使用 router-link 跳转到学生主页 -->
+                <router-link :to="{ name: '学生主页', params: { id: currUser.id, author: post.author } }">
+                  {{ post.author }}
+                </router-link>
                 <em>{{ post.date }}</em>
                 <em>{{ post.location }}</em>
               </div>
@@ -67,6 +64,7 @@ export default {
   },
   created() {
     this.fetchPosts();
+    console.log(this.currUser.id)
   },
   data() {
     return {
@@ -109,6 +107,9 @@ export default {
 
 
 <style lang="less" scoped>
+.page-layout {
+    padding: 20px;
+}
 .search-head {
   background-color: @base-bg-color;
   margin: -24px;
