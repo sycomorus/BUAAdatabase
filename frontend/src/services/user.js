@@ -166,6 +166,12 @@ export async function getStudentInfo(id) {
   return request(`${GET_STUDENT_INFO}?id=${id}`, METHOD.GET);
 }
 
+
+/*
+  * 获取老师信息
+  * @param id 老师id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
 export async function getTeacherInfo(id) {
   return request(`${GET_TEACHER_INFO}?id=${id}`, METHOD.GET);
 }
@@ -183,6 +189,12 @@ export async function updateStudentInfo(id, data) {
   })
 }
 
+/*
+  * 更新老师信息
+  * @param id 老师id
+  * @param data 老师信息
+  * @returns {Promise<AxiosResponse<T>>}
+  */
 export async function updateTeacherInfo(id, data) {
   return request(UPDATE_TEACHER_INFO, METHOD.POST, {
     id: id,

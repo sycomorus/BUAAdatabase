@@ -4,23 +4,8 @@
             <a-form @submit.prevent="submitForm">
                 <a-row gutter="32">
                     <a-col span="8">
-                        <div class="user-info-label">年级</div>
-                        <a-select v-model="editUserGrade" placeholder="请选择年级">
-                            <a-select-option value="学龄前">学龄前</a-select-option>
-                            <a-select-option value="小学一年级">小学一年级</a-select-option>
-                            <a-select-option value="小学二年级">小学二年级</a-select-option>
-                            <a-select-option value="小学三年级">小学三年级</a-select-option>
-                            <a-select-option value="小学四年级">小学四年级</a-select-option>
-                            <a-select-option value="小学五年级">小学五年级</a-select-option>
-                            <a-select-option value="小学六年级">小学六年级</a-select-option>
-                            <a-select-option value="初中一年级">初中一年级</a-select-option>
-                            <a-select-option value="初中二年级">初中二年级</a-select-option>
-                            <a-select-option value="初中三年级">初中三年级</a-select-option>
-                            <a-select-option value="高中一年级">高中一年级</a-select-option>
-                            <a-select-option value="高中二年级">高中二年级</a-select-option>
-                            <a-select-option value="高中三年级">高中三年级</a-select-option>
-                            <a-select-option value="本科生">本科生</a-select-option>
-                        </a-select>
+                        <div class="user-info-label">学历</div>
+                        <a-input v-model="editUserDegree" placeholder="请输入学历" />
                     </a-col>
                     <a-col span="8">
                         <div class="user-info-label">性别</div>
@@ -82,7 +67,7 @@ export default {
     data() {
         return {
             userId: this.$route.params.id, // 获取用户ID
-            editUserGrade: '',
+            editUserDegree: '',
             editUserGender: '',
             editUserAge: 0,
             editUserEmail: '',
@@ -101,7 +86,7 @@ export default {
                 const res = response.data;
                 if (res.code >= 0) {
                     const userData = res.data;
-                    this.editUserGrade = userData.grade || '';
+                    this.editUserDegree = userData.degree || '';
                     this.editUserGender = userData.gender || '';
                     this.editUserAge = userData.age || 0;
                     this.editUserEmail = userData.email || '';
@@ -119,7 +104,7 @@ export default {
         submitForm() {
             // 提交编辑后的用户信息
             const updatedUserInfo = {
-                grade: this.editUserGrade,
+                degree: this.editUserDegree,
                 gender: this.editUserGender,
                 age: this.editUserAge,
                 email: this.editUserEmail,

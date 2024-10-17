@@ -126,7 +126,7 @@ export default {
                 telephone: this.editUserTelephone,
                 address: this.editUserAddress,
                 intro: this.editUserIntro,
-                signature: this.editUserSignature,
+                personalSignature: this.editUserSignature,
             };
             updateStudentInfo(this.userId, updatedUserInfo).then(response => {
                 console.log(this.userId, updatedUserInfo);

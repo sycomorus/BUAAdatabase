@@ -173,15 +173,125 @@
 **返回**：
 
 ```json
-"posts": [{         // 一个帖子的列表
-    "id": "",       // 帖子id
-    "title": ""     // 帖子标题
-    "tags": [""],     // 帖子的tags
-    "content": "",  // 帖子内容
-    "author": "",   // 帖子作者
-    "authorId": int, // 帖子作者id
-    "date": "",     // 帖子发布日期（如果在二十四内则显示“几小时前”， 此外如果在三天内则显示“几天前， 此外显示日期”）
-    "location": ""   // 简略地址即可
-}]
-"total": int        // 总共的帖子数，不是单次返回的帖子数，注意是int
+{
+    "posts": [{         // 一个帖子的列表
+        "id": "",       // 帖子id
+        "title": ""     // 帖子标题
+        "tags": [""],     // 帖子的tags
+        "content": "",  // 帖子内容
+        "author": "",   // 帖子作者
+        "authorId": int, // 帖子作者id
+        "date": "",     // 帖子发布日期（如果在二十四内则显示“几小时前”， 此外如果在三天内则显示“几天前， 此外显示日期”）
+        "location": ""   // 简略地址即可
+    }]
+    "total": int        // 总共的帖子数，不是单次返回的帖子数，注意是int
+}
 ```
+
+## 用户主页相关
+
+### getStudentInfo
+
+**类型**：GET
+
+**参数**：
+
+```json
+"id": ""   // 目标用户的id
+```
+
+**返回**
+
+```json
+{
+    "code": 0  // 0表示成功，-1表示失败
+    "data": {
+    	"name": "" // 用户名
+    	"email": "" // 电子邮箱地址
+    	"telephone": "" //电话号码
+    	"address": "" // 地址
+    	"personalSignature": "" // 个性签名
+    	"intro": "" // 简介
+    	"age": int // 年龄
+    	"gender": "" // 性别，可选男或女（没有武装直升机！！！）
+    	"grade": "" //年级
+    }
+}
+```
+
+### updateStudentInfo
+
+**类型**：POST
+
+**参数**：
+
+```json
+{
+    "id": "" // 目标学生id
+    "data": {
+    	"grade": ""   // 年级
+        "gender": ""  // 性别
+        "age": int    // 年龄
+        "email": ""   // 电子邮箱地址
+        "telephone": "",  // 电话
+        "address": "",  // 地址
+        "intro": "",  // 简介
+        "personalSignature": "",  // 个性签名
+	}
+}
+```
+
+**返回**：
+
+```json
+{
+	"code": 0  // 0表示成功，-1表示失败
+}
+```
+
+### getTeacherInfo
+
+**类型**：GET
+
+**参数**：
+
+```json
+"id": ""  // 目标家教的id
+```
+
+**返回**：
+
+```json
+后续可能要增加家教评分，家教评论等系统，暂时不确定返回值
+```
+
+### updateTeacherInfo
+
+**类型**：POST
+
+**参数**：
+
+```json
+{
+	"id": "" // 目标家教id
+    "data": {
+		"dagree": ""  // 学历
+    	"gender": ""  // 性别
+    	"age": int // 年龄
+    	"email": "", // 电子邮箱地址
+        "telephone": "",  // 电话
+        "address": "",  // 地址
+        "intro": "", // 简介
+        "signature": "",  // 个性签名
+    }
+}
+```
+
+**返回**：
+
+```json
+{
+	"code": 0 // 0表示成功，-1表示失败
+}
+```
+
