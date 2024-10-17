@@ -1,5 +1,5 @@
 <template>
-    <page-layout :title="'编辑学生主页'" :desc="'在这里你可以修改你的个人信息'">
+    <page-layout :title="'编辑家教主页'" :desc="'在这里你可以修改你的个人信息'">
         <a-card :bordered="false" class="edit-user-info-card">
             <a-form @submit.prevent="submitForm">
                 <a-row gutter="32">
@@ -74,10 +74,10 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
-import { getStudentInfo, updateStudentInfo } from '@/services/user'
+import { getTeacherInfo, updateTeacherInfo } from '@/services/user'
 
 export default {
-    name: 'editStudentHomePage',
+    name: 'editTeacherHomePage',
     components: { PageLayout },
     data() {
         return {
@@ -97,7 +97,7 @@ export default {
     },
     methods: {
         fetchUserInfo() {
-            getStudentInfo(this.userId).then(response => {
+            getTeacherInfo(this.userId).then(response => {
                 const res = response.data;
                 if (res.code >= 0) {
                     const userData = res.data;
@@ -128,7 +128,7 @@ export default {
                 intro: this.editUserIntro,
                 signature: this.editUserSignature,
             };
-            updateStudentInfo(this.userId, updatedUserInfo).then(response => {
+            updateTeacherInfo(this.userId, updatedUserInfo).then(response => {
                 console.log(this.userId, updatedUserInfo);
                 if (response.data.code >= 0) {
                     this.$message.success('修改个人资料成功！');

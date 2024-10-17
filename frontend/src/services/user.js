@@ -8,6 +8,9 @@ import {
   GET_SAVED_POST,
   GET_POSTS,
   GET_STUDENT_INFO,
+  UPDATE_STUDENT_INFO,
+  GET_TEACHER_INFO,
+  UPDATE_TEACHER_INFO
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -90,6 +93,20 @@ export async function sendPost(
   });
 }
 
+/**
+ * 保存帖子
+ * @param id 用户id
+ * @param title 标题
+ * @param startDate 开始日期
+ * @param endDate 结束日期
+ * @param subjects 科目
+ * @param location 地点
+ * @param fullLocation 详细地址
+ * @param telephoneNumber 联系电话
+ * @param emailAddress 邮箱
+ * @param content 内容
+ * @returns {Promise<AxiosResponse<T>>}
+ */
 export async function savePost(
   id,
   title,
@@ -139,11 +156,39 @@ export async function getPosts(id, page, query) {
   return request(`${GET_POSTS}?id=${id}&page=${page}&query=${query}`, METHOD.GET);
 }
 
+
+/**
+ * 获取学生信息
+ * @param id 学生id
+ * @returns {Promise<AxiosResponse<T>>}
+ */
 export async function getStudentInfo(id) {
   return request(`${GET_STUDENT_INFO}?id=${id}`, METHOD.GET);
 }
 
+export async function getTeacherInfo(id) {
+  return request(`${GET_TEACHER_INFO}?id=${id}`, METHOD.GET);
+}
 
+/**
+ * 更新学生信息
+ * @param id 学生id
+ * @param data 学生信息
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export async function updateStudentInfo(id, data) {
+  return request(UPDATE_STUDENT_INFO, METHOD.POST, {
+    id: id,
+    data: data,
+  })
+}
+
+export async function updateTeacherInfo(id, data) {
+  return request(UPDATE_TEACHER_INFO, METHOD.POST, {
+    id: id,
+    data: data,
+  })
+}
 
 export async function getRoutesConfig() {
   return request(ROUTES, METHOD.GET);

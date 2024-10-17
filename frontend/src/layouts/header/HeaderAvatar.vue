@@ -43,14 +43,14 @@ export default {
       if (this.currRoles[0].id === 'student') {
         this.$router.push({ name: '学生主页', params: { id: this.user.id } })
       } else if (this.currRoles[0].id === 'teacher') {
-        this.$router.push({ name: '老师主页', params: { id: this.user.id } })
+        this.$router.push({ name: '家教主页', params: { id: this.user.id } })
       }
     },
     toEditPersonalPage() {
       if (this.currRoles[0].id === 'student') {
         this.$router.push({ name: '编辑学生主页', params: { id: this.user.id } })
       } else if (this.currRoles[0].id === 'teacher') {
-        this.$router.push({ name: '编辑教师主页', params: { id: this.user.id } })
+        this.$router.push({ name: '编辑家教主页', params: { id: this.user.id } })
       }
     }
   }

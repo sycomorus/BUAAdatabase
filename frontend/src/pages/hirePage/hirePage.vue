@@ -38,7 +38,9 @@
                 <a @click="showFullContent = null">收起</a>
               </div>
               <div class="author">
-                <a>{{ post.author }}</a>
+                <router-link :to="{ name: '家教主页', params: { id: post.authorId} }">
+                  {{ post.author }}
+                </router-link>
                 <em>{{ post.date }}</em>
                 <em>{{ post.location }}</em>
               </div>
