@@ -9,6 +9,7 @@ const postsData = Mock.mock({
             content: '撒大大',  // 随机生成的帖子内容
             tags: ['数学', "语文"],  // 随机生成的标签数组，1-3 个标签
             author: 'mysterious_name',  // 随机生成的作者名
+            authorId: 1,
             date: "2024-08-19",  // 随机生成的日期
             location: '北京海淀'  // 随机生成的城市地址
         }
@@ -24,6 +25,7 @@ const postsData2 = Mock.mock({
             content: '撒大大',  // 随机生成的帖子内容
             tags: ['数学', "语文"],  // 随机生成的标签数组，1-3 个标签
             author: 'mysterious_name',  // 随机生成的作者名
+            authorId: 1,
             date: "2024-08-19",  // 随机生成的日期
             location: '北京海淀'  // 随机生成的城市地址
         }
