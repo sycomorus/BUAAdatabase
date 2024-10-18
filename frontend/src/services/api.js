@@ -15,4 +15,5 @@ module.exports = {
   UPDATE_STUDENT_INFO: `${BASE_URL}/updateStudentInfo/`,
   GET_TEACHER_INFO: `${BASE_URL}/getTeacherInfo/`,
   UPDATE_TEACHER_INFO: `${BASE_URL}/updateTeacherInfo/`,
+  GET_POST: `${BASE_URL}/getPost/`,
 };

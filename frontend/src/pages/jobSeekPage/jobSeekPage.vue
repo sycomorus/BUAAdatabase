@@ -14,12 +14,14 @@
       </div>
       <a-card :bordered="false">
         <a-list itemLayout="vertical">
-          <a-list-item :key="post.id" v-for="post in posts" :title="post.title">
-            <a-list-item-meta :title="post.title">
-              <div slot="description">
-                <a-tag v-for="tag in post.tags" :key="tag">{{ tag }}</a-tag>
-              </div>
-            </a-list-item-meta>
+          <a-list-item v-for="post in posts" :key="post.id" class="list-item">
+            <router-link :to="{ name: '帖子详情', params: { id: post.id } }" class="title-link">
+              <a-list-item-meta :title="post.title">
+                <div slot="description">
+                  <a-tag v-for="tag in post.tags" :key="tag">{{ tag }}</a-tag>
+                </div>
+              </a-list-item-meta>
+            </router-link>
             <div class="content">
               <div class="detail" :class="{ 'expanded': showFullContent === post.id }">
                 {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content :
@@ -32,8 +34,7 @@
                 <a @click="showFullContent = null">收起</a>
               </div>
               <div class="author">
-                <!-- 使用 router-link 跳转到学生主页 -->
-                <router-link :to="{ name: '学生主页', params: { id: post.authorId} }">
+                <router-link :to="{ name: '学生主页', params: { id: post.authorId } }">
                   {{ post.author }}
                 </router-link>
                 <em>{{ post.date }}</em>
@@ -77,27 +78,23 @@ export default {
   },
   methods: {
     fetchPosts() {
-      // 调用 getPosts 方法，获取当前用户的帖子列表，添加 searchQuery
       getPosts(this.currUser.id, this.currentPage, this.searchQuery)
         .then(response => {
-          this.posts = response.data.posts; // 将返回的帖子列表存储到 posts 中
-          this.totalPosts = response.data.total; // 获取总帖子数用于分页
+          this.posts = response.data.posts;
+          this.totalPosts = response.data.total;
         })
         .catch(error => {
           console.error('获取帖子信息失败:', error);
         });
     },
     searchPosts() {
-      // 当用户点击搜索按钮时，重新获取数据
       this.currentPage = 1;
       this.fetchPosts();
     },
     shouldShowReadMore(content) {
-      // 判断是否需要显示“查看更多”按钮
       return content.length > 60;
     },
     onPageChange(page) {
-      // 当用户点击分页时，更新当前页面并重新获取数据
       this.currentPage = page;
       this.fetchPosts();
     }
@@ -105,16 +102,15 @@ export default {
 }
 </script>
 
-
 <style lang="less" scoped>
 .page-layout {
-    padding: 20px;
+  padding: 20px;
 }
+
 .search-head {
   background-color: @base-bg-color;
   margin: -24px;
   padding-bottom: 20px;
-  /* 增加底部内边距 */
 
   &.head.fixed {
     margin: -24px 0;
@@ -122,7 +118,6 @@ export default {
 
   .search-input {
     text-align: center;
-
   }
 }
 
@@ -140,14 +135,14 @@ export default {
     line-height: 22px;
     max-width: 900px;
     overflow: hidden;
-    text-overflow: ellipsis; // 单行或有限行文本显示省略号
-    white-space: normal; // 多行显示
+    text-overflow: ellipsis;
+    white-space: normal;
     transition: max-height 0.3s ease, white-space 0.3s ease;
 
     &.expanded {
       max-height: none;
-      overflow: visible; // 展开时取消 overflow 限制
-      text-overflow: clip; // 展开时不再显示省略号
+      overflow: visible;
+      text-overflow: clip;
     }
   }
 
@@ -173,9 +168,27 @@ export default {
   }
 }
 
+.list-item {
+  transition: background-color 0.3s ease;
+}
+
+.title-link {
+  display: block;
+  /* 确保整个标题区域可点击 */
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+
+  &:hover {
+    color: #1890ff;
+    /* 更改颜色 */
+  }
+}
+
+.list-item:hover {
+  background-color: rgba(240, 240, 240, 0.5);
+  /* 背景色变化 */
+}
 
 .pagination-container {
   text-align: center;
-  /* 这将使内联块级元素（如 <a-pagination>）居中 */
 }
 </style>

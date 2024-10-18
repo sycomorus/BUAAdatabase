@@ -148,6 +148,14 @@ const options = {
           component: () => import('@/pages/editTeacherHomePage')
         },
         {
+          path : 'postDetail/:id',
+          name: '帖子详情',
+          meta: {
+            invisible: true
+          },
+          component: () => import('@/pages/postDetail')
+        },
+        {
           path: 'form',
           name: '表单页',
           meta: {

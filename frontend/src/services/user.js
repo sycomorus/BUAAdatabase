@@ -10,7 +10,8 @@ import {
   GET_STUDENT_INFO,
   UPDATE_STUDENT_INFO,
   GET_TEACHER_INFO,
-  UPDATE_TEACHER_INFO
+  UPDATE_TEACHER_INFO,
+  GET_POST,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -154,6 +155,16 @@ export async function getSavedPost(id) {
 */
 export async function getPosts(id, page, query) {
   return request(`${GET_POSTS}?id=${id}&page=${page}&query=${query}`, METHOD.GET);
+}
+
+
+/*
+  * 获取帖子
+  * @param id 帖子id
+  * @returns {Promise<AxiosResponse<T>>} 
+*/
+export async function getPost(id) {
+  return request(`${GET_POST}?id=${id}`, METHOD.GET);
 }
 
 
