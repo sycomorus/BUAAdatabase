@@ -3,15 +3,8 @@
     <div>
       <div :class="['search-head', layout, pageWidth]">
         <div class="search-input">
-          <a-input-search
-            class="search-ipt"
-            style="width: 600px"
-            placeholder="请输入搜索内容"
-            size="large"
-            enterButton="搜索"
-            v-model="searchQuery"
-            @search="searchPosts" 
-          >
+          <a-input-search class="search-ipt" style="width: 600px" placeholder="请输入搜索内容" size="large" enterButton="搜索"
+            v-model="searchQuery" @search="searchPosts">
             <a-icon slot="prefix" type="search" />
           </a-input-search>
         </div>
@@ -21,15 +14,18 @@
       </div>
       <a-card :bordered="false">
         <a-list itemLayout="vertical">
-          <a-list-item :key="post.id" v-for="post in posts" :title="post.title">
-            <a-list-item-meta :title="post.title">
-              <div slot="description">
-                <a-tag v-for="tag in post.tags" :key="tag">{{ tag }}</a-tag>
-              </div>
-            </a-list-item-meta>
+          <a-list-item :key="post.id" v-for="post in posts" :title="post.title" class="list-item">
+            <router-link :to="{ name: '帖子详情', params: { id: post.id } }" class="title-link">
+              <a-list-item-meta :title="post.title">
+                <div slot="description">
+                  <a-tag v-for="tag in post.tags" :key="tag">{{ tag }}</a-tag>
+                </div>
+              </a-list-item-meta>
+            </router-link>
             <div class="content">
               <div class="detail" :class="{ 'expanded': showFullContent === post.id }">
-                {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content : post.content.slice(0, 60) + '...' }}
+                {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content :
+                  post.content.slice(0, 60) + '...' }}
               </div>
               <div class="read-more" v-if="shouldShowReadMore(post.content) && showFullContent !== post.id">
                 <a @click="showFullContent = post.id">查看更多</a>
@@ -38,7 +34,7 @@
                 <a @click="showFullContent = null">收起</a>
               </div>
               <div class="author">
-                <router-link :to="{ name: '家教主页', params: { id: post.authorId} }">
+                <router-link :to="{ name: '家教主页', params: { id: post.authorId } }">
                   {{ post.author }}
                 </router-link>
                 <em>{{ post.date }}</em>
@@ -111,6 +107,10 @@ export default {
 
 
 <style lang="less" scoped>
+.page-layout {
+  padding: 20px;
+}
+
 .search-head {
   background-color: @base-bg-color;
   margin: -24px;
@@ -174,6 +174,24 @@ export default {
   }
 }
 
+.list-item {
+  transition: background-color 0.3s ease;
+}
+
+.title-link {
+  display: block;
+  /* 确保整个标题区域可点击 */
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+
+  &:hover {
+    color: #1890ff;
+  }
+}
+
+.list-item:hover {
+  background-color: rgba(240, 240, 240, 0.5);
+  /* 背景色变化 */
+}
 
 .pagination-container {
   text-align: center;

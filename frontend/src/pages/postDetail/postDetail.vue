@@ -28,18 +28,26 @@
                     <strong>科目：</strong>
                     <span v-for="subject in post.subjects" :key="subject" class="subject">{{ subject }}</span>
                 </div>
-
+                <a-divider />
                 <div class="post-body">
                     <p>{{ post.content }}</p>
                 </div>
             </div>
+            <a-divider />
+            <a-space wrap class="button-container">
+                <a-button type="primary" @click="showModal">接受</a-button>
+                <a-button type="dashed" @click="goBack">返回</a-button>
+            </a-space>
         </a-card>
+        <a-modal :visible="open" title="你确定要接受这份请求吗?" @ok="handleOk" @cancel="handleCancel">
+            <p>等待对方同意后，你与用户<strong>{{ post.author }}</strong>即可建立正式的师生关系</p>
+        </a-modal>
     </page-layout>
 </template>
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
-import { getPost } from '@/services/user'
+import { getPost, agreePostRequest} from '@/services/user'
 
 export default {
     name: 'postDetail',
@@ -47,6 +55,7 @@ export default {
     data() {
         return {
             post: {},
+            open: false
         }
     },
     created() {
@@ -54,6 +63,28 @@ export default {
         this.fetchPostDetail();
     },
     methods: {
+        showModal() {
+            this.open = true;
+        },
+        handleOk() {
+            this.open = false;
+            agreePostRequest(this.post.id).then(response => {
+                if (response.data.code >= 0) {
+                    this.$message.success('接受请求成功');
+                } else {
+                    this.$message.error('接受请求失败');
+                }
+            }).catch(error => {
+                console.error('接受请求失败:', error);
+            });
+            this.goBack();
+        },
+        handleCancel() {
+            this.open = false;
+        },
+        goBack() {
+            this.$router.go(-1); // 返回到上一个页面
+        },
         fetchPostDetail() {
             const postId = this.$route.params.id; // 从路由参数获取帖子 ID
             getPost(postId)
@@ -73,6 +104,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.button-container {
+    display: flex; // 使用 flexbox
+    justify-content: center; // 水平居中
+    margin-top: 20px; // 可以调整上边距
+    gap: 16px; // 设置按钮之间的间距
+}
+
 .post-detail-card {
     padding: 20px;
     border-radius: 8px;

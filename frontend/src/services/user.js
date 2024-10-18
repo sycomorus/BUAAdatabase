@@ -12,6 +12,7 @@ import {
   GET_TEACHER_INFO,
   UPDATE_TEACHER_INFO,
   GET_POST,
+  AGREE_POST_REQUEST,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -211,6 +212,20 @@ export async function updateTeacherInfo(id, data) {
     id: id,
     data: data,
   })
+}
+
+
+/*
+  * 同意帖子请求
+  * @param id 用户id
+  * @param postId 帖子id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function agreePostRequest(id, postId) {
+  return request(AGREE_POST_REQUEST, METHOD.POST, {
+    id: id,
+    postId: postId,
+  });
 }
 
 export async function getRoutesConfig() {
