@@ -14,6 +14,7 @@ import {
   GET_POST,
   AGREE_POST_REQUEST,
   GET_USER_POSTS,
+  DELETE_POST,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -237,6 +238,17 @@ export async function agreePostRequest(id, postId) {
 */
 export async function getUserPosts(id) {
   return request(`${GET_USER_POSTS}?id=${id}`, METHOD.GET);
+}
+
+/*
+  * 删除帖子
+  * @param postId 帖子id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function deletePost(postId) {
+  return request(DELETE_POST, METHOD.POST, {
+    postId: postId,
+  });
 }
 
 export async function getRoutesConfig() {

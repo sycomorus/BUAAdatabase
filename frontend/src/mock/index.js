@@ -12,6 +12,7 @@ import '@/mock/post/getSavedPost'
 import '@/mock/post/getPosts'
 import '@/mock/user/updateStudentInfo'
 import '@/mock/post/getPost'
+import '@/mock/post/getUserPosts'
 
 // 设置全局延时
 Mock.setup({
