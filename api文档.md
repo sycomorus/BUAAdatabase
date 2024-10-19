@@ -421,6 +421,56 @@
 }
 ```
 
+### getTeachers
+
+**描述**：获取一个学生的所有家教信息
+
+**类型**：GET
+
+**参数**：
+
+```json
+"id": ""  // 学生的id
+```
+
+**返回**：
+
+```json
+{
+	"code": 0 // 0表示成功， -1表示失败
+	"teachers": [{
+		"id": "" // 家教的id
+		"name": '' // 家教的昵称
+	}]
+}
+```
+
+### submitComment
+
+**描述**：学生对家教发表评论
+
+**类型**：POST
+
+**参数**
+
+```json
+{
+	"studentId": "" // 学生id
+	"studentName": "" // 学生名字
+	"teacherId": "" // 家教id
+	"rate": float // 评分
+	"comment": "" // 评论内容
+}
+```
+
+**返回**
+
+```json
+{
+	"code": 0
+}
+```
+
 ### submitLearningMaterial
 
 **描述**：家教上传学习资料
@@ -446,6 +496,35 @@
 	"code": 0
 }
 ```
+
+### getLearningMaterials
+
+**描述**：学生获取学习资料
+
+**类型**：GET
+
+**参数**：
+
+```json
+"id": "" // 学生id
+```
+
+**返回**：
+
+```json
+{
+	"code": 0
+	"materials": [{
+        "id": "",   // 学习资料id
+        "filename": "", // 学习资料名称
+        "publisher": "", // 发布者名称
+        "downloadLink": "", // 链接
+        "date": "", // 发布日期
+	}]
+}
+```
+
+
 
 ### getTodos
 
