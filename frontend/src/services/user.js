@@ -24,6 +24,7 @@ import {
   GET_TEACHERS,
   SUBMIT_COMMENT,
   GET_LEARNING_MATERIALS,
+  GET_NOTICES,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -371,6 +372,10 @@ export async function submitComment(studentId, studentName, teacherId, rate, com
 */
 export async function getLearningMaterials(id) {
   return request(`${GET_LEARNING_MATERIALS}?id=${id}`, METHOD.GET);
+}
+
+export async function getNotices(id) {
+  return request(`${GET_NOTICES}?id=${id}`, METHOD.GET);
 }
 
 export async function getRoutesConfig() {

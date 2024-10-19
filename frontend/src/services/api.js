@@ -28,4 +28,5 @@ module.exports = {
   GET_TEACHERS: `${BASE_URL}/getTeachers/`,
   SUBMIT_COMMENT: `${BASE_URL}/submitComment/`,
   GET_LEARNING_MATERIALS: `${BASE_URL}/getLearningMaterials/`,
+  GET_NOTICES: `${BASE_URL}/getNotices/`,
 };
