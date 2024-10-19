@@ -15,6 +15,12 @@ import {
   AGREE_POST_REQUEST,
   GET_USER_POSTS,
   DELETE_POST,
+  GET_STUDENTS,
+  UNLINK,
+  SUBMIT_LEARNING_MATERIAL,
+  GET_TODOS,
+  LINK,
+  REFUSE_LINK
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -249,6 +255,81 @@ export async function deletePost(postId) {
   return request(DELETE_POST, METHOD.POST, {
     postId: postId,
   });
+}
+
+/*
+  * 获取学生
+  * @param id 老师id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getStudents(id) {
+  return request(`${GET_STUDENTS}?id=${id}`, METHOD.GET);
+}
+
+
+/*
+  * 解除关联
+  * @param id 帖子id
+  * @param studentId 学生id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function unlink(id, studentId) {
+  return request(UNLINK, METHOD.POST, {
+    id: id,
+    studentId: studentId,
+  });
+}
+
+/*
+  * 提交学习资料
+  * @param teacherId 老师id
+  * @param studentId 学生id
+  * @param filename 文件名
+  * @param downloadLink 下载链接
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function submitLearningMaterial(teacherId, studentId, filename, downloadLink) {
+  return request(SUBMIT_LEARNING_MATERIAL, METHOD.POST, {
+    teacherId: teacherId,
+    studentId: studentId,
+    filename: filename,
+    downloadLink: downloadLink
+  })
+}
+
+/*
+  * 获取待办事项
+  * @param id 用户id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getTodos(id) {
+  return request(`${GET_TODOS}?id=${id}`, METHOD.GET);
+}
+
+/*
+  * 建立家教关系关联
+  * @param teacherId 老师id
+  * @param studentId 学生id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function link(teacherId, studentId) {
+  return request(LINK, METHOD.POST, {
+    teacherId: teacherId,
+    studentId: studentId
+  })
+}
+
+/*
+  * 拒绝家教关系关联
+  * @param teacherId 老师id
+  * @param studentId 学生id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function refuseLink(teacherId, studentId) {
+  return request(REFUSE_LINK, METHOD.POST, {
+    teacherId: teacherId,
+    studentId: studentId
+  })
 }
 
 export async function getRoutesConfig() {

@@ -13,6 +13,8 @@ import '@/mock/post/getPosts'
 import '@/mock/user/updateStudentInfo'
 import '@/mock/post/getPost'
 import '@/mock/post/getUserPosts'
+import '@/mock/user/getStudents'
+import "@/mock/user/getTodos"
 
 // 设置全局延时
 Mock.setup({

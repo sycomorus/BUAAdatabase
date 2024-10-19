@@ -19,4 +19,10 @@ module.exports = {
   AGREE_POST_REQUEST: `${BASE_URL}/agreePostRequest/`,
   GET_USER_POSTS: `${BASE_URL}/getUserPosts/`,
   DELETE_POST: `${BASE_URL}/deletePost/`,
+  GET_STUDENTS: `${BASE_URL}/getStudents/`,
+  UNLINK: `${BASE_URL}/unlink/`,
+  SUBMIT_LEARNING_MATERIAL: `${BASE_URL}/submitLearningMaterial/`,
+  GET_TODOS: `${BASE_URL}/getTodos/`,
+  LINK: `${BASE_URL}/link/`,
+  REFUSE_LINK: `${BASE_URL}/refuseLink/`,
 };
