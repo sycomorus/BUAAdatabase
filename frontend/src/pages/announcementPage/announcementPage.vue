@@ -25,7 +25,7 @@ import {mapState} from 'vuex'
 import {request, METHOD} from '@/utils/request'
 
 export default {
-  name: 'notice',
+  name: 'announcementPage',
   components: {PageLayout},
   data () {
     return {

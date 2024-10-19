@@ -111,7 +111,7 @@ export default {
                         this.userIntro = res.data.intro || '这个人很懒，还什么都没有写';
                         this.userAge = res.data.age || 0;
                         this.userGender = res.data.gender;
-                        this.userDegree = res.data.Degree;
+                        this.userDegree = res.data.degree;
                         this.userRate = res.data.rate;
                         this.userRateNum = res.data.rateNum;
                         this.userComments = res.data.comments;

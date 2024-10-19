@@ -50,7 +50,7 @@ const options = {
           ]
         },
         {
-          path: 'notice',
+          path: 'announcementPage',
           name: '公告',
           meta: {
             icon: 'dashboard',
@@ -58,7 +58,7 @@ const options = {
               closable: false
             },
           },
-          component: () => import('@/pages/notice'),
+          component: () => import('@/pages/announcementPage'),
         },
         {
           path: 'jobSeekPage', // 这是针对教师的求职页面

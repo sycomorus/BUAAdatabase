@@ -16,7 +16,7 @@ Mock.mock(/\/getTeacherInfo\//, 'get', (options) => {
             intro: '一位资深的数学老师，教授代数和几何。',
             gender: '男',
             age: 35,
-            Degree: '硕士',
+            degree: '硕士',
             rate: 4.5,
             rateNum: 120,
             comments: [
