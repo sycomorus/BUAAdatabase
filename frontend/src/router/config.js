@@ -83,6 +83,17 @@ const options = {
           component: () => import('@/pages/teacherPostPage')
         },
         {
+          path: 'teacherWorkPage', // 这是教师工作页面
+          name: "工作",
+          meta: {
+            icon: "switcher",
+            authority: {
+              role: 'teacher'
+            }
+          },
+          component: () => import('@/pages/teacherWorkPage')
+        },
+        {
           path : "hirePage", // 这是针对学生的招聘页面
           name: "广场",
           meta: {
