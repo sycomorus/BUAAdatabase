@@ -4,11 +4,11 @@ import Mock from 'mockjs';
 const todosData = Mock.mock({
     'todos|5-10': [
         {
-            'id': 1,
-            'postId': 1,
+            'id': "1",
+            'postId': "1",
             'postTitle': "诚信求聘",
             'accepterName': "乌啦啦",
-            "accepterId": 1
+            "accepterId": "1"
         }
     ]
 });
