@@ -2,7 +2,6 @@ import {
   LOGIN,
   REGISTER,
   ROUTES,
-  ACTIVITIES,
   SEND_POST,
   SAVE_POST,
   GET_SAVED_POST,
@@ -54,15 +53,6 @@ export async function register(name, password, role) {
     password: password,
     role: role,
   });
-}
-
-/*
- * 获取用户动态
- * @param userToken 用户token
- * @returns {Promise<AxiosResponse<T>>}
- */
-export async function getActivities() {
-  return request(ACTIVITIES, METHOD.GET);
 }
 
 /**

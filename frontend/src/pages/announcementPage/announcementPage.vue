@@ -6,14 +6,6 @@
     </div>
     <template>
           <a-card :loading="loading" :title="$t('dynamic')" :bordered="false">
-            <a-list>
-              <a-list-item :key="index" v-for="(item, index) in activities">
-                <a-list-item-meta>
-                  <div slot="title" v-html="item.template" />
-                  <div slot="description">9小时前</div>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
           </a-card>
     </template>
   </page-layout>
@@ -22,7 +14,6 @@
 <script>
 import PageLayout from '@/layouts/PageLayout'
 import {mapState} from 'vuex'
-import {request, METHOD} from '@/utils/request'
 
 export default {
   name: 'announcementPage',
@@ -39,9 +30,6 @@ export default {
     ...mapState('setting', ['lang'])
   },
   created() {
-    request('/work/activity', METHOD.GET).then(res => {this.activities = res.data
-      this.loading = false
-    })
 
   }
 }

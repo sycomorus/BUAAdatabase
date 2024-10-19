@@ -315,7 +315,29 @@
 **返回**：
 
 ```json
-后续可能要增加家教评分，家教评论等系统，暂时不确定返回值
+{
+    "code": 0  // 0表示成功，-1表示失败
+    "data": {
+		"name": "" // 教师姓名
+    	"email": "" // 电子邮箱地址
+    	"telephone": "" // 电话
+    	"address": "" // 地址，简略地址即可
+    	"personalSignature": "" // 个性签名
+		"intro": "" // 自我介绍
+    	"gender": "" // 性别，可选男女
+    	"age": int // 年龄
+    	"degree": "" // 学历
+    	"rate": float // 评分
+    	"rateNum": int // 评分人数
+    	"comments":[{ // 一个包含评论信息的列表
+				"id": "" // 评论id
+    			"authorName": "" // 评论作者
+    			"rating": "" // 评分
+    			"content": "" // 评论内容
+    			"date": "" // 日期
+            }]
+    }
+}
 ```
 
 ### updateTeacherInfo
@@ -624,6 +646,35 @@
 ```json
 {
 	"code": 0 
+}
+```
+
+## 通知相关
+
+### getNotices
+
+**描述**：用于管理页面右上角的通知图标
+
+**类型**：GET
+
+**参数**：
+
+```json
+"id": "" // 收到通知的用户id
+```
+
+**返回**
+
+```json
+{
+	"code": 0
+	"data": {
+		"notices": [{  // 包含通知信息的列表
+			"title": "",   // 通知的主要内容
+			"description": ""  // 通知的时间
+		}]
+		"newNum": int   // 新通知的个数
+	}
 }
 ```
 
