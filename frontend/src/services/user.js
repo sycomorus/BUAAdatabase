@@ -21,7 +21,9 @@ import {
   GET_TODOS,
   LINK,
   REFUSE_LINK,
-  GET_TEACHER,
+  GET_TEACHERS,
+  SUBMIT_COMMENT,
+  GET_LEARNING_MATERIALS,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -334,18 +336,48 @@ export async function refuseLink(teacherId, studentId) {
   })
 }
 
+/*
+  * 获取一个学生的所有家教
+  * @param id 老师id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getTeachers(id) {
+  return request(`${GET_TEACHERS}?id=${id}`, METHOD.GET);
+}
+
+/*
+  * 发表评论
+  * @param studentId 学生id
+  * @param studentName 学生名
+  * @param teacherId 老师id
+  * @param rate 评分
+  * @param comment 评论
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function submitComment(studentId, studentName, teacherId, rate, comment) {
+  return request(SUBMIT_COMMENT, METHOD.POST, {
+    studentId: studentId,
+    studentName: studentName,
+    teacherId: teacherId,
+    rate: rate,
+    comment: comment
+  })
+}
+
+/*
+  * 获取学习资料
+  * @param id 学生id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getLearningMaterials(id) {
+  return request(`${GET_LEARNING_MATERIALS}?id=${id}`, METHOD.GET);
+}
+
 export async function getRoutesConfig() {
   return request(ROUTES, METHOD.GET);
 }
 
-/*
-  * 获取老师
-  * @param id 老师id
-  * @returns {Promise<AxiosResponse<T>>}
-*/
-export async function getTeacher(id) {
-  return request(`${GET_TEACHER}?id=${id}`, METHOD.GET);
-}
+
 
 /**
  * 退出登录

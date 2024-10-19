@@ -228,6 +228,8 @@ export default {
         },
         closeDrawer() {
             this.drawerOpen = false;
+            this.fileName = '';
+            this.downloadLink = '';
         },
         publishLearningMaterial(id) {
             this.drawerOpen = true;

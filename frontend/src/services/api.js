@@ -26,4 +26,6 @@ module.exports = {
   LINK: `${BASE_URL}/link/`,
   REFUSE_LINK: `${BASE_URL}/refuseLink/`,
   GET_TEACHERS: `${BASE_URL}/getTeachers/`,
+  SUBMIT_COMMENT: `${BASE_URL}/submitComment/`,
+  GET_LEARNING_MATERIALS: `${BASE_URL}/getLearningMaterials/`,
 };
