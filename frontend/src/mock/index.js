@@ -17,6 +17,7 @@ import '@/mock/user/getStudents'
 import "@/mock/user/getTodos"
 import "@/mock/user/getTeachers"
 import "@/mock/user/getLearningMaterials"
+import "@/mock/user/getTeacherInfo"
 
 // 设置全局延时
 Mock.setup({

@@ -1,5 +1,13 @@
 <template>
-    <page-layout :title='userName' :desc='userPersonalSignature'>
+    <page-layout>
+        <div slot="headerContent">
+            <div class="title">{{ userName }}</div>
+            <div class="sub-title">{{userPersonalSignature}}</div>
+        </div>
+        <template slot="extra">
+            <head-info class="split-right" title="评分" :content="userRate"/>
+            <head-info class="split-right" title="评分人数" :content="userRateNum"/>
+        </template>
         <a-card :bordered="false" class="user-info-card">
             <a-row :gutter="16">
                 <a-col :span="8">
@@ -39,16 +47,35 @@
                 </a-col>
             </a-row>
         </a-card>
+        <a-card v-if="userComments.length > 0" :bordered="false" class="user-bio-card">
+            <div class="user-info-label">用户评论:</div>
+            <div v-for="comment in userComments" :key="comment.id">
+                <a-comment>
+                    <div slot="author" class="author-rating">
+                        <span class="author-name">{{ comment.authorName }}</span>
+                        <a-rate :value="comment.rating" disabled allow-half class="rating"></a-rate>
+                    </div>
+                    <div slot="content" class="comment-content">
+                        <p>{{ comment.content }}</p>
+                    </div>
+                    <div slot="datetime" class="author-rating">
+                        {{ comment.date }}
+                    </div>
+                </a-comment>
+                <a-divider class="custom-divider" v-if="index < userComments.length - 1" />
+            </div>
+        </a-card>
     </page-layout>
 </template>
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
 import { getTeacherInfo } from '@/services/user'
+import HeadInfo from '@/components/tool/HeadInfo'
 
 export default {
     name: 'teacherHomePage',
-    components: { PageLayout},
+    components: { PageLayout, HeadInfo},
     data() {
         return {
             userId: this.$route.params.id, // 获取路由参数中的id
@@ -61,7 +88,10 @@ export default {
             userIntro: '',
             userAge: 0,
             userGender: '',
-            userDegree: ''
+            userDegree: '',
+            userRate: 0,
+            userRateNum: 0,
+            userComments: []
         }
     },
     created() {
@@ -82,6 +112,9 @@ export default {
                         this.userAge = res.data.age || 0;
                         this.userGender = res.data.gender;
                         this.userDegree = res.data.Degree;
+                        this.userRate = res.data.rate;
+                        this.userRateNum = res.data.rateNum;
+                        this.userComments = res.data.comments;
                         console.log('获取用户信息成功:', res.data);
                     } else {
                         console.error('获取用户信息失败:', res.msg);
@@ -100,13 +133,11 @@ export default {
     padding: 20px;
 }
 
+
 .user-info-card, .user-bio-card {
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
-}
-
-.user-info-card {
     margin-bottom: 30px;
 }
 
@@ -125,5 +156,28 @@ export default {
 .custom-divider {
     border-top: 2px solid #e8e8e8; /* 改变分割线的粗细和颜色 */
     margin: 16px 0; /* 调整上下间距 */
+}
+
+.author-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px; /* 底部间距 */
+}
+
+.author-name {
+    font-weight: bold;
+    font-size: 16px; /* 字体大小 */
+    color: #333; /* 字体颜色 */
+    margin-right: 8px; /* 名字与评分之间的间距 */
+}
+
+.rating {
+    color: #fadb14; /* 评分的颜色 */
+}
+
+.comment-content p {
+    font-size: 14px; /* 字体大小 */
+    line-height: 1.5; /* 行高 */
+    color: #555; /* 字体颜色 */
 }
 </style>
