@@ -14,7 +14,7 @@
       </div>
       <a-card :bordered="false">
         <a-list itemLayout="vertical">
-          <a-list-item :key="post.id" v-for="post in posts" :title="post.title" class="list-item">
+          <a-list-item v-for="(post, index) in posts" :key="index" :title="post.title" class="list-item">
             <router-link :to="{ name: '帖子详情', params: { id: post.id, showAccept:true } }" class="title-link">
               <a-list-item-meta :title="post.title">
                 <div slot="description">

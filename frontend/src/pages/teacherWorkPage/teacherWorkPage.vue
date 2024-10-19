@@ -6,7 +6,7 @@
                     style="padding: 0 10px;">
                     <a-tab-pane :key="1" tab="我的帖子">
                         <a-list item-layout="horizontal">
-                            <a-list-item v-for="post in posts" :key="post.id">
+                            <a-list-item v-for="(post, index) in posts" :key="index">
                                 <a-list-item-meta :title="post.title">
                                     <div slot="description">
                                         <div class="content">
@@ -36,7 +36,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="2" tab="我的学生">
                         <a-list item-layout="horizontal">
-                            <a-list-item v-for="student in students" :key="student.id">
+                            <a-list-item v-for="(student, index) in students" :key="index">
                                 <a-list-item-meta :title="student.name"></a-list-item-meta>
                                 <div slot="actions">
                                     <router-link :to="{ name: '学生主页', params: { id: student.id } }">
@@ -51,7 +51,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="3" tab="我的待办">
                         <a-list item-layout="horizontal">
-                            <a-list-item v-for="todo in todos" :key="todo.id">
+                            <a-list-item v-for="(todo, index) in todos" :key="index">
                                 <div>
                                     您发布的求聘帖
                                     <router-link

@@ -5,7 +5,7 @@
         <a-tabs size="large" :tabBarStyle="{ textAlign: 'center' }" @change="onTabChange" style="padding: 0 10px;">
           <a-tab-pane :key="1" tab="我的帖子">
             <a-list item-layout="horizontal">
-              <a-list-item v-for="post in posts" :key="post.id">
+              <a-list-item v-for="(post, index) in posts" :key="index">
                 <a-list-item-meta :title="post.title">
                   <div slot="description">
                     <div class="content">
@@ -34,7 +34,7 @@
           </a-tab-pane>
           <a-tab-pane key="2" tab="我的家教">
             <a-list item-layout="horizontal">
-              <a-list-item v-for="teacher in teachers" :key="teacher.id">
+              <a-list-item v-for="(teacher, index) in teachers" :key="index">
                 <a-list-item-meta :title="teacher.name"></a-list-item-meta>
                 <div slot="actions">
                   <router-link :to="{ name: '家教主页', params: { id: teacher.id } }">
@@ -48,7 +48,7 @@
           </a-tab-pane>
           <a-tab-pane key="3" tab="我的待办">
             <a-list item-layout="horizontal">
-              <a-list-item v-for="todo in todos" :key="todo.id">
+              <a-list-item v-for="(todo, index) in todos" :key="index">
                 <div>
                   您发布的招聘帖
                   <router-link :to="{ name: '帖子详情', params: { id: todo.postId, showAccept: false } }">“{{
@@ -66,7 +66,7 @@
           </a-tab-pane>
           <a-tab-pane key="4" tab="我的学习资料">
             <a-list item-layout="horizontal">
-              <a-list-item v-for="material in learningMaterials" :key="material.id">
+              <a-list-item v-for="(material, index) in learningMaterials" :key="index">
                 <a-list-item-meta :title="material.filename">
                   <div slot="description">来自<strong>{{ material.publisher}}</strong>   {{material.date }}</div>
                 </a-list-item-meta>
