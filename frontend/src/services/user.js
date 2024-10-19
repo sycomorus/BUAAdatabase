@@ -20,7 +20,8 @@ import {
   SUBMIT_LEARNING_MATERIAL,
   GET_TODOS,
   LINK,
-  REFUSE_LINK
+  REFUSE_LINK,
+  GET_TEACHER,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -288,10 +289,11 @@ export async function unlink(id, studentId) {
   * @param downloadLink 下载链接
   * @returns {Promise<AxiosResponse<T>>}
 */
-export async function submitLearningMaterial(teacherId, studentId, filename, downloadLink) {
+export async function submitLearningMaterial(teacherId, teacherName, studentId, filename, downloadLink) {
   return request(SUBMIT_LEARNING_MATERIAL, METHOD.POST, {
     teacherId: teacherId,
     studentId: studentId,
+    teacherName:teacherName,
     filename: filename,
     downloadLink: downloadLink
   })
@@ -334,6 +336,15 @@ export async function refuseLink(teacherId, studentId) {
 
 export async function getRoutesConfig() {
   return request(ROUTES, METHOD.GET);
+}
+
+/*
+  * 获取老师
+  * @param id 老师id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getTeacher(id) {
+  return request(`${GET_TEACHER}?id=${id}`, METHOD.GET);
 }
 
 /**

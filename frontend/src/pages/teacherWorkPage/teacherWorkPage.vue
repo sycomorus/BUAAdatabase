@@ -241,7 +241,7 @@ export default {
             console.log('文件名:', this.fileName);
             console.log('下载链接:', this.downloadLink);
             // 这里可以添加实际的提交逻辑
-            submitLearningMaterial(this.currUser.id, this.curStudentId, this.fileName, this.downloadLink).then(res => {
+            submitLearningMaterial(this.currUser.id, this.currUser.name, this.curStudentId, this.fileName, this.downloadLink).then(res => {
                 if (res.data.code >= 0) {
                     console.log('发布学习资料成功');
                     this.closeDrawer(); // 提交后关闭抽屉

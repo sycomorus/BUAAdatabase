@@ -84,7 +84,7 @@ const options = {
         },
         {
           path: 'teacherWorkPage', // 这是教师工作页面
-          name: "工作",
+          name: "我的工作",
           meta: {
             icon: "switcher",
             authority: {
@@ -116,15 +116,15 @@ const options = {
           component: () => import('@/pages/studentPostPage')
         },
         {
-          path: 'learningMaterials',  // 这是学习资料页面
-          name: "学习资料",
+          path: 'studentWorkPage',  // 这是学习资料页面
+          name: "我的学习",
           meta: {
             icon: "book",
             authority: {
               role: 'student'
             }
           },
-          component: () => import('@/pages/learningMaterials')
+          component: () => import('@/pages/studentWorkPage')
         },
         {
           path: 'user/studentHomePage/:id',
