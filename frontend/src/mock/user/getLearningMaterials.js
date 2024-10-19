@@ -4,10 +4,10 @@ const learningMaterials = Mock.mock({
     'materials|10': [
         {
             id: '1',
-            filename: '123.pdf', // 随机生成文件名
-            publisher: 'asd', // 随机生成发布者名称
-            downloadLink: 'http://www.bilibili.com', // 随机生成下载链接
-            date: '2021-06-01', // 随机生成发布日期
+            filename: '123.pdf', // 文件名
+            publisher: 'asd', // 发布者名称
+            downloadLink: 'http://www.bilibili.com', // 下载链接
+            date: '2021-06-01', // 发布日期
         }
     ],
 });
