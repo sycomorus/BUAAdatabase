@@ -35,7 +35,7 @@
             </div>
             <a-divider />
             <a-space wrap class="button-container">
-                <a-button type="primary" @click="showModal">接受</a-button>
+                <a-button v-if="$route.params.showAccept !== 'false'" type="primary" @click="showModal">接受</a-button>
                 <a-button type="dashed" @click="goBack">返回</a-button>
             </a-space>
         </a-card>
@@ -47,7 +47,7 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
-import { getPost, agreePostRequest} from '@/services/user'
+import { getPost, agreePostRequest } from '@/services/user'
 
 export default {
     name: 'postDetail',

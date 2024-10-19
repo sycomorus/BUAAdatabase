@@ -6,10 +6,10 @@
                     style="padding: 0 10px;">
                     <a-tab-pane key="1" tab="我的帖子">
                         <a-list item-layout="horizontal">
-                            <a-list-item v-for="item in data" :key="item.title">
+                            <a-list-item v-for="post in posts" :key="post.title">
                                 <a-list-item-meta :title="item.title">
                                     <div slot="description">
-                                        {{ "我是谁" }}
+                                        {{ post.content }}
                                     </div>
                                 </a-list-item-meta>
                                 <div slot="actions">
@@ -29,33 +29,37 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
+import { getUserPosts } from '@/services/user'
 export default {
     name: 'teacherWorkPage',
     components: { PageLayout },
+    created() {
+        this.fetchUserPosts();
+    },
     data() {
         return {
             activeKey: '1',
-            data: [
-                {
-                    title: 'Ant Design Title 1',
-                },
-                {
-                    title: 'Ant Design Title 2',
-                },
-                {
-                    title: 'Ant Design Title 3',
-                },
-                {
-                    title: 'Ant Design Title 4',
-                },
-            ]
+            posts: []
         }
     },
     methods: {
         onTabChange(key) {
             this.activeKey = key;
+        },
+        fetchUserPosts() {
+            getUserPosts().then(res => {
+                if (res.data.code >= 0) {
+                    this.posts = res.data.data;
+                }
+                else {
+                    console.error('获取帖子信息失败');
+                }
+            }).catch(error => {
+                console.error('获取帖子信息失败:', error);
+            });
         }
-    }
+
+    },
 }
 </script>
 

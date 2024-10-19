@@ -17,4 +17,5 @@ module.exports = {
   UPDATE_TEACHER_INFO: `${BASE_URL}/updateTeacherInfo/`,
   GET_POST: `${BASE_URL}/getPost/`,
   AGREE_POST_REQUEST: `${BASE_URL}/agreePostRequest/`,
+  GET_USER_POSTS: `${BASE_URL}/getUserPosts/`,
 };

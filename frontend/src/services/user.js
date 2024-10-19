@@ -13,6 +13,7 @@ import {
   UPDATE_TEACHER_INFO,
   GET_POST,
   AGREE_POST_REQUEST,
+  GET_USER_POSTS,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -226,6 +227,16 @@ export async function agreePostRequest(id, postId) {
     id: id,
     postId: postId,
   });
+}
+
+
+/*
+  * 获取用户发的所有帖子
+  * @param id 用户id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getUserPosts(id) {
+  return request(`${GET_USER_POSTS}?id=${id}`, METHOD.GET);
 }
 
 export async function getRoutesConfig() {
