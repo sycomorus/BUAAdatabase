@@ -140,7 +140,7 @@ export default {
         const user = { name: this.name, id: loginRes.data.id}
         this.setUser(user)
         setAuthorization({ token: loginRes.data.token})
-        this.$router.push('/notice')
+        this.$router.push('/announcementPage')
         this.$message.success("欢迎回来", 3)
       } else {
         this.errorLogin = '用户名或密码错误'
@@ -155,7 +155,7 @@ export default {
         const user = { name: this.name, id: registerRes.data.id}
         this.setUser(user)
         setAuthorization({ token: registerRes.data.token})
-        this.$router.push('/notice')
+        this.$router.push('/announcementPage')
         this.$message.success("欢迎加入家教综合服务平台", 3)
       } else {
         this.errorRegister = '用户名已被注册'
