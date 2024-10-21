@@ -164,7 +164,7 @@ def savePost(request):
         content=body.get('data').get('content')
 
         try:
-            user=User.objects.get(id=id)
+            user=User.objects.get(id=int(id))
         except User.DoesNotExist:
             return JsonResponse({'code': -1, 'message': '用户不存在'})
         
@@ -183,6 +183,10 @@ def savePost(request):
                 post.emailAddress=email
                 post.content=content
                 post.tags=subjects
+                post.save()
+                result={'data':{}}
+                result['code'] = 0
+                return JsonResponse(result)
             except JobPost.DoesNotExist:
                 post=JobPost(
                     user=user,
@@ -204,7 +208,6 @@ def savePost(request):
                 return JsonResponse(result)
         elif user.identity ==2:
             try:
-                print("hasFirst")
                 print(request.body)
                 post=RecruitmentPost.objects.get(user=user,is_completed=False)
                 post.title=title
@@ -222,7 +225,6 @@ def savePost(request):
                 result['code'] = 0
                 return JsonResponse(result)
             except RecruitmentPost.DoesNotExist:
-                print("noFirst")
                 post=RecruitmentPost(
                     user=user,
                     title=title,
