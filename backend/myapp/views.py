@@ -1,10 +1,11 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.db import models
 import json
 import random
 from datetime import datetime, timedelta
-from .models import User, RecruitmentPost,JobPost
+from .models import User, Student,Tutor,RecruitmentPost,JobPost
 
 @csrf_exempt
 def home(request):
@@ -64,9 +65,13 @@ def register(request):
                 result['data']['roles']=[{'id': 'admin'}]
             elif role == "teacher":
                 identity = 1
+                tutor=Tutor(name=username)
+                tutor.save()
                 result['data']['roles']=[{'id': 'teacher'}]
             elif role == "student":
                 identity = 2
+                student=Student(name=username)
+                student.save()
                 result['data']['roles']=[{'id': 'student'}]
             user = User(username=username, 
                         password=password, 
@@ -271,6 +276,48 @@ def getSavedPost(request):
             result={'data':{}}
             result['code'] = 0
             return JsonResponse(result)     
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
+
+
+@csrf_exempt
+def getPosts(request):
+    if request.method == 'GET':
+        request_id=int(request.GET.get('id'))
+        request_page=int(request.GET.get('page'))
+        request_query=int(request.GET.get('query'))
+        start=(request_page-1)*10
+        end=request_page*10
+        try:
+            user=User.objects.get(id=request_id)
+            if user.identity==0:
+                raise Exception("管理员现在还不知道干啥")
+            elif user.identity==1:
+                if request_query=="":
+                    posts=JobPost.objects.all()
+                else:
+                    posts=RecruitmentPost.objects.filter(
+                        models.Q(title=request_query)|
+                        models.Q(tags__icontains=request_query)|
+                        models.Q(user__username=request_query)|
+                        models.Q(content=request_query)
+                    )
+            elif user.identity==2:
+                if request_query=="":
+                    posts=RecruitmentPost.objects.all()
+                else:
+                    posts=JobPost.objects.filter(
+                        models.Q(title=request_query)|
+                        models.Q(tags__icontains=request_query)|
+                        models.Q(user__username=request_query)|
+                        models.Q(content=request_query)
+                    )
+            else:
+                raise Exception("未知身份")
+            result={'posts':posts[start:end],'total':len(posts)}
+            return JsonResponse(result)
+        except:
+            raise Exception("用户不存在")
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
 

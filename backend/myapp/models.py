@@ -17,10 +17,10 @@ class Student(models.Model):
     id = models.BigAutoField(primary_key=True)
 #    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    age = models.IntegerField()
-    gender = models.IntegerField()  # 0: 男, 1: 女
-    contact = models.CharField(max_length=255)
-    grade = models.IntegerField()
+    age = models.IntegerField(blank=True,null=True)
+    gender = models.IntegerField(blank=True,null=True)  # 0: 男, 1: 女
+    contact = models.CharField(max_length=255,null=True,blank=True)
+    grade = models.IntegerField(blank=True,null=True)
     
 
     def __str__(self):
@@ -31,11 +31,11 @@ class Tutor(models.Model):
     id = models.BigAutoField(primary_key=True)
 #    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    age = models.IntegerField()
-    gender = models.IntegerField()  # 0: 男, 1: 女
-    contact = models.CharField(max_length=255)
-    grade = models.IntegerField()
-    rating = models.IntegerField()
+    age = models.IntegerField(blank=True,null=True)
+    gender = models.IntegerField(blank=True,null=True)  # 0: 男, 1: 女
+    contact = models.CharField(max_length=255,blank=True,null=True) 
+    grade = models.IntegerField(blank=True,null=True)
+    rating = models.IntegerField(blank=True,null=True)
 
     def __str__(self):
         return self.name
