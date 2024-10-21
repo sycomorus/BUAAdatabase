@@ -11,9 +11,9 @@ Mock.mock(/\/getSavedPost\//, 'get', (options) => {
         return {
             code: 0,  // 返回0表示成功
             data: {
-                title: '教师职位招聘',
-                startDate: '2024-10-01',
-                endDate: '2024-12-31',
+                title: '',
+                startDate: '',
+                endDate: '',
                 subjects: ['语文', '数学'],
                 location: ['北京市', '北京市', '海淀区'],
                 fullLocation: '中关村大街',
@@ -27,8 +27,8 @@ Mock.mock(/\/getSavedPost\//, 'get', (options) => {
             code: 0,  // 返回0表示成功
             data: {
                 title: '学生家教',
-                startDate: '2024-10-01',
-                endDate: '2024-12-31',
+                startDate: '',
+                endDate: '',
                 subjects: ['英语', '数学'],
                 location: ['上海市', '上海市','浦东新区'],
                 fullLocation: '陆家嘴',
