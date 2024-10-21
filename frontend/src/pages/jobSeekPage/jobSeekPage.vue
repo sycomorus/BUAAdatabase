@@ -12,7 +12,7 @@
       <div class="search-content">
         <router-view />
       </div>
-      <a-card :bordered="false">
+      <a-card :bordered="false" class="post-card">
         <a-list itemLayout="vertical">
           <a-list-item v-for="(post, index) in posts" :key="index" class="list-item" @click="navigateToPost(post.id)">
             <div class="title-link">
@@ -130,9 +130,15 @@ export default {
 }
 
 
+.post-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
 .content {
   .detail {
-    line-height: 22px;
+    line-height: 1.5; // 增加行高
     max-width: 900px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -151,44 +157,35 @@ export default {
     margin-top: 16px;
     line-height: 22px;
 
-    &> :global(.ant-avatar) {
-      vertical-align: top;
-      margin-right: 8px;
-      width: 20px;
-      height: 20px;
-      position: relative;
-      top: 1px;
-    }
-
-    &>em {
+    em {
       color: @disabled-color;
-      font-style: normal;
-      margin-left: 16px;
+      margin-left: 8px;
     }
   }
 }
 
 .list-item {
   transition: background-color 0.3s ease;
+  padding: 16px;
+  border-radius: 4px; // 圆角
+  margin-bottom: 16px; // 增加底部间距
 }
 
 .title-link {
   display: block;
-  /* 确保整个标题区域可点击 */
-  transition: color 0.3s ease, text-decoration 0.3s ease;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #1890ff;
-    /* 更改颜色 */
+    color: #1890ff; // 鼠标悬停颜色
   }
 }
 
 .list-item:hover {
-  background-color: rgba(240, 240, 240, 0.5);
-  /* 背景色变化 */
+  background-color: rgba(240, 240, 240, 0.3); // 鼠标悬停背景色
 }
 
 .pagination-container {
   text-align: center;
+  margin-top: 20px; // 增加上边距
 }
 </style>
