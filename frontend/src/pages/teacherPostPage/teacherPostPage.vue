@@ -9,7 +9,7 @@
           </a-form-item>
           <a-form-item :label="'日期'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
             <a-range-picker style="width: 100%"
-              v-decorator="['dateRange', { rules: [{ type: 'array', message: ' ', required: true, whitespace: true }], validateTrigger: 'onSubmit' }]" />
+              v-decorator="['dateRange', { rules: [{ type: 'array', message: '请选择日期', required: true}, { validator: this.validateDateRange }], validateTrigger: 'onSubmit' }]" />
           </a-form-item>
           <a-form-item :label="'科目'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
             <a-select mode="tags" style="width: 100%" placeholder="请输入或选择科目" :options="subjectOptions"
@@ -157,8 +157,8 @@ export default {
       // 获取各个字段的值
       const title = values.title || '';  // 如果字段为空，赋默认值 ''
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length ? dateRange[0]: '';
-      const endDate = dateRange.length ? dateRange[1]: '';
+      const startDate = dateRange.length ? dateRange[0] : '';
+      const endDate = dateRange.length ? dateRange[1] : '';
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || '';
@@ -177,6 +177,13 @@ export default {
       } else {
         this.$message.error('保存失败，可能出现了网络波动');
       }
+    },
+    validateDateRange(rule, value, callback) {
+      if (!value || value.length === 0 || !value[0] || !value[1]) {
+        callback('请选择日期');
+      } else {
+        callback(); // 验证通过
+      }
     }
   }
 }
@@ -184,27 +191,33 @@ export default {
 
 <style lang="less" scoped>
 .page-layout {
-    padding: 20px;
+  padding: 20px;
 }
+
 .form-container {
   display: flex;
   justify-content: center;
   margin: 20px 0;
 }
+
 .submit-button {
-  background-color: #4CAF50; /* 绿色 */
+  background-color: #4CAF50;
+  /* 绿色 */
   color: white;
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s;
 }
+
 .form-card {
   width: 100%;
   max-width: 1200px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 .submit-button:hover {
-  background-color: #45a049; /* 深绿色 */
+  background-color: #45a049;
+  /* 深绿色 */
 }
 </style>

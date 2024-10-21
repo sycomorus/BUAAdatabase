@@ -4,24 +4,29 @@
       <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" class="form-card">
         <a-form :form="postForm">
           <a-form-item :label="'标题'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
-            <a-input :placeholder="'请输入标题'" v-decorator="['title', { rules: [{ required: true, message: '请输入标题', whitespace: true}], validateTrigger: 'onSubmit' }]" />
+            <a-input :placeholder="'请输入标题'"
+              v-decorator="['title', { rules: [{ required: true, message: '请输入标题', whitespace: true }], validateTrigger: 'onSubmit' }]" />
           </a-form-item>
 
           <a-form-item :label="'日期'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
-            <a-range-picker style="width: 100%" v-decorator="['dateRange', { rules: [{ type: 'array', message: '请选择日期', required: true }], validateTrigger: 'onSubmit' }]" />
+            <a-range-picker style="width: 100%"
+              v-decorator="['dateRange', { rules: [{ type: 'array', message: '请选择日期', required: true }, { validator: this.validateDateRange }], validateTrigger: 'onSubmit' }]" />
           </a-form-item>
 
           <a-form-item :label="'科目'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
-            <a-select mode="tags" style="width: 100%" placeholder="请输入或选择科目" :options="subjectOptions" v-decorator="['subjects', { rules: [{ type: 'array', required: true, message: '请选择科目' }] }]" />
+            <a-select mode="tags" style="width: 100%" placeholder="请输入或选择科目" :options="subjectOptions"
+              v-decorator="['subjects', { rules: [{ type: 'array', required: true, message: '请选择科目' }] }]" />
           </a-form-item>
 
           <a-form-item :label="'地址'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
             <a-row :gutter="20">
               <a-col :span="10">
-                <a-cascader :options="locationOptions" placeholder="请选择地址" change-on-select v-decorator="['location', { rules: [{ required: true, type: 'array', message: '请选择地址' }] }]" />
+                <a-cascader :options="locationOptions" placeholder="请选择地址" change-on-select
+                  v-decorator="['location', { rules: [{ required: true, type: 'array', message: '请选择地址' }] }]" />
               </a-col>
               <a-col :span="14">
-                <a-input :placeholder="'请输入详细地址'" v-decorator="['fullLocation', { rules: [{ required: true, message: '请输入详细地址', whitespace: true }] }]" />
+                <a-input :placeholder="'请输入详细地址'"
+                  v-decorator="['fullLocation', { rules: [{ required: true, message: '请输入详细地址', whitespace: true }] }]" />
               </a-col>
             </a-row>
           </a-form-item>
@@ -29,7 +34,8 @@
           <a-form-item :label="'联系方式'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
             <a-row :gutter="20">
               <a-col :span="10">
-                <a-input placeholder="电话号码（必填）" v-decorator="['telephoneNumber', { rules: [{ required: true, message: '请输入电话号码', whitespace: true }] }]" />
+                <a-input placeholder="电话号码（必填）"
+                  v-decorator="['telephoneNumber', { rules: [{ required: true, message: '请输入电话号码', whitespace: true }] }]" />
               </a-col>
               <a-col :span="14">
                 <a-input placeholder="电子邮箱（选填）" v-decorator="['emailAddress']" />
@@ -38,7 +44,8 @@
           </a-form-item>
 
           <a-form-item :label="'详情'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
-            <a-textarea rows="4" :placeholder="'可以在这里描述你的具体要求，薪资水平，学生的学习情况等'" v-decorator="['content', { rules: [{ required: true, message: '请输入详情', whitespace: true }] }]" />
+            <a-textarea rows="4" :placeholder="'可以在这里描述你的具体要求，薪资水平，学生的学习情况等'"
+              v-decorator="['content', { rules: [{ required: true, message: '请输入详情', whitespace: true }] }]" />
           </a-form-item>
 
           <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 10, offset: 7 }" :required=false>
@@ -144,8 +151,8 @@ export default {
       const values = this.postForm.getFieldsValue();
       const title = values.title || '';
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length ? dateRange[0]: '';
-      const endDate = dateRange.length ? dateRange[1]: '';
+      const startDate = dateRange.length ? dateRange[0] : '';
+      const endDate = dateRange.length ? dateRange[1] : '';
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || '';
@@ -162,6 +169,13 @@ export default {
         this.$message.success('保存成功');
       } else {
         this.$message.error('保存失败，可能出现了网络波动');
+      }
+    },
+    validateDateRange(rule, value, callback) {
+      if (!value || value.length === 0 || !value[0] || !value[1]) {
+        callback('请选择日期');
+      } else {
+        callback(); // 验证通过
       }
     }
   }
@@ -187,7 +201,8 @@ export default {
 }
 
 .submit-button {
-  background-color: #4CAF50; /* 绿色 */
+  background-color: #4CAF50;
+  /* 绿色 */
   color: white;
   border: none;
   border-radius: 4px;
@@ -195,6 +210,7 @@ export default {
 }
 
 .submit-button:hover {
-  background-color: #45a049; /* 深绿色 */
+  background-color: #45a049;
+  /* 深绿色 */
 }
 </style>
