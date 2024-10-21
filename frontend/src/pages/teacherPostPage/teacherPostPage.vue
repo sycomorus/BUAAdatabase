@@ -1,7 +1,7 @@
 <template>
   <page-layout :desc="'你可以在这个页面填写并发布求聘信息'" :title="'我要求聘'">
-    <div style="display: flex; justify-content: center;">
-      <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" :style="{ width: '1200px' }">
+    <div class="form-container">
+      <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" class="form-card">
         <a-form :form="postForm">
           <a-form-item :label="'标题'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
             <a-input :placeholder="'请输入标题'"
@@ -44,7 +44,7 @@
               v-decorator="['content', { rules: [{ required: true, message: ' ', whitespace: true }], validateTrigger: 'onSubmit' }]" />
           </a-form-item>
           <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 10, offset: 7 }">
-            <a-button type="primary" @click="handleSubmit">{{ '提交' }}</a-button>
+            <a-button type="primary" @click="handleSubmit" class="submit-button">{{ '提交' }}</a-button>
             <a-button style="margin-left: 8px" @click="handleSave">{{ '保存' }}</a-button>
           </a-form-item>
         </a-form>
@@ -186,5 +186,26 @@ export default {
 <style lang="less" scoped>
 .page-layout {
     padding: 20px;
+}
+.form-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+.submit-button {
+  background-color: #4CAF50; /* 绿色 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+.form-card {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.submit-button:hover {
+  background-color: #45a049; /* 深绿色 */
 }
 </style>
