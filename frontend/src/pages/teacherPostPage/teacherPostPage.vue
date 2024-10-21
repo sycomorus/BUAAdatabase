@@ -202,7 +202,6 @@ import { sendPost, savePost, getSavedPost } from "@/services/user";
 import PageLayout from "@/layouts/PageLayout";
 import locationOptions from "@/assets/json/locationOptions.json";
 import { mapState } from "vuex";
-import moment from "moment";
 
 export default {
   name: "teacherPostPage",
@@ -256,10 +255,7 @@ export default {
           } = resdata.data;
           this.postForm.setFieldsValue({
             title,
-            dateRange: [
-              startDate ? moment(startDate) : null,
-              endDate ? moment(endDate) : null,
-            ],
+            dateRange: [startDate ? startDate : "", endDate ? endDate : ""],
             subjects,
             location,
             fullLocation,
@@ -282,8 +278,8 @@ export default {
           // 输出时间范围
           const title = values.title;
           const dateRange = values.dateRange;
-          const startDate = dateRange[0].format("YYYY-MM-DD");
-          const endDate = dateRange[1].format("YYYY-MM-DD");
+          const startDate = dateRange[0];
+          const endDate = dateRange[1];
           const subjects = values.subjects;
           const location = values.location;
           const fullLocation = values.fullLocation;
@@ -326,10 +322,8 @@ export default {
       // 获取各个字段的值
       const title = values.title || ""; // 如果字段为空，赋默认值 ''
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length
-        ? dateRange[0].format("YYYY-MM-DD")
-        : "";
-      const endDate = dateRange.length ? dateRange[1].format("YYYY-MM-DD") : "";
+      const startDate = dateRange.length ? dateRange[0] : "";
+      const endDate = dateRange.length ? dateRange[1] : "";
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || "";

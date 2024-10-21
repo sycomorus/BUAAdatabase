@@ -3,19 +3,19 @@
     <div class="form-container">
       <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" class="form-card">
         <a-form :form="postForm">
-          <a-form-item :label="'标题'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+          <a-form-item :label="'标题'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
             <a-input :placeholder="'请输入标题'" v-decorator="['title', { rules: [{ required: true, message: '请输入标题', whitespace: true}], validateTrigger: 'onSubmit' }]" />
           </a-form-item>
 
-          <a-form-item :label="'日期'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+          <a-form-item :label="'日期'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
             <a-range-picker style="width: 100%" v-decorator="['dateRange', { rules: [{ type: 'array', message: '请选择日期', required: true }], validateTrigger: 'onSubmit' }]" />
           </a-form-item>
 
-          <a-form-item :label="'科目'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+          <a-form-item :label="'科目'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
             <a-select mode="tags" style="width: 100%" placeholder="请输入或选择科目" :options="subjectOptions" v-decorator="['subjects', { rules: [{ type: 'array', required: true, message: '请选择科目' }] }]" />
           </a-form-item>
 
-          <a-form-item :label="'地址'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+          <a-form-item :label="'地址'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
             <a-row :gutter="20">
               <a-col :span="10">
                 <a-cascader :options="locationOptions" placeholder="请选择地址" change-on-select v-decorator="['location', { rules: [{ required: true, type: 'array', message: '请选择地址' }] }]" />
@@ -26,7 +26,7 @@
             </a-row>
           </a-form-item>
 
-          <a-form-item :label="'联系方式'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+          <a-form-item :label="'联系方式'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
             <a-row :gutter="20">
               <a-col :span="10">
                 <a-input placeholder="电话号码（必填）" v-decorator="['telephoneNumber', { rules: [{ required: true, message: '请输入电话号码', whitespace: true }] }]" />
@@ -37,11 +37,11 @@
             </a-row>
           </a-form-item>
 
-          <a-form-item :label="'详情'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+          <a-form-item :label="'详情'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required=false>
             <a-textarea rows="4" :placeholder="'可以在这里描述你的具体要求，薪资水平，学生的学习情况等'" v-decorator="['content', { rules: [{ required: true, message: '请输入详情', whitespace: true }] }]" />
           </a-form-item>
 
-          <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 14, offset: 6 }" :required=false>
+          <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 10, offset: 7 }" :required=false>
             <a-button type="primary" @click="handleSubmit" class="submit-button">{{ '提交' }}</a-button>
             <a-button style="margin-left: 8px" @click="handleSave">{{ '保存' }}</a-button>
           </a-form-item>
@@ -56,7 +56,6 @@ import { sendPost, savePost, getSavedPost } from '@/services/user'
 import PageLayout from '@/layouts/PageLayout'
 import locationOptions from '@/assets/json/locationOptions.json'
 import { mapState } from 'vuex'
-import moment from 'moment';
 
 export default {
   name: 'teacherPostPage',
@@ -100,7 +99,7 @@ export default {
           const { title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, emailAddress, content } = resdata.data;
           this.postForm.setFieldsValue({
             title,
-            dateRange: [startDate ? moment(startDate) : null, endDate ? moment(endDate) : null],
+            dateRange: [startDate ? startDate : '', endDate ? endDate : ''],
             subjects,
             location,
             fullLocation,
@@ -118,8 +117,8 @@ export default {
         if (!errors) {
           const title = values.title;
           const dateRange = values.dateRange;
-          const startDate = dateRange[0].format('YYYY-MM-DD');
-          const endDate = dateRange[1].format('YYYY-MM-DD');
+          const startDate = dateRange[0];
+          const endDate = dateRange[1];
           const subjects = values.subjects;
           const location = values.location;
           const fullLocation = values.fullLocation;
@@ -145,8 +144,8 @@ export default {
       const values = this.postForm.getFieldsValue();
       const title = values.title || '';
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length ? dateRange[0].format('YYYY-MM-DD') : '';
-      const endDate = dateRange.length ? dateRange[1].format('YYYY-MM-DD') : '';
+      const startDate = dateRange.length ? dateRange[0]: '';
+      const endDate = dateRange.length ? dateRange[1]: '';
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || '';
