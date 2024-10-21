@@ -43,7 +43,7 @@ class Tutor(models.Model):
 # 招聘帖表
 class RecruitmentPost(models.Model):
     post_id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
     tags=models.JSONField(default=list,blank=True,null=True)
     title = models.CharField(max_length=255,blank=True,null=True)
     startDate = models.DateField(blank=True,null=True)
@@ -62,7 +62,7 @@ class RecruitmentPost(models.Model):
 # 求职帖表
 class JobPost(models.Model):
     post_id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
     tags=models.JSONField(default=list,blank=True,null=True)
     title = models.CharField(max_length=255,blank=True,null=True)
     startDate = models.DateField(blank=True,null=True)
@@ -73,7 +73,7 @@ class JobPost(models.Model):
     telephoneNumber = models.CharField(max_length=255,blank=True,null=True)
     emailAddress = models.EmailField(max_length=255,blank=True,null=True)
     content = models.TextField(blank=True,null=True)
-    is_completed = models.BooleanField(default=True,blank=True,null=True)
+    is_completed = models.BooleanField(blank=True,null=True)
 
     def __str__(self):
         return self.title
@@ -104,7 +104,6 @@ class Review(models.Model):
 class Notification(models.Model):
     id = models.BigAutoField(primary_key=True)
     recipient_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    related_post_id = models.ForeignKey(JobPost, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Notification {self.id}"
