@@ -4,7 +4,7 @@
       <div :class="['search-head', layout, pageWidth]">
         <div class="search-input">
           <a-input-search class="search-ipt" style="width: 600px" placeholder="请输入搜索内容" size="large" enterButton="搜索"
-            v-model="searchQuery" @search="searchPosts">
+            v-model="searchQueryLast" @search="searchPosts">
             <a-icon slot="prefix" type="search" />
           </a-input-search>
         </div>
@@ -73,6 +73,7 @@ export default {
       posts: [], // 帖子列表
       showFullContent: null, // 控制显示完整内容的帖子ID
       searchQuery: '', // 搜索内容
+      searchQueryLast: '' // 上一次搜索内容
     }
   },
   methods: {
@@ -90,6 +91,7 @@ export default {
     searchPosts() {
       // 当用户点击搜索按钮时，重新获取数据
       this.currentPage = 1;
+      this.searchQuery = this.searchQueryLast;
       this.fetchPosts();
     },
     shouldShowReadMore(content) {
