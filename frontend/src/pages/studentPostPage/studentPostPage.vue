@@ -124,14 +124,15 @@ export default {
         if (!errors) {
           const title = values.title;
           const dateRange = values.dateRange;
-          const startDate = dateRange[0];
-          const endDate = dateRange[1];
+          const startDate = dateRange[0].format("YYYY-MM-DD");
+          const endDate = dateRange[1].format("YYYY-MM-DD");
           const subjects = values.subjects;
           const location = values.location;
           const fullLocation = values.fullLocation;
           const telephoneNumber = values.telephoneNumber;
           const emailAddress = values.emailAddress;
           const content = values.content;
+          console.log(startDate, endDate);
           sendPost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, emailAddress, content).then(this.afterPost)
         } else {
           console.log('表单验证错误:', errors);
@@ -140,6 +141,7 @@ export default {
     },
     afterPost(res) {
       const resdata = res.data;
+      console.log(resdata);
       if (resdata.code >= 0) {
         this.$message.success('发布成功');
         this.postForm.resetFields();
@@ -151,14 +153,15 @@ export default {
       const values = this.postForm.getFieldsValue();
       const title = values.title || '';
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length ? dateRange[0] : '';
-      const endDate = dateRange.length ? dateRange[1] : '';
+      const startDate = dateRange.length ? dateRange[0].format("YYYY-MM-DD") : '';
+      const endDate = dateRange.length ? dateRange[1].format("YYYY-MM-DD") : '';
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || '';
       const telephoneNumber = values.telephoneNumber || '';
       const emailAddress = values.emailAddress || '';
       const content = values.content || '';
+      console.log(startDate, endDate);
 
       savePost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, emailAddress, content).then(this.afterSave);
     },

@@ -193,8 +193,8 @@ export default {
           // 输出时间范围
           const title = values.title;
           const dateRange = values.dateRange;
-          const startDate = dateRange[0];
-          const endDate = dateRange[1];
+          const startDate = dateRange[0].format("YYYY-MM-DD");
+          const endDate = dateRange[1].format("YYYY-MM-DD");
           const subjects = values.subjects;
           const location = values.location;
           const fullLocation = values.fullLocation;
@@ -237,8 +237,8 @@ export default {
       // 获取各个字段的值
       const title = values.title || ""; // 如果字段为空，赋默认值 ''
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length ? dateRange[0] : '';
-      const endDate = dateRange.length ? dateRange[1] : '';
+      const startDate = dateRange.length ? dateRange[0].format("YYYY-MM-DD") : '';
+      const endDate = dateRange.length ? dateRange[1].format("YYYY-MM-DD") : '';
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || "";
