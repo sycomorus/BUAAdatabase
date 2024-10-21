@@ -94,6 +94,54 @@ def sendPost(request):
         telephoneNumber=body.get('data').get('telephoneNumber')
         email=body.get('data').get('emailAddress')
         content=body.get('data').get('content')
+        is_complete = all([title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, email, content])
+        if not is_complete:
+            return JsonResponse({'code': 0})
+
+        try:
+            # 创建招聘帖
+            recruitmentPost = RecruitmentPost(
+                user_id=User.objects.get(id=id),
+                title=title,
+                startDate=startDate,
+                endDate=endDate,
+                subjects=subjects,
+                location=location,
+                fullLocation=fullLocation,
+                telephoneNumber=telephoneNumber,
+                emailAddress=email,
+                content=content,
+                tags=subjects,
+                is_completed=is_complete,
+            )
+            recruitmentPost.save()
+            result={'data':{}}
+            result['code'] = 0
+            return JsonResponse(result)
+        except Exception as e:
+            print(e)
+            result={'data':{}}
+            result['code'] = -1
+            return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
+
+@csrf_exempt
+def savePost(request):
+    print("bbbbb")
+    if request.method == 'POST':
+        print("aaaaaaaa")
+        body = json.loads(request.body)
+        id=body.get('id')
+        title = body.get('data').get('title')
+        startDate = body.get('data').get('startDate') or None
+        endDate = body.get('data').get('endDate') or None
+        subjects=body.get('data').get('subjects')
+        location=body.get('data').get('location')
+        fullLocation=body.get('data').get('fullLocation')
+        telephoneNumber=body.get('data').get('telephoneNumber') or None
+        email=body.get('data').get('emailAddress') or None
+        content=body.get('data').get('content')
         try:
             # 创建招聘帖
             print("in")
@@ -108,12 +156,13 @@ def sendPost(request):
                 telephoneNumber=telephoneNumber,
                 emailAddress=email,
                 content=content,
-                tags=subjects
+                tags=subjects,
+                is_completed=False,
             )
-            print("out")
             recruitmentPost.save()
             result={'data':{}}
             result['code'] = 0
+            print("out")
             return JsonResponse(result)
         except Exception as e:
             print(e)
@@ -122,6 +171,34 @@ def sendPost(request):
             return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
+
+@csrf_exempt
+def getSavedPost(request):
+    if request.method == 'GET':
+        try:
+            user_id=request.GET.get('id')
+            for post in RecruitmentPost.objects.all():
+                print(post.is_completed)
+            post=RecruitmentPost.objects.get(user_id=user_id,is_completed=False)
+            result={'data':{}}
+            result['code'] = 0
+            result['data']['title']=post.title
+            result['data']['startDate']=post.startDate
+            result['data']['endDate']=post.endDate
+            result['data']['subjects']=post.subjects
+            result['data']['location']=post.location
+            result['data']['fullLocation']=post.fullLocation
+            result['data']['telephoneNumber']=post.telephoneNumber
+            result['data']['emailAddress']=post.emailAddress
+            result['data']['content']=post.content
+            return JsonResponse(result)
+        except RecruitmentPost.DoesNotExist:
+            result={'data':{}}
+            result['code'] = 0
+            return JsonResponse(result)
+           
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
 
 
 

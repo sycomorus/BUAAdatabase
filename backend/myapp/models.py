@@ -43,17 +43,18 @@ class Tutor(models.Model):
 # 招聘帖表
 class RecruitmentPost(models.Model):
     post_id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE,default=-1)
-    tags=models.JSONField(default=list,blank=True)
-    title = models.CharField(max_length=255,default='title')
-    startDate = models.DateField(default='2021-01-01')
-    endDate = models.DateField(default='2021-01-01')
-    subjects = models.JSONField(default=list,blank=True)
-    location = models.CharField(max_length=255,default='location')
-    fullLocation = models.CharField(max_length=255,default='fullLocation')
-    telephoneNumber = models.CharField(max_length=255,default='telephoneNumber')
-    emailAddress = models.EmailField(max_length=255,default='emailAddress')
-    content = models.TextField(default='content')
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
+    tags=models.JSONField(default=list,blank=True,null=True)
+    title = models.CharField(max_length=255,blank=True,null=True)
+    startDate = models.DateField(blank=True,null=True)
+    endDate = models.DateField(blank=True,null=True)
+    subjects = models.JSONField(default=list,blank=True,null=True)
+    location = models.CharField(max_length=255,blank=True,null=True)
+    fullLocation = models.CharField(max_length=255,blank=True,null=True)
+    telephoneNumber = models.CharField(max_length=255,blank=True,null=True)
+    emailAddress = models.EmailField(max_length=255,blank=True,null=True)
+    content = models.TextField(blank=True,null=True)
+    is_completed = models.BooleanField(default=True,blank=True,null=True)
 
     def __str__(self):
         return self.title
