@@ -14,8 +14,8 @@
       </div>
       <a-card :bordered="false">
         <a-list itemLayout="vertical">
-          <a-list-item v-for="(post, index) in posts" :key="index" :title="post.title" class="list-item">
-            <div class="title-link" @click="navigateToPost(post.id)">
+          <a-list-item v-for="(post, index) in posts" :key="index" :title="post.title" class="list-item" @click="navigateToPost(post.id)">
+            <div class="title-link">
               <a-list-item-meta :title="post.title">
                 <div slot="description">
                   <a-tag v-for="tag in post.tags" :key="tag">{{ tag }}</a-tag>
@@ -33,7 +33,7 @@
               <div class="read-less" v-if="showFullContent === post.id">
                 <a @click="showFullContent = null">收起</a>
               </div>
-              <div class="author">
+              <div class="author" @click.stop>
                 <router-link :to="{ name: '家教主页', params: { id: post.authorId } }">
                   {{ post.author }}
                 </router-link>
