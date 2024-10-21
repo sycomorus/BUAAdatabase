@@ -4,7 +4,7 @@ from django.http import HttpResponse
 import json
 import random
 from datetime import datetime, timedelta
-from .models import User, RecruitmentPost
+from .models import User, RecruitmentPost,JobPost
 
 @csrf_exempt
 def home(request):
@@ -97,6 +97,30 @@ def sendPost(request):
         is_complete = all([title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, email, content])
         if not is_complete:
             return JsonResponse({'code': 0})
+        
+        # try :
+        #     user=User.objects.get(id=id)
+        # except User.DoesNotExist:
+        #     return JsonResponse({'code': -1, 'message': '用户不存在'})
+        
+        # if user.identity ==0:
+        #     raise Exception("管理员无法发帖")
+        # elif user.identity ==1:
+        #     jobPost=JobPost(
+        #         user_id=User.objects.get(id=id),
+        #         title=title,
+        #         startDate=startDate,
+        #         endDate=endDate,
+        #         subjects=subjects,
+        #         location=location,
+        #         fullLocation=fullLocation,
+        #         telephoneNumber=telephoneNumber,
+        #         emailAddress=email,
+        #         content=content,
+        #         tags=subjects,
+        #         is_completed=is_complete,
+        #     )
+
 
         try:
             # 创建招聘帖
@@ -177,8 +201,6 @@ def getSavedPost(request):
     if request.method == 'GET':
         try:
             user_id=request.GET.get('id')
-            for post in RecruitmentPost.objects.all():
-                print(post.is_completed)
             post=RecruitmentPost.objects.get(user_id=user_id,is_completed=False)
             result={'data':{}}
             result['code'] = 0
