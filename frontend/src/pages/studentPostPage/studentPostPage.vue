@@ -1,46 +1,48 @@
 <template>
-  <page-layout :desc="'你可以在这个页面填写并发布招聘信息'" :title ="'我要招聘'">
-    <div style="display: flex; justify-content: center;">
-      <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" :style="{ width: '1200px' }">
+  <page-layout :desc="'你可以在这个页面填写并发布招聘信息'" :title="'我要招聘'">
+    <div class="form-container">
+      <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" class="form-card">
         <a-form :form="postForm">
-          <a-form-item :label="'标题'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
-            <a-input :placeholder="'请输入标题'"
-              v-decorator="['title', { rules: [{ required: true, message: ' ', whitespace: true}], validateTrigger: 'onSubmit' }]" />
+          <a-form-item :label="'标题'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+            <a-input :placeholder="'请输入标题'" v-decorator="['title', { rules: [{ required: true, message: '请输入标题', whitespace: true}], validateTrigger: 'onSubmit' }]" />
           </a-form-item>
-          <a-form-item :label="'日期'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
-            <a-range-picker style="width: 100%"
-              v-decorator="['dateRange', { rules: [{ type: 'array', message: ' ', required: true, whitespace: true}], validateTrigger: 'onSubmit' }]" />
+
+          <a-form-item :label="'日期'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+            <a-range-picker style="width: 100%" v-decorator="['dateRange', { rules: [{ type: 'array', message: '请选择日期', required: true }], validateTrigger: 'onSubmit' }]" />
           </a-form-item>
-          <a-form-item :label="'科目'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
-            <a-select mode="tags" style="width: 100%" placeholder="请输入或选择科目" :options="subjectOptions"
-              v-decorator="['subjects', { rules: [{ type: 'array',required: true, message: ' ', message: ' ', whitespace: true}], validateTrigger: 'onSubmit' }]"/>
+
+          <a-form-item :label="'科目'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+            <a-select mode="tags" style="width: 100%" placeholder="请输入或选择科目" :options="subjectOptions" v-decorator="['subjects', { rules: [{ type: 'array', required: true, message: '请选择科目' }] }]" />
           </a-form-item>
-          <a-form-item :label="'地址'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
-            <a-row :gutter="20"> <!-- 设置列间间隔为16像素 -->
-              <a-col :span="10">
-                <a-cascader :options="locationOptions" placeholder="请选择地址" change-on-select
-                v-decorator="['location', { rules: [{ required: true, type: 'array', message: ' ', validateTrigger: 'onSubmit' }] }]"/>
-              </a-col>
-              <a-col :span="14">
-                <a-input :placeholder="'请输入详细地址'" v-decorator="['fullLocation', { rules: [{ required: true, message: ' ', whitespace: true}], validateTrigger: 'onSubmit'}]"/>
-              </a-col>
-            </a-row>
-          </a-form-item>
-          <a-form-item :label="'联系方式'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required="false">
+
+          <a-form-item :label="'地址'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
             <a-row :gutter="20">
               <a-col :span="10">
-                <a-input placeholder="电话号码（必填）" v-decorator="['telephoneNumber', { rules: [{ required: true, message: ' ', whitespace: true}], validateTrigger: 'onSubmit'}]"/>
+                <a-cascader :options="locationOptions" placeholder="请选择地址" change-on-select v-decorator="['location', { rules: [{ required: true, type: 'array', message: '请选择地址' }] }]" />
               </a-col>
               <a-col :span="14">
-                <a-input placeholder="电子邮箱（选填)" v-decorator="['emailAddress', { rules: [{ required: false, message: ' ', whitespace: true}], validateTrigger: 'onSubmit'}]"/>
+                <a-input :placeholder="'请输入详细地址'" v-decorator="['fullLocation', { rules: [{ required: true, message: '请输入详细地址', whitespace: true }] }]" />
               </a-col>
             </a-row>
           </a-form-item>
-          <a-form-item :label="'详情'" :labelCol="{ span: 7 }" :wrapperCol="{ span: 10 }" :required = 'false'>
-            <a-textarea rows="4" :placeholder="'可以在这里描述你的具体要求，薪资水平，学生的学习情况等'" v-decorator="['content', { rules: [{ required: true, message: ' ', whitespace: true}], validateTrigger: 'onSubmit'}]" />
+
+          <a-form-item :label="'联系方式'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+            <a-row :gutter="20">
+              <a-col :span="10">
+                <a-input placeholder="电话号码（必填）" v-decorator="['telephoneNumber', { rules: [{ required: true, message: '请输入电话号码', whitespace: true }] }]" />
+              </a-col>
+              <a-col :span="14">
+                <a-input placeholder="电子邮箱（选填）" v-decorator="['emailAddress']" />
+              </a-col>
+            </a-row>
           </a-form-item>
-          <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 10, offset: 7 }">
-            <a-button type="primary" @click="handleSubmit">{{ '提交' }}</a-button>
+
+          <a-form-item :label="'详情'" :labelCol="{ span: 6 }" :wrapperCol="{ span: 14 }" :required=false>
+            <a-textarea rows="4" :placeholder="'可以在这里描述你的具体要求，薪资水平，学生的学习情况等'" v-decorator="['content', { rules: [{ required: true, message: '请输入详情', whitespace: true }] }]" />
+          </a-form-item>
+
+          <a-form-item style="margin-top: 24px" :wrapperCol="{ span: 14, offset: 6 }" :required=false>
+            <a-button type="primary" @click="handleSubmit" class="submit-button">{{ '提交' }}</a-button>
             <a-button style="margin-left: 8px" @click="handleSave">{{ '保存' }}</a-button>
           </a-form-item>
         </a-form>
@@ -85,8 +87,8 @@ export default {
     }
   },
   created() {
-    this.locationOptions = locationOptions; // 在组件创建时加载 JSON 数据
-    this.fetchSavedPost(); // 加载保存的草稿
+    this.locationOptions = locationOptions;
+    this.fetchSavedPost();
   },
   methods: {
     async fetchSavedPost() {
@@ -111,14 +113,9 @@ export default {
         console.error('获取草稿失败', error);
       }
     },
-    // 提交表单
     handleSubmit() {
-      // 验证表单字段
       this.postForm.validateFields((errors, values) => {
         if (!errors) {
-          // 表单验证通过，提交数据
-          console.log('表单数据:', values);
-          // 输出时间范围
           const title = values.title;
           const dateRange = values.dateRange;
           const startDate = dateRange[0].format('YYYY-MM-DD');
@@ -136,23 +133,17 @@ export default {
       });
     },
     afterPost(res) {
-      const resdate = res.data;
-      if (resdate.code >= 0) {
+      const resdata = res.data;
+      if (resdata.code >= 0) {
         this.$message.success('发布成功');
-        this.postForm.resetFields(); // 清空表单
+        this.postForm.resetFields();
       } else {
         this.$message.error('发布失败，可能出现了网络波动');
       }
     },
-    // 保存表单数据到草稿
     handleSave() {
-      // 验证表单字段，这里允许部分字段为空
-      // 不进行表单验证，直接获取表单数据
       const values = this.postForm.getFieldsValue();
-      console.log('表单数据:', values);
-
-      // 获取各个字段的值
-      const title = values.title || '';  // 如果字段为空，赋默认值 ''
+      const title = values.title || '';
       const dateRange = values.dateRange || [];
       const startDate = dateRange.length ? dateRange[0].format('YYYY-MM-DD') : '';
       const endDate = dateRange.length ? dateRange[1].format('YYYY-MM-DD') : '';
@@ -163,7 +154,6 @@ export default {
       const emailAddress = values.emailAddress || '';
       const content = values.content || '';
 
-      // 调用 savePost API，保存为草稿
       savePost(this.currUser.id, title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, emailAddress, content).then(this.afterSave);
     },
 
@@ -181,6 +171,31 @@ export default {
 
 <style lang="less" scoped>
 .page-layout {
-    padding: 20px;
+  padding: 20px;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button {
+  background-color: #4CAF50; /* 绿色 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #45a049; /* 深绿色 */
 }
 </style>
