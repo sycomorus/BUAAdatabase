@@ -36,12 +36,8 @@
                 'dateRange',
                 {
                   rules: [
-                    {
-                      type: 'array',
-                      message: ' ',
-                      required: true,
-                      whitespace: true,
-                    },
+                    { type: 'array', message: '请选择日期', required: true },
+                    { validator: this.validateDateRange },
                   ],
                   validateTrigger: 'onSubmit',
                 },
@@ -278,8 +274,8 @@ export default {
           // 输出时间范围
           const title = values.title;
           const dateRange = values.dateRange;
-          const startDate = dateRange[0];
-          const endDate = dateRange[1];
+          const startDate = dateRange[0].format("YYYY-MM-DD");
+          const endDate = dateRange[1].format("YYYY-MM-DD");
           const subjects = values.subjects;
           const location = values.location;
           const fullLocation = values.fullLocation;
@@ -322,8 +318,10 @@ export default {
       // 获取各个字段的值
       const title = values.title || ""; // 如果字段为空，赋默认值 ''
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length ? dateRange[0] : "";
-      const endDate = dateRange.length ? dateRange[1] : "";
+      const startDate = dateRange.length
+        ? dateRange[0].format("YYYY-MM-DD")
+        : "";
+      const endDate = dateRange.length ? dateRange[1].format("YYYY-MM-DD") : "";
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || "";
@@ -354,6 +352,13 @@ export default {
         this.$message.error("保存失败，可能出现了网络波动");
       }
     },
+    validateDateRange(rule, value, callback) {
+      if (!value || value.length === 0 || !value[0] || !value[1]) {
+        callback("请选择日期");
+      } else {
+        callback(); // 验证通过
+      }
+    },
   },
 };
 </script>
@@ -362,25 +367,31 @@ export default {
 .page-layout {
   padding: 20px;
 }
+
 .form-container {
   display: flex;
   justify-content: center;
   margin: 20px 0;
 }
+
 .submit-button {
-  background-color: #4caf50; /* 绿色 */
+  background-color: #4caf50;
+  /* 绿色 */
   color: white;
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s;
 }
+
 .form-card {
   width: 100%;
   max-width: 1200px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 .submit-button:hover {
-  background-color: #45a049; /* 深绿色 */
+  background-color: #45a049;
+  /* 深绿色 */
 }
 </style>

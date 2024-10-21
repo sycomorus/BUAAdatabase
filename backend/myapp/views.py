@@ -285,7 +285,7 @@ def getPosts(request):
     if request.method == 'GET':
         request_id=int(request.GET.get('id'))
         request_page=int(request.GET.get('page'))
-        request_query=int(request.GET.get('query'))
+        request_query=request.GET.get('query')
         start=(request_page-1)*10
         end=request_page*10
         try:
@@ -298,7 +298,7 @@ def getPosts(request):
                 else:
                     posts=RecruitmentPost.objects.filter(
                         models.Q(title=request_query)|
-                        models.Q(tags__icontains=request_query)|
+                        models.Q(tags__icontains=[request_query])|
                         models.Q(user__username=request_query)|
                         models.Q(content=request_query)
                     )
@@ -314,9 +314,9 @@ def getPosts(request):
                     )
             else:
                 raise Exception("未知身份")
-            result={'posts':posts[start:end],'total':len(posts)}
+            result={'posts':(list(posts.values()))[start:end],'total':len(posts)}
             return JsonResponse(result)
-        except:
+        except User.DoesNotExist:
             raise Exception("用户不存在")
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
