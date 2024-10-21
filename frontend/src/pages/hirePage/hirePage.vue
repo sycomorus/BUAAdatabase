@@ -15,13 +15,13 @@
       <a-card :bordered="false">
         <a-list itemLayout="vertical">
           <a-list-item v-for="(post, index) in posts" :key="index" :title="post.title" class="list-item">
-            <router-link :to="{ name: '帖子详情', params: { id: post.id, showAccept:true } }" class="title-link">
+            <div class="title-link" @click="navigateToPost(post.id)">
               <a-list-item-meta :title="post.title">
                 <div slot="description">
                   <a-tag v-for="tag in post.tags" :key="tag">{{ tag }}</a-tag>
                 </div>
               </a-list-item-meta>
-            </router-link>
+            </div>
             <div class="content">
               <div class="detail" :class="{ 'expanded': showFullContent === post.id }">
                 {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content :
@@ -100,6 +100,9 @@ export default {
       // 当用户点击分页时，更新当前页面并重新获取数据
       this.currentPage = page;
       this.fetchPosts();
+    },
+    navigateToPost(postId) {
+      this.$router.push({ name: '帖子详情', params: { id: postId, showAccept: true } });
     }
   }
 }
