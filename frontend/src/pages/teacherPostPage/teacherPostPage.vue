@@ -232,13 +232,13 @@ export default {
       // 验证表单字段，这里允许部分字段为空
       // 不进行表单验证，直接获取表单数据
       const values = this.postForm.getFieldsValue();
-      console.log("表单数据:", values);
 
       // 获取各个字段的值
       const title = values.title || ""; // 如果字段为空，赋默认值 ''
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length ? dateRange[0].format("YYYY-MM-DD") : '';
-      const endDate = dateRange.length ? dateRange[1].format("YYYY-MM-DD") : '';
+      console.log("dateRange:", dateRange);
+      const startDate = dateRange[0] ? dateRange[0].format("YYYY-MM-DD") : '';
+      const endDate = dateRange[1] ? dateRange[1].format("YYYY-MM-DD") : '';
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || "";

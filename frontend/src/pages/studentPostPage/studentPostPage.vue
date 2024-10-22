@@ -153,8 +153,8 @@ export default {
       const values = this.postForm.getFieldsValue();
       const title = values.title || '';
       const dateRange = values.dateRange || [];
-      const startDate = dateRange.length ? dateRange[0].format("YYYY-MM-DD") : '';
-      const endDate = dateRange.length ? dateRange[1].format("YYYY-MM-DD") : '';
+      const startDate = dateRange[0] ? dateRange[0].format("YYYY-MM-DD") : '';
+      const endDate = dateRange[1] ? dateRange[1].format("YYYY-MM-DD") : '';
       const subjects = values.subjects || [];
       const location = values.location || [];
       const fullLocation = values.fullLocation || '';
