@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.db import models
 import json
 import random
+import pytz
 from datetime import datetime, timedelta
 from .models import User, Student,Tutor,RecruitmentPost,JobPost
 
@@ -76,7 +77,7 @@ def register(request):
             user = User(username=username, 
                         password=password, 
                         identity=identity, 
-                        registration_date=datetime.now())
+                        registration_date=datetime.now(pytz.timezone('Asia/Shanghai')))
             user.save()
             result['code'] = 0
             result['data']['token']="Authorization:" + str(random.random())
@@ -114,7 +115,7 @@ def sendPost(request):
             jobPost=JobPost(
                 user_id=user.id,
                 title=title,
-                # postDate=datetime.now(),
+                postDate=datetime.now(pytz.timezone('Asia/Shanghai')),
                 startDate=startDate,
                 endDate=endDate,
                 subjects=subjects,
@@ -134,7 +135,7 @@ def sendPost(request):
             recruitmentPost = RecruitmentPost(
                 user_id=user.id,
                 title=title,
-                # postDate=datetime.now(),
+                postDate=datetime.now(pytz.timezone('Asia/Shanghai')),
                 startDate=startDate,
                 endDate=endDate,
                 subjects=subjects,
@@ -190,6 +191,10 @@ def savePost(request):
                 post.emailAddress=email
                 post.content=content
                 post.tags=subjects
+                post.save()
+                result={'data':{}}
+                result['code'] = 0
+                return JsonResponse(result)
             except JobPost.DoesNotExist:
                 post=JobPost(
                     user=user,
@@ -222,6 +227,10 @@ def savePost(request):
                 post.emailAddress=email
                 post.content=content
                 post.tags=subjects
+                post.save()
+                result={'data':{}}
+                result['code'] = 0
+                return JsonResponse(result)
             except RecruitmentPost.DoesNotExist:
                 post=RecruitmentPost(
                     user=user,
@@ -310,8 +319,8 @@ def getPosts(request):
                 raise Exception("未知身份")
             return_posts=[]
             for post in posts:
-                now=datetime.now()
-                post_date=post.postDate
+                now = datetime.now(pytz.timezone('Asia/Shanghai'))
+                post_date = post.postDate.astimezone(pytz.timezone('Asia/Shanghai'))
                 time_diff = now - post_date
                 if time_diff < timedelta(hours=24):
                     date_display = f"{time_diff.seconds // 3600}小时前"
