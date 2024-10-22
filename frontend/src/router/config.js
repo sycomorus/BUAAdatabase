@@ -127,6 +127,17 @@ const options = {
           component: () => import('@/pages/studentWorkPage')
         },
         {
+          path: 'managePostsPage',
+          name: "帖子管理",
+          meta: {
+            icon: "team",
+            authority: {
+              role: 'admin'
+            }
+          },
+          component: () => import('@/pages/managePostsPage')
+        },
+        {
           path: 'user/studentHomePage/:id',
           name: '学生主页',
           meta: {
@@ -165,6 +176,14 @@ const options = {
             invisible: true
           },
           component: () => import('@/pages/postDetail')
+        },
+        {
+          path: 'managePostDetail/:id',
+          name: '管理详情',
+          meta: {
+            invisible: true
+          },
+          component: () => import('@/pages/managePostDetail')
         },
         {
           path: 'form',
