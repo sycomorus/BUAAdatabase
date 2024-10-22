@@ -102,12 +102,19 @@ def sendPost(request):
         is_complete = all([title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, email, content])
         if not is_complete:
             return JsonResponse({'code': 0})
-
-        try:
-            # 创建招聘帖
-            recruitmentPost = RecruitmentPost(
-                user_id=User.objects.get(id=id),
+        
+        try :
+            user=User.objects.get(id=id)
+        except User.DoesNotExist:
+            return JsonResponse({'code': -1, 'message': '用户不存在'})
+        
+        if user.identity ==0:
+            raise Exception("管理员无法发帖")
+        elif user.identity ==1:
+            jobPost=JobPost(
+                user_id=user.id,
                 title=title,
+                # postDate=datetime.now(),
                 startDate=startDate,
                 endDate=endDate,
                 subjects=subjects,
@@ -117,25 +124,40 @@ def sendPost(request):
                 emailAddress=email,
                 content=content,
                 tags=subjects,
-                is_completed=is_complete,
+                is_completed=True,
+            )
+            jobPost.save()
+            result={'data':{}}
+            result['code'] = 0
+            return JsonResponse(result)
+        elif user.identity ==2:
+            recruitmentPost = RecruitmentPost(
+                user_id=user.id,
+                title=title,
+                # postDate=datetime.now(),
+                startDate=startDate,
+                endDate=endDate,
+                subjects=subjects,
+                location=location,
+                fullLocation=fullLocation,
+                telephoneNumber=telephoneNumber,
+                emailAddress=email,
+                content=content,
+                tags=subjects,
+                is_completed=True,
             )
             recruitmentPost.save()
             result={'data':{}}
             result['code'] = 0
             return JsonResponse(result)
-        except Exception as e:
-            print(e)
-            result={'data':{}}
-            result['code'] = -1
-            return JsonResponse(result)
+        else:
+            raise Exception("未知身份")
     else:
         return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
 
 @csrf_exempt
 def savePost(request):
-    print("bbbbb")
     if request.method == 'POST':
-        print("aaaaaaaa")
         body = json.loads(request.body)
         id=body.get('id')
         title = body.get('data').get('title')
@@ -144,36 +166,84 @@ def savePost(request):
         subjects=body.get('data').get('subjects')
         location=body.get('data').get('location')
         fullLocation=body.get('data').get('fullLocation')
-        telephoneNumber=body.get('data').get('telephoneNumber') or None
+        telephoneNumber=body.get('data').get('telephoneNumber')
         email=body.get('data').get('emailAddress') or None
         content=body.get('data').get('content')
+
         try:
-            # 创建招聘帖
-            print("in")
-            recruitmentPost = RecruitmentPost(
-                user_id=User.objects.get(id=id),
-                title=title,
-                startDate=startDate,
-                endDate=endDate,
-                subjects=subjects,
-                location=location,
-                fullLocation=fullLocation,
-                telephoneNumber=telephoneNumber,
-                emailAddress=email,
-                content=content,
-                tags=subjects,
-                is_completed=False,
-            )
-            recruitmentPost.save()
-            result={'data':{}}
-            result['code'] = 0
-            print("out")
-            return JsonResponse(result)
-        except Exception as e:
-            print(e)
-            result={'data':{}}
-            result['code'] = -1
-            return JsonResponse(result)
+            user=User.objects.get(id=id)
+        except User.DoesNotExist:
+            return JsonResponse({'code': -1, 'message': '用户不存在'})
+        
+        if user.identity ==0:
+            raise Exception("管理员无法保存帖子")
+        elif user.identity ==1:
+            try:
+                post=JobPost.objects.get(user=user,is_completed=False)
+                post.title=title
+                post.startDate=startDate
+                post.endDate=endDate
+                post.subjects=subjects
+                post.location=location
+                post.fullLocation=fullLocation
+                post.telephoneNumber=telephoneNumber
+                post.emailAddress=email
+                post.content=content
+                post.tags=subjects
+            except JobPost.DoesNotExist:
+                post=JobPost(
+                    user=user,
+                    title=title,
+                    startDate=startDate,
+                    endDate=endDate,
+                    subjects=subjects,
+                    location=location,
+                    fullLocation=fullLocation,
+                    telephoneNumber=telephoneNumber,
+                    emailAddress=email,
+                    content=content,
+                    tags=subjects,
+                    is_completed=False,
+                )
+                post.save()
+                result={'data':{}}
+                result['code'] = 0
+                return JsonResponse(result)
+        elif user.identity ==2:
+            try:
+                post=RecruitmentPost.objects.get(user=user,is_completed=False)
+                post.title=title
+                post.startDate=startDate
+                post.endDate=endDate
+                post.subjects=subjects
+                post.location=location
+                post.fullLocation=fullLocation
+                post.telephoneNumber=telephoneNumber
+                post.emailAddress=email
+                post.content=content
+                post.tags=subjects
+            except RecruitmentPost.DoesNotExist:
+                post=RecruitmentPost(
+                    user=user,
+                    title=title,
+                    startDate=startDate,
+                    endDate=endDate,
+                    subjects=subjects,
+                    location=location,
+                    fullLocation=fullLocation,
+                    telephoneNumber=telephoneNumber,
+                    emailAddress=email,
+                    content=content,
+                    tags=subjects,
+                    is_completed=False,
+                )
+                print("OK")
+                post.save()
+                result={'data':{}}
+                result['code'] = 0
+                return JsonResponse(result)
+        else:
+            raise Exception("未知身份")
     else:
         return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
 
@@ -182,9 +252,8 @@ def getSavedPost(request):
     if request.method == 'GET':
         try:
             user_id=request.GET.get('id')
-            for post in RecruitmentPost.objects.all():
-                print(post.is_completed)
-            post=RecruitmentPost.objects.get(user_id=user_id,is_completed=False)
+            user=User.objects.get(id=int(user_id))
+            post=RecruitmentPost.objects.get(user=user,is_completed=False)
             result={'data':{}}
             result['code'] = 0
             result['data']['title']=post.title
@@ -239,7 +308,28 @@ def getPosts(request):
                     )
             else:
                 raise Exception("未知身份")
-            result={'posts':(list(posts.values()))[start:end],'total':len(posts)}
+            return_posts=[]
+            for post in posts:
+                now=datetime.now()
+                post_date=post.postDate
+                time_diff = now - post_date
+                if time_diff < timedelta(hours=24):
+                    date_display = f"{time_diff.seconds // 3600}小时前"
+                elif time_diff < timedelta(days=3):
+                    date_display = f"{time_diff.days}天前"
+                else:
+                    date_display = post_date.strftime("%Y-%m-%d")
+                return_posts.append({
+                    'id':str(post.post_id),
+                    'title':post.title,
+                    'tags':post.tags,
+                    'content':post.content,
+                    'author':post.user.username,
+                    'authorId':post.user.id,
+                    'date':date_display,
+                    'location':post.location,
+                })
+            result={'posts':return_posts[start:end],'total':len(posts)}
             return JsonResponse(result)
         except User.DoesNotExist:
             raise Exception("用户不存在")
