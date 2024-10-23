@@ -28,4 +28,5 @@ module.exports = {
   SUBMIT_COMMENT: `${BASE_URL}/submitComment/`,
   GET_LEARNING_MATERIALS: `${BASE_URL}/getLearningMaterials/`,
   GET_NOTICES: `${BASE_URL}/getNotices/`,
+  GET_USER_ROLE: `${BASE_URL}/getUserRole`,
 };

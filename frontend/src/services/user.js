@@ -24,6 +24,7 @@ import {
   SUBMIT_COMMENT,
   GET_LEARNING_MATERIALS,
   GET_NOTICES,
+  GET_USER_ROLE,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -372,7 +373,14 @@ export async function getRoutesConfig() {
   return request(ROUTES, METHOD.GET);
 }
 
-
+/*
+  * 获取发帖人身份
+  * @param id 帖子id
+  * @returns {Promise<AxiosResponse<T>>} 
+*/
+export async function getUserRole(id) {
+  return request(`${GET_USER_ROLE}?id=${id}`, METHOD.GET);
+}
 
 /**
  * 退出登录
