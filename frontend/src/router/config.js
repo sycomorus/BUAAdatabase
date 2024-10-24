@@ -138,6 +138,17 @@ const options = {
           component: () => import('@/pages/managePostsPage')
         },
         {
+          path: 'moderatePostsPage',
+          name: "帖子审核",
+          meta: {
+            icon: "team",
+            authority: {
+              role: 'admin'
+            }
+          },
+          component: () => import('@/pages/moderatePostsPage')
+        },
+        {
           path: 'user/studentHomePage/:id',
           name: '学生主页',
           meta: {
@@ -184,6 +195,14 @@ const options = {
             invisible: true
           },
           component: () => import('@/pages/managePostDetail')
+        },
+        {
+          path: 'moderatePostDetail/:id',
+          name: '审核详情',
+          meta: {
+            invisible: true
+          },
+          component: () => import('@/pages/moderatePostDetail')
         },
         {
           path: 'form',

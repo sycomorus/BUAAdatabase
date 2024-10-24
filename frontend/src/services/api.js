@@ -29,4 +29,6 @@ module.exports = {
   GET_LEARNING_MATERIALS: `${BASE_URL}/getLearningMaterials/`,
   GET_NOTICES: `${BASE_URL}/getNotices/`,
   GET_USER_ROLE: `${BASE_URL}/getUserRole`,
+  APPROVE_POST: `${BASE_URL}/approvePost`,
+  REJECT_POST: `${BASE_URL}/rejectPost`,
 };

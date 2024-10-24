@@ -1,5 +1,5 @@
 <template>
-  <page-layout :title="'帖子管理'">
+  <page-layout :title="'帖子审核'">
     <div>
       <div :class="['search-head', layout, pageWidth]">
         <div class="search-input">
@@ -57,7 +57,7 @@ import PageLayout from '@/layouts/PageLayout'
 import { getPosts, getUserRole } from '@/services/user'
 
 export default {
-  name: 'hirePage',
+  name: 'moderatePostsPage',
   components: { PageLayout },
   computed: {
     ...mapState('setting', ['layout', 'pageWidth']),
@@ -106,7 +106,7 @@ export default {
       this.fetchPosts();
     },
     navigateToPost(postId) {
-      this.$router.push({ name: '管理详情', params: { id: postId, showDelete: true } });
+      this.$router.push({ name: '审核详情', params: { id: postId, showModerate: true } });
     },
     getRole(event, postId) {
       event.stopPropagation();

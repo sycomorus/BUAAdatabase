@@ -25,6 +25,8 @@ import {
   GET_LEARNING_MATERIALS,
   GET_NOTICES,
   GET_USER_ROLE,
+  APPROVE_POST,
+  REJECT_POST,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -251,7 +253,26 @@ export async function deletePost(postId) {
     postId: postId,
   });
 }
-
+/*
+  * 通过帖子
+  * @param postId 帖子id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function approvePost(postId) {
+  return request(APPROVE_POST, METHOD.POST, {
+    postId: postId,
+  });
+}
+/*
+  * 驳回帖子
+  * @param postId 帖子id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function rejectPost(postId) {
+  return request(REJECT_POST, METHOD.POST, {
+    postId: postId,
+  });
+}
 /*
   * 获取学生
   * @param id 老师id
