@@ -23,6 +23,7 @@
 
 <script>
 import { getNotices } from '@/services/user'; // 确保引入你的API服务
+import { mapState } from "vuex";
 
 export default {
   name: 'HeaderNotice',
