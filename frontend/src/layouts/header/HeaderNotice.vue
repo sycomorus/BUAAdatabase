@@ -26,6 +26,9 @@ import { getNotices } from '@/services/user'; // 确保引入你的API服务
 
 export default {
   name: 'HeaderNotice',
+  computed: {
+    ...mapState("account", { currUser: "user" }),
+  },
   data () {
     return {
       loading: false,
@@ -46,7 +49,7 @@ export default {
       if (this.show) return;
 
       this.loading = true;
-      getNotices() // 调用 API 获取通知
+      getNotices(this.currUser.id) // 调用 API 获取通知
         .then(response => {
           if (response.data.code >= 0) {
             this.notices = response.data.notices;
