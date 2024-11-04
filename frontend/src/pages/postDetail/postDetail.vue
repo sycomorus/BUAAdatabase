@@ -46,12 +46,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import PageLayout from '@/layouts/PageLayout'
 import { getPost, agreePostRequest } from '@/services/user'
 
 export default {
     name: 'postDetail',
     components: { PageLayout },
+    computed: {
+    ...mapState('account', { currUser: 'user' })
+    },
     data() {
         return {
             post: {},
@@ -68,7 +72,7 @@ export default {
         },
         handleOk() {
             this.open = false;
-            agreePostRequest(this.post.id).then(response => {
+            agreePostRequest(this.currUser.id, this.post.id).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('接受请求成功');
                 } else {
