@@ -207,6 +207,8 @@
 		"title": "" // 帖子的标题
     	"author": "" // 帖子的作者
     	"location": [""] // 简略地址，格式如["湖南省", "衡阳市", "雁峰区"]
+		"startDate": "" // yyyy-mm-dd
+		"endDate": "" // yyyy-mm-dd
     	"fullLocation": "" // 详细地址
 		"telephoneNumber": "" // 联系电话
 		"emailAddress": "" // 电子邮箱
