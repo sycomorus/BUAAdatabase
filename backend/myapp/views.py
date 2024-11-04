@@ -334,7 +334,9 @@ def getPost(request):
             result['code'] = 0
             result['data']['title']=post.title
             result['data']['author']=post.user_id.username
-            result['data']['location']=post.location
+            location=post.location.split('"')
+            print(location)
+            result['data']['location']=location
             result['data']['fullLocation']=post.fullLocation
             result['data']['telephoneNumber']=post.telephoneNumber
             result['data']['emailAddress']=post.emailAddress
@@ -344,6 +346,7 @@ def getPost(request):
                 subjects.append(subject.subject)
             result['data']['subjects']=subjects
             result['data']['content']=post.content
+            print(result)
             return JsonResponse(result)
             
         except Post.DoesNotExist:
@@ -353,6 +356,7 @@ def getPost(request):
 def agreePostRequest(request):
     if request.method == 'POST':
         body = json.loads(request.body)
+        print(request)
         user_id=int(body.get('id'))
         post_id=int(body.get('postId'))
         accepter=User.objects.get(user_id=user_id)
@@ -659,7 +663,6 @@ def getNotices(request):
         new_len=len(Notification.objects.filter(user_id=user,is_read=False))
         Notification.objects.filter(user_id=user).update(is_read=True)
         result['data']['newNum']=new_len
-        print(result)
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
