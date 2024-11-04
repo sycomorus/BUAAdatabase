@@ -38,7 +38,7 @@ export default {
       newNum: 0
     }
   },
-  mounted () {
+  mounted() {
     this.fetchNotice();
   },
   methods: {
@@ -52,9 +52,10 @@ export default {
       this.loading = true;
       getNotices(this.currUser.id) // 调用 API 获取通知
         .then(response => {
+          console.log('获取通知成功:',  response.data.data.notices);
           if (response.data.code >= 0) {
-            this.notices = response.data.notices;
-            this.newNum = response.data.newNum;
+            this.notices = response.data.data.notices;
+            this.newNum = response.data.data.newNum;
             this.loading = false;
           } else {
             console.error('获取通知失败:', response.data.message);
