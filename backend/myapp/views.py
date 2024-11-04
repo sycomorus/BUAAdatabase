@@ -334,12 +334,15 @@ def getPost(request):
             result['code'] = 0
             result['data']['title']=post.title
             result['data']['author']=post.user_id.username
-            location=post.location.split('"')
+            location=post.location.strip('"')
+            location=json.loads(location.replace("'",'"'))
             print(location)
             result['data']['location']=location
             result['data']['fullLocation']=post.fullLocation
             result['data']['telephoneNumber']=post.telephoneNumber
             result['data']['emailAddress']=post.emailAddress
+            result['data']['startDate']=post.startDate
+            result['data']['endDate']=post.endDate
             subject_lines=PostSubject.objects.filter(post_id=post)
             subjects=[]
             for subject in subject_lines:
@@ -498,10 +501,10 @@ def getUserPosts(request):
     if request.method == 'GET':
         request_id=int(request.GET.get('id'))
         user=User.objects.get(user_id=request_id)
-        posts=Post.objects.filter(user_id=user)
+        posts=Post.objects.filter(user_id=user,is_completed=True)
 
         return_posts=[]
-        result={'data':{}}
+        result={}
         result['code'] = 0
         for post in posts:
             return_posts.append({
@@ -509,7 +512,7 @@ def getUserPosts(request):
                 'title':post.title,
                 'content':post.content,
             })
-        result['data']['posts']=return_posts
+        result['posts']=return_posts
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
@@ -518,7 +521,7 @@ def getUserPosts(request):
 def deletePost(request):
     if request.method == 'POST':
         body = json.loads(request.body)
-        post_id=int(body.get('id'))
+        post_id=int(body.get('postId'))
         post=Post.objects.get(post_id=post_id)
         post.delete()
         result={'data':{}}
@@ -542,8 +545,14 @@ def link(request):
         user_id=request.session['user_id']
         if user_id==tutor_id:
             sendNotice(student,"招聘成功",f"您正式成为{tutor.username}的学生")
+            todos=Todo.objects.filter(owner_id=tutor,accepter_id=student)
+            for todo in todos:
+                todo.delete()
         else:
             sendNotice(tutor,"应聘成功",f"您正式成为{student.username}的家教")
+            todos=Todo.objects.filter(owner_id=student,accepter_id=tutor)
+            for todo in todos:
+                todo.delete()
 
         result={'data':{}}
         result['code'] = 0
@@ -555,7 +564,8 @@ def link(request):
 def unlink(request):
     if request.method == 'POST':
         body = json.loads(request.body)
-        tutor_id=int(body.get('teacherId'))
+        print(body)
+        tutor_id=int(body.get('id'))
         student_id=int(body.get('studentId'))
         tutor=User.objects.get(user_id=tutor_id)
         student=User.objects.get(user_id=student_id)
@@ -587,8 +597,14 @@ def refuseLink(request):
         user_id=request.session['user_id']
         if user_id==tutor_id:
             sendNotice(student,"招聘失败",f"很抱歉，{tutor.username}未同意您的招聘")
+            todos=Todo.objects.filter(owner_id=tutor,accepter_id=student)
+            for todo in todos:
+                todo.delete()
         else:
             sendNotice(tutor,"应聘失败",f"很抱歉，{student.username}未同意您的应聘")
+            todos=Todo.objects.filter(owner_id=student,accepter_id=tutor)
+            for todo in todos:
+                todo.delete()
 
         result={'data':{}}
         result['code'] = 0
@@ -602,14 +618,14 @@ def getStudents(request):
         request_id=int(request.GET.get('id'))
         students=Link.objects.filter(tutor_id=request_id)
         return_students=[]
-        result={'data':{}}
+        result={}
         result['code'] = 0
         for student in students:
             return_students.append({
                 'id':str(student.student_id.user_id),
                 'name':student.student_id.username,
             })
-        result['data']['students']=return_students
+        result['students']=return_students
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
@@ -620,14 +636,14 @@ def getTeachers(request):
         request_id=int(request.GET.get('id'))
         teachers=Link.objects.filter(student_id=request_id)
         return_teachers=[]
-        result={'data':{}}
+        result={}
         result['code'] = 0
         for teacher in teachers:
             return_teachers.append({
                 'id':str(teacher.tutor_id.user_id),
                 'name':teacher.tutor_id.username,
             })
-        result['data']['teachers']=return_teachers
+        result['teachers']=return_teachers
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
@@ -685,6 +701,13 @@ def submitComment(request):
             date=datetime.now(pytz.timezone('Asia/Shanghai')),
         )
         review.save()
+
+        sendNotice(tutor,"收到新评价",f"您收到了来自{user.username}的新评价")
+        teacher=Tutor.objects.get(user_id=tutor)
+        teacher.rateNum+=1
+        teacher.rate=(teacher.rate*(teacher.rateNum-1)+rating)/teacher.rateNum
+        teacher.save()
+        
         result={'data':{}}
         result['code'] = 0
         return JsonResponse(result)
@@ -723,7 +746,7 @@ def getLearningMaterials(request):
         materials=StudyMaterial.objects.filter(student_id=user)
 
         return_materials=[]
-        result={'data':{}}
+        result={}
         result['code'] = 0
         for material in materials:
             return_materials.append({
@@ -733,7 +756,7 @@ def getLearningMaterials(request):
                 'downloadLink':material.download_link,
                 'uploadDate':material.upload_date,
             })
-        result['data']['materials']=return_materials
+        result['materials']=return_materials
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
@@ -756,16 +779,18 @@ def getTodos(request):
         todos=Todo.objects.filter(owner_id=user)
 
         return_todos=[]
-        result={'data':{}}
+        result={}
         result['code'] = 0
         for todo in todos:
             return_todos.append({
                 'id':str(todo.todo_id),
-                'postId':todo.accept_post_id.post_id,
+                'postId':str(todo.accept_post_id.post_id),
+                'postTitle':todo.accept_post_id.title,
                 'accepterName':todo.accepter_id.username,
-                'accepterId':todo.accepter_id.user_id,
+                'accepterId':str(todo.accepter_id.user_id),
             })
-        result['data']['todos']=return_todos
+        result['todos']=return_todos
+        print(result)
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})

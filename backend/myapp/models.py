@@ -42,8 +42,8 @@ class Tutor(models.Model):
     telephone = models.CharField(max_length=255,blank=True,null=True)
     # 主属性
     email = models.EmailField(max_length=255,blank=True,null=True)
-    rate = models.FloatField(blank=True,null=True)
-    rateNum = models.IntegerField(blank=True,null=True)
+    rate = models.FloatField(default=0)
+    rateNum = models.IntegerField(default=0)
     address = models.CharField(max_length=255,blank=True,null=True)
     intro= models.TextField(blank=True,null=True)
     personalSignature = models.CharField(max_length=255,blank=True,null=True)
