@@ -63,7 +63,6 @@ export default {
         }
     },
     created() {
-        console.log(this.$route.params.id);
         this.fetchPostDetail();
     },
     methods: {
@@ -72,6 +71,7 @@ export default {
         },
         handleOk() {
             this.open = false;
+            console.log(this.currUser.id, this.$route.params.id);
             agreePostRequest(this.currUser.id, this.post.id).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('接受请求成功');
