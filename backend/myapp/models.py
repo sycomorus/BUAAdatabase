@@ -93,7 +93,7 @@ class Notification(models.Model):
     is_read = models.BooleanField()
 
     def __str__(self):
-        return self.notification_id
+        return self.title
 
 # 学习资料表 BCNF
 class StudyMaterial(models.Model):

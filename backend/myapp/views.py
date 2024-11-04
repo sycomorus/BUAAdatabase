@@ -401,10 +401,8 @@ def updateStudentInfo(request):
 
 @csrf_exempt
 def getStudentInfo(request):
-    if request.method == 'POST':
-        body = json.loads(request.body)
-        request_id=int(body.get('id'))
-
+    if request.method == 'GET':
+        request_id=int(request.GET.get('id'))
         result={'data':{}}
         result['code'] = 0
         user=User.objects.get(user_id=request_id)
@@ -419,11 +417,14 @@ def getStudentInfo(request):
         result['data']['gender']=student.gender
         result['data']['grade']=student.grade
         return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
     
 @csrf_exempt
 def updateTeacherInfo(request):
     if request.method == 'POST':
         body = json.loads(request.body)
+        print(body)
         request_id=int(body.get('id'))
         degree=body.get('data').get('degree')
         gender=body.get('data').get('gender')
@@ -454,9 +455,8 @@ def updateTeacherInfo(request):
     
 @csrf_exempt
 def getTeacherInfo(request):
-    if request.method == 'POST':
-        body = json.loads(request.body)
-        request_id=int(body.get('id'))
+    if request.method == 'GET':
+        request_id=int(request.GET.get('id'))
 
         result={'data':{}}
         result['code'] = 0
@@ -484,9 +484,10 @@ def getTeacherInfo(request):
                 'date':comment.date,
             })
         result['data']['comments']=return_comments
+        print(result)
         return JsonResponse(result)
     else:
-        return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
+        return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
 
 @csrf_exempt
 def getUserPosts(request):
@@ -641,8 +642,6 @@ def sendNotice(user,title,description):
 
 @csrf_exempt
 def getNotices(request):
-    print("in")
-    print(request)
     if request.method == 'GET':
         request_id=int(request.GET.get('id'))
         user=User.objects.get(user_id=request_id)
@@ -656,10 +655,11 @@ def getNotices(request):
                 'title':notification.title,
                 'description':notification.description,
             })
-        result['data']['notifications']=return_notifications
+        result['data']['notices']=return_notifications
         new_len=len(Notification.objects.filter(user_id=user,is_read=False))
         Notification.objects.filter(user_id=user).update(is_read=True)
         result['data']['newNum']=new_len
+        print(result)
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
