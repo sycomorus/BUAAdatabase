@@ -72,7 +72,7 @@ export default {
         handleOk() {
             this.open = false;
             console.log(this.currUser.id, this.$route.params.id);
-            agreePostRequest(this.currUser.id, this.post.id).then(response => {
+            agreePostRequest(this.currUser.id, this.$route.params.id).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('接受请求成功');
                 } else {
