@@ -103,7 +103,7 @@
     <a-drawer :visible="drawerOpen" class="custom-class" root-class-name="root-class-name"
       :root-style="{ color: 'blue' }" style="color: red" title="发布评价" placement="right" @close="closeDrawer">
       <form @submit.prevent="submitComment">
-        <a-form-item label="文件名">
+        <a-form-item label="星级">
           <a-rate v-model=rate allow-half />
         </a-form-item>
         <a-form-item label="评价">
