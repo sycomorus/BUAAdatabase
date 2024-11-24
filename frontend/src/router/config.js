@@ -127,10 +127,21 @@ const options = {
           component: () => import('@/pages/studentWorkPage')
         },
         {
+          path: 'makeAnnouncementPage',
+          name: "发布公告",
+          meta: {
+            icon: "dashboard",
+            authority: {
+              role: 'admin'
+            }
+          },
+          component: () => import('@/pages/makeAnnouncementPage')
+        },
+        {
           path: 'managePostsPage',
           name: "帖子管理",
           meta: {
-            icon: "team",
+            icon: "book",
             authority: {
               role: 'admin'
             }
@@ -141,12 +152,23 @@ const options = {
           path: 'moderatePostsPage',
           name: "帖子审核",
           meta: {
-            icon: "team",
+            icon: "book",
             authority: {
               role: 'admin'
             }
           },
           component: () => import('@/pages/moderatePostsPage')
+        },
+        {
+          path: 'manageUserPage',
+          name: "用户管理",
+          meta: {
+            icon: "team",
+            authority: {
+              role: 'admin'
+            }
+          },
+          component: () => import('@/pages/manageUserPage')
         },
         {
           path: 'user/studentHomePage/:id',

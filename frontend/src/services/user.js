@@ -27,6 +27,10 @@ import {
   GET_USER_ROLE,
   APPROVE_POST,
   REJECT_POST,
+  GET_ALL_TEACHERS,
+  GET_ALL_STUDENTS,
+  MAKE_ANNOUNCEMENT,
+  DELETE_USER,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -253,6 +257,11 @@ export async function deletePost(postId) {
     postId: postId,
   });
 }
+export async function deleteUser(id) {
+  return request(DELETE_USER, METHOD.POST, {
+    id: id,
+  });
+}
 /*
   * 通过帖子
   * @param postId 帖子id
@@ -308,7 +317,7 @@ export async function submitLearningMaterial(teacherId, teacherName, studentId, 
   return request(SUBMIT_LEARNING_MATERIAL, METHOD.POST, {
     teacherId: teacherId,
     studentId: studentId,
-    teacherName:teacherName,
+    teacherName: teacherName,
     filename: filename,
     downloadLink: downloadLink
   })
@@ -357,7 +366,12 @@ export async function refuseLink(teacherId, studentId) {
 export async function getTeachers(id) {
   return request(`${GET_TEACHERS}?id=${id}`, METHOD.GET);
 }
-
+export async function getAllTeachers(id) {
+  return request(`${GET_ALL_TEACHERS}?id=${id}`, METHOD.GET);
+}
+export async function getAllStudents(id) {
+  return request(`${GET_ALL_STUDENTS}?id=${id}`, METHOD.GET);
+}
 /*
   * 发表评论
   * @param studentId 学生id
@@ -376,7 +390,12 @@ export async function submitComment(studentId, studentName, teacherId, rate, com
     comment: comment
   })
 }
-
+export async function makeAnnouncement(id, comment) {
+  return request(MAKE_ANNOUNCEMENT, METHOD.POST, {
+    id: id,
+    comment: comment
+  })
+}
 /*
   * 获取学习资料
   * @param id 学生id

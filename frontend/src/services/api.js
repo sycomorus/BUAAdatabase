@@ -31,4 +31,8 @@ module.exports = {
   GET_USER_ROLE: `${BASE_URL}/getUserRole`,
   APPROVE_POST: `${BASE_URL}/approvePost`,
   REJECT_POST: `${BASE_URL}/rejectPost`,
+  GET_ALL_TEACHERS: `${BASE_URL}/getAllTeachers`,
+  GET_ALL_STUDENTS: `${BASE_URL}/getAllStudents`,
+  MAKE_ANNOUNCEMENT: `${BASE_URL}/makeAnnouncement`,
+  DELETE_USER: `${BASE_URL}/deleteUser`,
 };

@@ -72,7 +72,7 @@ export default {
       totalPosts: 0, // 总帖子数量
       posts: [], // 帖子列表
       userRole: null,
-      toWhere: '家教主页',
+      toWhere: null,
       showFullContent: null, // 控制显示完整内容的帖子ID
       searchQuery: '', // 搜索内容
       searchQueryLast: '' // 上一次搜索内容
