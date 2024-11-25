@@ -31,6 +31,7 @@ import {
   GET_ALL_STUDENTS,
   MAKE_ANNOUNCEMENT,
   DELETE_USER,
+  GET_ANNOUNCEMENTS
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -409,10 +410,6 @@ export async function getNotices(id) {
   return request(`${GET_NOTICES}?id=${id}`, METHOD.GET);
 }
 
-export async function getRoutesConfig() {
-  return request(ROUTES, METHOD.GET);
-}
-
 /*
   * 获取发帖人身份
   * @param id 帖子id
@@ -420,6 +417,18 @@ export async function getRoutesConfig() {
 */
 export async function getUserRole(id) {
   return request(`${GET_USER_ROLE}?id=${id}`, METHOD.GET);
+}
+
+/*
+  * 获取公告
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getAnnouncements() {
+  return request(GET_ANNOUNCEMENTS, METHOD.GET);
+}
+
+export async function getRoutesConfig() {
+  return request(ROUTES, METHOD.GET);
 }
 
 /**
