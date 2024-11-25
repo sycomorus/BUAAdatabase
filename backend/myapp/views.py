@@ -265,59 +265,63 @@ def getPosts(request):
         returnSubjects=[]
         user=User.objects.get(user_id=request_id)
         try:
-            if user.identity==0:
-                raise Exception("管理员现在还不知道干啥")
+            if user.identity==1:
+                filter_id=2
             else:
-                if user.identity==1:
-                    filter_id=2
-                else:
-                    filter_id=1
-                
-                if request_query=="":
+                filter_id=1
+            
+            if request_query=="":
+                if user.identity!=0:
                     posts=Post.objects.filter(is_completed=True,user_id__identity=filter_id)
                 else:
-                    subjectsLine=PostSubject.objects.filter(subject=request_query)
-                    subjectsFits=set([subject.post_id for subject in subjectsLine])
-                    userLine=User.objects.filter(username=request_query)
-                    userFits=Post.objects.filter(user_id__in=userLine)
-                    OtherFits=Post.objects.filter(
-                        models.Q(title=request_query)|
-                        models.Q(content=request_query)
-                    )
-                    all_posts=list(set(list(subjectsFits)+list(userFits)+list(OtherFits)))
-                    posts=[]
-                    for post in all_posts:
+                    posts=Post.objects.filter(is_completed=True)
+            else:
+                subjectsLine=PostSubject.objects.filter(subject=request_query)
+                subjectsFits=set([subject.post_id for subject in subjectsLine])
+                userLine=User.objects.filter(username=request_query)
+                userFits=Post.objects.filter(user_id__in=userLine)
+                OtherFits=Post.objects.filter(
+                    models.Q(title=request_query)|
+                    models.Q(content=request_query)
+                )
+                all_posts=list(set(list(subjectsFits)+list(userFits)+list(OtherFits)))
+                posts=[]
+                for post in all_posts:
+                    if user.identity!=0:
                         if post.is_completed and post.user_id.identity==filter_id:
                             posts.append(post)
-                
-                return_posts=[]
-                for post in posts:
-                    user=post.user_id
-                    now = datetime.now(pytz.timezone('Asia/Shanghai'))
-                    post_date = post.postDate.astimezone(pytz.timezone('Asia/Shanghai'))
-                    time_diff = now - post_date
-                    if time_diff < timedelta(hours=24):
-                        date_display = f"{time_diff.seconds // 3600}小时前"
-                    elif time_diff < timedelta(days=3):
-                        date_display = f"{time_diff.days}天前"
                     else:
-                        date_display = post_date.strftime("%Y-%m-%d")
-                    return_subject_lines=PostSubject.objects.filter(post_id=post)
-                    returnSubjects=[]
-                    for subject in return_subject_lines:
-                        returnSubjects.append(subject.subject)
-                    return_posts.append({
-                        'id':str(post.post_id),
-                        'title':post.title,
-                        'tags':returnSubjects,
-                        'content':post.content,
-                        'author':user.username,
-                        'authorId':user.user_id,
-                        'date':date_display,
-                        'location':post.location,
-                    })
-                result={'posts':return_posts[start:end],'total':len(posts)}
-                return JsonResponse(result)
+                        if post.is_completed:
+                            posts.append(post)
+            
+            return_posts=[]
+            for post in posts:
+                user=post.user_id
+                now = datetime.now(pytz.timezone('Asia/Shanghai'))
+                post_date = post.postDate.astimezone(pytz.timezone('Asia/Shanghai'))
+                time_diff = now - post_date
+                if time_diff < timedelta(hours=24):
+                    date_display = f"{time_diff.seconds // 3600}小时前"
+                elif time_diff < timedelta(days=3):
+                    date_display = f"{time_diff.days}天前"
+                else:
+                    date_display = post_date.strftime("%Y-%m-%d")
+                return_subject_lines=PostSubject.objects.filter(post_id=post)
+                returnSubjects=[]
+                for subject in return_subject_lines:
+                    returnSubjects.append(subject.subject)
+                return_posts.append({
+                    'id':str(post.post_id),
+                    'title':post.title,
+                    'tags':returnSubjects,
+                    'content':post.content,
+                    'author':user.username,
+                    'authorId':user.user_id,
+                    'date':date_display,
+                    'location':post.location,
+                })
+            result={'posts':return_posts[start:end],'total':len(posts)}
+            return JsonResponse(result)
         except User.DoesNotExist:
             raise Exception("用户不存在")
     else:
@@ -794,6 +798,106 @@ def getTodos(request):
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
+    
+@csrf_exempt
+def getUserRole(request):
+    if request.method == 'GET':
+        post_id=int(request.GET.get('postId'))
+        post=Post.objects.get(post_id=post_id)
+        user=post.user_id
+        result={'data':{}}
+        result['code'] = 0
+        if user.identity==0:
+            raise Exception("管理员不发帖子")
+        elif user.identity==1:
+            result['data']['userRole']="家教"
+        else:
+            result['data']['userRole']="学生"
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
+    
+@csrf_exempt
+def approvePost(request):
+    if request.method == 'POST':
+        result={}
+        result['code'] = 0
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
+
+@csrf_exempt
+def rejectPost(request):
+    if request.method == 'POST':
+        result={}
+        result['code'] = 0
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
+    
+@csrf_exempt
+def getAllTeachers(request):
+    if request.method == 'GET':
+        teachers=User.objects.filter(identity=1)
+        return_teachers=[]
+        result={}
+        result['code'] = 0
+        for teacher in teachers:
+            tutor=Tutor.objects.get(user_id=teacher)
+            return_teachers.append({
+                'id':str(teacher.user_id),
+                'name':teacher.username,
+            })
+        result['teachers']=return_teachers
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
+
+@csrf_exempt
+def getAllStudents(request):
+    if request.method == 'GET':
+        students=User.objects.filter(identity=2)
+        return_students=[]
+        result={}
+        result['code'] = 0
+        for student in students:
+            return_students.append({
+                'id':str(student.user_id),
+                'name':student.username,
+            })
+        result['students']=return_students
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
+    
+@csrf_exempt
+def makeAnnouncement(request):
+    if request.method == 'POST':
+        body = json.loads(request.body)
+        comment=body.get('comment')
+        admin_id=request.session['user_id']
+        for user in User.objects.all():
+            if user.user_id==admin_id:
+                continue
+            sendNotice(user,"!!!站点管理员公告!!!",comment)
+        result={}
+        result['code']=0
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
+
+@csrf_exempt
+def deleteUser(request):
+    if request.method == 'POST':
+        body = json.loads(request.body)
+        user_id=int(body.get('id'))
+        user=User.objects.get(user_id=user_id)
+        user.delete()
+        result={}
+        result['code']=0
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
 
 @csrf_exempt
 def get_routes_config(request):

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import login, register, get_routes_config, sendPost, savePost, getSavedPost,getPosts,getPost,agreePostRequest,updateStudentInfo,getStudentInfo,updateTeacherInfo,getTeacherInfo,getUserPosts,deletePost,link,unlink,refuseLink,getStudents,getTeachers,sendNotice,getNotices,submitComment,submitLearningMaterial,getLearningMaterials,sendTodo,getTodos
+from .views import login, register, get_routes_config, sendPost, savePost, getSavedPost,getPosts,getPost,agreePostRequest,updateStudentInfo,getStudentInfo,updateTeacherInfo,getTeacherInfo,getUserPosts,deletePost,link,unlink,refuseLink,getStudents,getTeachers,sendNotice,getNotices,submitComment,submitLearningMaterial,getLearningMaterials,sendTodo,getTodos,getUserRole,approvePost,rejectPost,getAllStudents,getAllTeachers,makeAnnouncement,deleteUser
 
 urlpatterns = [
     path('login/', login, name='login'),
@@ -30,4 +30,11 @@ urlpatterns = [
     path('getLearningMaterials/',getLearningMaterials,name="getLearningMaterials"),
     path('sendTodo/',sendTodo,name="sendTodo"),
     path('getTodos/',getTodos,name="getTodos"),
+    path('getUserRole/',getUserRole,name="getUserRole"),
+    path('approvePost/',approvePost,name="approvePost"),
+    path('rejectPost/',rejectPost,name="rejectPost"),
+    path('getAllStudents/',getAllStudents,name="getAllStudents"),
+    path('getAllTeachers/',getAllTeachers,name="getAllTeachers"),
+    path('makeAnnouncement/', makeAnnouncement, name='makeAnnouncement'),
+    path('deleteUser/',deleteUser,name="deleteUser"),
 ]
