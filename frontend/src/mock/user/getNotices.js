@@ -26,7 +26,9 @@ Mock.mock(/\/getNotices\//, 'get', (options) => {
 
     return {
         code: 0,
+        data: {
         notices: notices,
         newNum: newNum,
+        }
     };
 });
