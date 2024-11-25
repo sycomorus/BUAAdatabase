@@ -35,4 +35,8 @@ module.exports = {
   GET_ALL_STUDENTS: `${BASE_URL}/getAllStudents/`,
   MAKE_ANNOUNCEMENT: `${BASE_URL}/makeAnnouncement/`,
   DELETE_USER: `${BASE_URL}/deleteUser/`,
+<<<<<<< HEAD
+=======
+  GET_ANNOUNCEMENTS: `${BASE_URL}/getAnnouncements/`
+>>>>>>> 591e5e2bd59cdd580602632bd9b139a516fd4580
 };
