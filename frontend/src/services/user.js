@@ -391,10 +391,11 @@ export async function submitComment(studentId, studentName, teacherId, rate, com
     comment: comment
   })
 }
-export async function makeAnnouncement(id, comment) {
+export async function makeAnnouncement(id, title, content) {
   return request(MAKE_ANNOUNCEMENT, METHOD.POST, {
     id: id,
-    comment: comment
+    title: title,
+    content: content
   })
 }
 /*
