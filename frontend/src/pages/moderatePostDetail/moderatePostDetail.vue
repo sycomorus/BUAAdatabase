@@ -80,7 +80,7 @@ export default {
         //     this.open = false;
         // },
         handleApprove() {
-            approvePost(this.post.id).then(response => {
+            approvePost(this.$route.params.id).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('帖子已通过');
                 } else {
@@ -92,7 +92,7 @@ export default {
             this.goBack();
         },
         handleReject() {
-            rejectPost(this.post.id).then(response => {
+            rejectPost(this.$route.params.id).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('帖子已驳回');
                 } else {
