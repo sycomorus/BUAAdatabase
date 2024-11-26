@@ -12,6 +12,9 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
+    
+    class Meta:
+        ordering = ['-registration_date']
 
 # 学生表 BCNF
 class Student(models.Model):
@@ -68,9 +71,13 @@ class Post(models.Model):
     emailAddress = models.EmailField(max_length=255,blank=True,null=True)
     content = models.TextField(blank=True,null=True)
     is_completed = models.BooleanField()
+    is_approved = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        ordering = ['-postDate']
 
 # Post表的科目表 BCNF
 class PostSubject(models.Model):
@@ -91,9 +98,13 @@ class Notification(models.Model):
     title = models.CharField(max_length=255,blank=True,null=True)
     description = models.TextField(blank=True,null=True)
     is_read = models.BooleanField()
+    is_announcement = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        ordering = ['-notificationDate']
 
 # 学习资料表 BCNF
 class StudyMaterial(models.Model):
@@ -109,6 +120,9 @@ class StudyMaterial(models.Model):
 
     def __str__(self):
         return f"Material {self.material_id}"
+    
+    class Meta:
+        ordering = ['-upload_date']
 
 # 评价表 BCNF
 class Review(models.Model):
@@ -124,6 +138,9 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review {self.review_id}"
+    
+    class Meta:
+        ordering = ['-date']
 
 # 师生关系表 BCNF
 class Link(models.Model):
