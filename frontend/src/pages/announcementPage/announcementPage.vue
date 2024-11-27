@@ -2,9 +2,8 @@
   <page-layout :avatar="currUser.avatar">
     <div slot="headerContent">
       <div class="title">{{ '您好' }}，{{ currUser.name }}，{{ '欢迎来到家教综合服务平台' }}</div>
-      <div class="title">{{ notice }}</div>
     </div>
-    <a-card title="公告" :bordered="false">
+    <a-card :bordered="false" class = "announcement_card">
       <a-collapse :bordered="false" class="custom-collapse">
         <!-- 动态渲染公告 -->
         <a-collapse-panel v-for="(announcement, index) in announcements" :key="index">
@@ -34,7 +33,6 @@ export default {
   data() {
     return {
       announcements: [],
-      notice: "本网站暂时处于建设之中，敬请期待"
     }
   },
   computed: {
@@ -121,5 +119,12 @@ export default {
   font-size: 12px;
   /* 调整字体大小 */
   color: #999;
+}
+
+.announcement_card {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 </style>
