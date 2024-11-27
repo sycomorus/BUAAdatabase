@@ -6,7 +6,7 @@ import json
 import random
 import pytz
 from datetime import datetime, timedelta
-from .models import User, Student,Tutor,Post,PostSubject,Link,Notification,Review,StudyMaterial,Todo
+from .models import User, Student,Tutor,Post,PostSubject,Link,Notification,Review,StudyMaterial,Todo,Announcement
 
 @csrf_exempt
 def home(request):
@@ -121,7 +121,7 @@ def sendPost(request):
             return JsonResponse({'code': -1, 'message': '用户不存在'})
         
         if user.identity ==0:
-            raise Exception("管理员无法发帖")
+            raise Exception("管理员不通过sendPost发帖")
         else:
             post=Post(
                 user_id=user,
@@ -135,6 +135,7 @@ def sendPost(request):
                 emailAddress=email,
                 content=content,
                 is_completed=True,
+                is_approved=False,
             )
             post.save()
             for subject in subjects:
@@ -205,6 +206,7 @@ def savePost(request):
                     emailAddress=email,
                     content=content,
                     is_completed=False,
+                    is_approved=False,
                 )
                 post.save()
                 for subject in subjects:
@@ -272,9 +274,9 @@ def getPosts(request):
             
             if request_query=="":
                 if user.identity!=0:
-                    posts=Post.objects.filter(is_completed=True,user_id__identity=filter_id)
+                    posts=Post.objects.filter(is_completed=True,user_id__identity=filter_id,is_approved=True)
                 else:
-                    posts=Post.objects.filter(is_completed=True)
+                    posts=Post.objects.filter(is_completed=True,is_approved=False)
             else:
                 subjectsLine=PostSubject.objects.filter(subject=request_query)
                 subjectsFits=set([subject.post_id for subject in subjectsLine])
@@ -288,10 +290,10 @@ def getPosts(request):
                 posts=[]
                 for post in all_posts:
                     if user.identity!=0:
-                        if post.is_completed and post.user_id.identity==filter_id:
+                        if post.is_completed and post.user_id.identity==filter_id and post.is_approved:
                             posts.append(post)
                     else:
-                        if post.is_completed:
+                        if post.is_completed and not post.is_approved:
                             posts.append(post)
             
             return_posts=[]
@@ -340,7 +342,6 @@ def getPost(request):
             result['data']['author']=post.user_id.username
             location=post.location.strip('"')
             location=json.loads(location.replace("'",'"'))
-            print(location)
             result['data']['location']=location
             result['data']['fullLocation']=post.fullLocation
             result['data']['telephoneNumber']=post.telephoneNumber
@@ -353,7 +354,6 @@ def getPost(request):
                 subjects.append(subject.subject)
             result['data']['subjects']=subjects
             result['data']['content']=post.content
-            print(result)
             return JsonResponse(result)
             
         except Post.DoesNotExist:
@@ -505,7 +505,7 @@ def getUserPosts(request):
     if request.method == 'GET':
         request_id=int(request.GET.get('id'))
         user=User.objects.get(user_id=request_id)
-        posts=Post.objects.filter(user_id=user,is_completed=True)
+        posts=Post.objects.filter(user_id=user,is_completed=True,is_approved=True)
 
         return_posts=[]
         result={}
@@ -820,6 +820,13 @@ def getUserRole(request):
 @csrf_exempt
 def approvePost(request):
     if request.method == 'POST':
+        body = json.loads(request.body)
+        print(body)
+        post_id=int(body.get('postId'))
+        post=Post.objects.get(post_id=post_id)
+        post.is_approved=True
+        post.save()
+        sendNotice(post.user_id,"帖子通过审核",f"您的帖子《{post.title}》已通过审核")
         result={}
         result['code'] = 0
         return JsonResponse(result)
@@ -829,6 +836,11 @@ def approvePost(request):
 @csrf_exempt
 def rejectPost(request):
     if request.method == 'POST':
+        body = json.loads(request.body)
+        post_id=int(body.get('postId'))
+        post=Post.objects.get(post_id=post_id)
+        post.delete()
+        sendNotice(post.user_id,"帖子未通过审核",f"您的帖子《{post.title}》未通过审核")
         result={}
         result['code'] = 0
         return JsonResponse(result)
@@ -843,7 +855,6 @@ def getAllTeachers(request):
         result={}
         result['code'] = 0
         for teacher in teachers:
-            tutor=Tutor.objects.get(user_id=teacher)
             return_teachers.append({
                 'id':str(teacher.user_id),
                 'name':teacher.username,
@@ -874,12 +885,14 @@ def getAllStudents(request):
 def makeAnnouncement(request):
     if request.method == 'POST':
         body = json.loads(request.body)
-        comment=body.get('comment')
-        admin_id=request.session['user_id']
-        for user in User.objects.all():
-            if user.user_id==admin_id:
-                continue
-            sendNotice(user,"!!!站点管理员公告!!!",comment)
+        title=body.get('title')
+        content=body.get('content')
+        announcement=Announcement(
+              title=title,
+              description=content,
+              announcementDate=datetime.now(pytz.timezone('Asia/Shanghai')),
+        )
+        announcement.save()
         result={}
         result['code']=0
         return JsonResponse(result)
@@ -898,6 +911,35 @@ def deleteUser(request):
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
+    
+@csrf_exempt
+def getAnnouncements(request):
+    if request.method == 'GET':
+        try:
+            return_announcements=[]
+            for announcement in Announcement.objects.all():
+                now = datetime.now(pytz.timezone('Asia/Shanghai'))
+                announcement_date = announcement.announcementDate.astimezone(pytz.timezone('Asia/Shanghai'))
+                time_diff = now - announcement_date
+                if time_diff < timedelta(hours=24):
+                    date_display = f"{time_diff.seconds // 3600}小时前"
+                elif time_diff < timedelta(days=3):
+                    date_display = f"{time_diff.days}天前"
+                else:
+                    date_display = announcement_date.strftime("%Y-%m-%d")
+                return_announcements.append({
+                    'title':announcement.title,
+                    'content':announcement.description,
+                    'date':date_display,
+                })
+            result={'data':{}}
+            result['code'] = 0
+            result['data']['announcements']=return_announcements
+            return JsonResponse(result)
+        except User.DoesNotExist:
+            raise Exception("用户不存在")
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
 
 @csrf_exempt
 def get_routes_config(request):
