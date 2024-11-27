@@ -276,7 +276,7 @@ def getPosts(request):
                 if user.identity!=0:
                     posts=Post.objects.filter(is_completed=True,user_id__identity=filter_id,is_approved=True)
                 else:
-                    posts=Post.objects.filter(is_completed=True)
+                    posts=Post.objects.filter(is_completed=True,is_approved=False)
             else:
                 subjectsLine=PostSubject.objects.filter(subject=request_query)
                 subjectsFits=set([subject.post_id for subject in subjectsLine])
@@ -293,7 +293,7 @@ def getPosts(request):
                         if post.is_completed and post.user_id.identity==filter_id and post.is_approved:
                             posts.append(post)
                     else:
-                        if post.is_completed:
+                        if post.is_completed and not post.is_approved:
                             posts.append(post)
             
             return_posts=[]
@@ -825,6 +825,7 @@ def approvePost(request):
         post_id=int(body.get('postId'))
         post=Post.objects.get(post_id=post_id)
         post.is_approved=True
+        post.save()
         sendNotice(post.user_id,"帖子通过审核",f"您的帖子《{post.title}》已通过审核")
         result={}
         result['code'] = 0
