@@ -98,7 +98,6 @@ class Notification(models.Model):
     title = models.CharField(max_length=255,blank=True,null=True)
     description = models.TextField(blank=True,null=True)
     is_read = models.BooleanField()
-    is_announcement = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -166,3 +165,16 @@ class Todo(models.Model):
 
     def __str__(self):
         return f"Todo {self.todo_id}"
+
+class Announcement(models.Model):
+    # 主码、主属性
+    announcement_id = models.BigAutoField(primary_key=True)
+    announcementDate = models.DateTimeField(blank=True,null=True)
+    title = models.CharField(max_length=255,blank=True,null=True)
+    description = models.TextField(blank=True,null=True)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['-announcementDate']

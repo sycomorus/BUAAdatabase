@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import login, register, get_routes_config, sendPost, savePost, getSavedPost,getPosts,getPost,agreePostRequest,updateStudentInfo,getStudentInfo,updateTeacherInfo,getTeacherInfo,getUserPosts,deletePost,link,unlink,refuseLink,getStudents,getTeachers,sendNotice,getNotices,submitComment,submitLearningMaterial,getLearningMaterials,sendTodo,getTodos,getUserRole,approvePost,rejectPost,getAllStudents,getAllTeachers,makeAnnouncement,deleteUser
+from .views import login, register, get_routes_config, sendPost, savePost, getSavedPost,getPosts,getPost,agreePostRequest,updateStudentInfo,getStudentInfo,updateTeacherInfo,getTeacherInfo,getUserPosts,deletePost,link,unlink,refuseLink,getStudents,getTeachers,sendNotice,getNotices,submitComment,submitLearningMaterial,getLearningMaterials,sendTodo,getTodos,getUserRole,approvePost,rejectPost,getAllStudents,getAllTeachers,makeAnnouncement,deleteUser,getAnnouncements
 
 urlpatterns = [
     path('login/', login, name='login'),
@@ -37,4 +37,5 @@ urlpatterns = [
     path('getAllTeachers/',getAllTeachers,name="getAllTeachers"),
     path('makeAnnouncement/', makeAnnouncement, name='makeAnnouncement'),
     path('deleteUser/',deleteUser,name="deleteUser"),
+    path('getAnnouncements/',getAnnouncements,name="getAnnouncements"),
 ]

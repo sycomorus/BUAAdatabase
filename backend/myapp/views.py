@@ -6,7 +6,7 @@ import json
 import random
 import pytz
 from datetime import datetime, timedelta
-from .models import User, Student,Tutor,Post,PostSubject,Link,Notification,Review,StudyMaterial,Todo
+from .models import User, Student,Tutor,Post,PostSubject,Link,Notification,Review,StudyMaterial,Todo,Announcement
 
 @csrf_exempt
 def home(request):
@@ -887,19 +887,12 @@ def makeAnnouncement(request):
         body = json.loads(request.body)
         title=body.get('title')
         content=body.get('content')
-        admin_id=request.session['user_id']
-        for user in User.objects.all():
-            if user.user_id==admin_id:
-                continue
-            notification=Notification(
-                user_id=user,
-                notificationDate=datetime.now(pytz.timezone('Asia/Shanghai')),
-                title=title,
-                description=content,
-                is_read=False,
-                is_announcement=True
-                )
-            notification.save()
+        announcement=Announcement(
+              title=title,
+              description=content,
+              announcementDate=datetime.now(pytz.timezone('Asia/Shanghai')),
+        )
+        announcement.save()
         result={}
         result['code']=0
         return JsonResponse(result)
@@ -923,17 +916,10 @@ def deleteUser(request):
 def getAnnouncements(request):
     if request.method == 'GET':
         try:
-            announcements=[]
-            cnt=0
-            for notice in Notification.objects.all():
-                if notice.is_announcement:
-                    announcements.append(notice)
-                    cnt+=1
-                if cnt==10:
-                    break
-            for announcement in announcements:
+            return_announcements=[]
+            for announcement in Announcement.objects.all():
                 now = datetime.now(pytz.timezone('Asia/Shanghai'))
-                announcement_date = announcement.notificationDate.astimezone(pytz.timezone('Asia/Shanghai'))
+                announcement_date = announcement.announcementDate.astimezone(pytz.timezone('Asia/Shanghai'))
                 time_diff = now - announcement_date
                 if time_diff < timedelta(hours=24):
                     date_display = f"{time_diff.seconds // 3600}小时前"
@@ -941,10 +927,9 @@ def getAnnouncements(request):
                     date_display = f"{time_diff.days}天前"
                 else:
                     date_display = announcement_date.strftime("%Y-%m-%d")
-                return_announcements=[]
                 return_announcements.append({
                     'title':announcement.title,
-                    'content':announcement.content,
+                    'content':announcement.description,
                     'date':date_display,
                 })
             result={'data':{}}
