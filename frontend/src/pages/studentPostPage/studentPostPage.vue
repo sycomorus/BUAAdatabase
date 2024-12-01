@@ -156,7 +156,7 @@ export default {
       const startDate = dateRange[0] ? dateRange[0].format("YYYY-MM-DD") : '';
       const endDate = dateRange[1] ? dateRange[1].format("YYYY-MM-DD") : '';
       const subjects = values.subjects || [];
-      const location = values.location || [];
+      const location =values.location || [];
       const fullLocation = values.fullLocation || '';
       const telephoneNumber = values.telephoneNumber || '';
       const emailAddress = values.emailAddress || '';
