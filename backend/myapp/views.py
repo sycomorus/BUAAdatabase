@@ -288,7 +288,14 @@ def getPosts(request):
                     models.Q(title=request_query)|
                     models.Q(content=request_query)
                 )
-                all_posts=list(set(list(subjectsFits)+list(userFits)+list(OtherFits)))
+                locationFits = []
+                for post in Post.objects.all():
+                    location = post.location.strip('"')
+                    location = json.loads(location.replace("'", '"'))
+                    if any(request_query in loc for loc in location):
+                        locationFits.append(post)
+
+                all_posts=list(set(list(subjectsFits)+list(userFits)+list(OtherFits)+list(locationFits)))
                 posts=[]
                 for post in all_posts:
                     if user.identity!=0:
@@ -316,6 +323,7 @@ def getPosts(request):
                     returnSubjects.append(subject.subject)
                 location=post.location.strip('"')
                 location=json.loads(location.replace("'",'"'))
+                location=location[0]
                 return_posts.append({
                     'id':str(post.post_id),
                     'title':post.title,
@@ -326,7 +334,6 @@ def getPosts(request):
                     'date':date_display,
                     'location':location,
                 })
-                print(isinstance(location,list))
             result={'posts':return_posts[start:end],'total':len(posts)}
             return JsonResponse(result)
         except User.DoesNotExist:
