@@ -237,7 +237,9 @@ def getSavedPost(request):
                     result['data']['title']=post.title
                     result['data']['startDate']=post.startDate
                     result['data']['endDate']=post.endDate
-                    result['data']['location']=post.location
+                    location=post.location.strip('"')
+                    location=json.loads(location.replace("'",'"'))
+                    result['data']['location']=location
                     result['data']['fullLocation']=post.fullLocation
                     result['data']['telephoneNumber']=post.telephoneNumber
                     result['data']['emailAddress']=post.emailAddress
@@ -312,6 +314,8 @@ def getPosts(request):
                 returnSubjects=[]
                 for subject in return_subject_lines:
                     returnSubjects.append(subject.subject)
+                location=post.location.strip('"')
+                location=json.loads(location.replace("'",'"'))
                 return_posts.append({
                     'id':str(post.post_id),
                     'title':post.title,
@@ -320,8 +324,9 @@ def getPosts(request):
                     'author':user.username,
                     'authorId':user.user_id,
                     'date':date_display,
-                    'location':post.location,
+                    'location':location,
                 })
+                print(isinstance(location,list))
             result={'posts':return_posts[start:end],'total':len(posts)}
             return JsonResponse(result)
         except User.DoesNotExist:
