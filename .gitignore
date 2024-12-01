@@ -27,3 +27,4 @@ package-lock.json
 .env.production.local
 backend/backend/__pycache__/
 backend/db.sqlite3
+database.zip
