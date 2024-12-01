@@ -75,10 +75,14 @@
 <script>
 import PageLayout from '@/layouts/PageLayout'
 import { getStudentInfo, updateStudentInfo } from '@/services/user'
+import { mapState } from 'vuex'
 
 export default {
     name: 'editStudentHomePage',
     components: { PageLayout },
+    computed: {
+    ...mapState('account', { currUser: 'user' }),
+    },
     data() {
         return {
             userId: this.$route.params.id, // 获取用户ID
@@ -93,6 +97,9 @@ export default {
         };
     },
     created() {
+        if (this.currUser.id !== this.userId) {
+            this.$router.push('/404');
+        }
         this.fetchUserInfo(); // 页面加载时获取用户信息
     },
     methods: {
