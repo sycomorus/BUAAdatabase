@@ -273,8 +273,7 @@ export default {
           this.closeDrawer(); // 提交后关闭抽屉
           this.fileName = ''; // 重置输入
           this.downloadLink = ''; // 重置输入
-        } else {
-          console.error('发布学习资料失败');
+          this.$message.success('发布评价成功');
         }
       }).catch(error => {
         console.error('发布学习资料失败:', error);
