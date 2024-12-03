@@ -77,7 +77,10 @@ class Post(models.Model):
         return self.title
     
     class Meta:
-        ordering = ['-postDate']
+        indexes = [
+            models.Index(fields=['post_id']),
+            models.Index(fields=['title']),
+        ]
 
 # Post表的科目表 BCNF
 class PostSubject(models.Model):
@@ -104,6 +107,9 @@ class Notification(models.Model):
     
     class Meta:
         ordering = ['-notificationDate']
+        indexes = [
+            models.Index(fields=['notificationDate']),
+        ]
 
 # 学习资料表 BCNF
 class StudyMaterial(models.Model):
