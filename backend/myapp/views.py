@@ -748,6 +748,7 @@ def submitLearningMaterial(request):
             upload_date=datetime.now(pytz.timezone('Asia/Shanghai')),
         )
         material.save()
+        sendNotice(user,"收到新学习资料",f"您收到了来自{tutor.username}的新学习资料")
         result={'data':{}}
         result['code'] = 0
         return JsonResponse(result)
@@ -814,7 +815,7 @@ def getTodos(request):
 @csrf_exempt
 def getUserRole(request):
     if request.method == 'GET':
-        post_id=int(request.GET.get('postId'))
+        post_id=int(request.GET.get('id'))
         post=Post.objects.get(post_id=post_id)
         user=post.user_id
         result={'data':{}}
@@ -825,6 +826,7 @@ def getUserRole(request):
             result['data']['userRole']="家教"
         else:
             result['data']['userRole']="学生"
+        print(result)
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
