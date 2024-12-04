@@ -2,7 +2,11 @@
   <common-layout>
     <div class="top">
       <div class="header">
+<<<<<<< HEAD
         <img alt="logo" class="logo" src="@/assets/img/output_image_white.png" />
+=======
+        <img alt="logo" class="logo" src="@/assets/img/logo_black.png" />
+>>>>>>> 60452d6b3d8380c0c72ad8a299ce0dc77ea97c2a
         <span class="title">{{ systemName }}</span>
       </div>
       <div class="desc">一对一上门家教</div>

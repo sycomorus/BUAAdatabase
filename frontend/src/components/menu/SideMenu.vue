@@ -2,7 +2,11 @@
   <a-layout-sider :theme="sideTheme" :class="['side-menu', 'beauty-scroll', isMobile ? null : 'shadow']" width="256px" :collapsible="collapsible" v-model="collapsed" :trigger="null">
     <div :class="['logo', theme]">
       <router-link to="/announcementPage">
+<<<<<<< HEAD
         <img src="@/assets/img/output_image_white.png">
+=======
+        <img src="@/assets/img/logo_white.png">
+>>>>>>> 60452d6b3d8380c0c72ad8a299ce0dc77ea97c2a
         <h1>{{systemName}}</h1>
       </router-link>
     </div>
