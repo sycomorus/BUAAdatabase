@@ -111,9 +111,9 @@ export default {
         .then(response => {
           if (response.data.code >= 0) {
             this.userRole = response.data.data.userRole;
-            if (this.userRole === '家教') {
+            if (this.userRole === "家教") {
               this.toWhere = '家教主页';
-            } else if (this.userRole === '学生') {
+            } else if (this.userRole === "学生") {
               this.toWhere = '学生主页';
             }
           } else {
