@@ -27,9 +27,6 @@
                 {{ showFullContent === post.id || !shouldShowReadMore(post.content) ? post.content :
                   post.content.slice(0, 60) + '...' }}
               </div>
-              <div class="read-more" v-if="shouldShowReadMore(post.content) && showFullContent !== post.id">
-                <a @click="showFullContent = post.id">查看更多</a>
-              </div>
               <div class="read-less" v-if="showFullContent === post.id">
                 <a @click="showFullContent = null">收起</a>
               </div>
