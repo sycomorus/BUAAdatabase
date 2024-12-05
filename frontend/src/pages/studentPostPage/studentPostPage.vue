@@ -63,6 +63,7 @@ import { sendPost, savePost, getSavedPost } from '@/services/user'
 import PageLayout from '@/layouts/PageLayout'
 import locationOptions from '@/assets/json/locationOptions.json'
 import { mapState } from 'vuex'
+import moment from 'moment';
 
 export default {
   name: 'teacherPostPage',
