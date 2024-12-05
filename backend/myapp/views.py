@@ -111,7 +111,7 @@ def sendPost(request):
         telephoneNumber=body.get('data').get('telephoneNumber')
         email=body.get('data').get('emailAddress')
         content=body.get('data').get('content')
-        is_complete = all([title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, email, content])
+        is_complete = all([title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, content])
         if not is_complete:
             return JsonResponse({'code': 0})
         
