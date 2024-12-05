@@ -31,7 +31,8 @@ import {
   GET_ALL_STUDENTS,
   MAKE_ANNOUNCEMENT,
   DELETE_USER,
-  GET_ANNOUNCEMENTS
+  GET_ANNOUNCEMENTS,
+  RESET_PASSWORD
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -426,6 +427,14 @@ export async function getUserRole(id) {
 */
 export async function getAnnouncements() {
   return request(GET_ANNOUNCEMENTS, METHOD.GET);
+}
+
+export async function resetPassword(id, oldpassword, password) {
+  return request(RESET_PASSWORD, METHOD.POST, {
+    id: id,
+    oldpassword: oldpassword,
+    password: password
+  })
 }
 
 export async function getRoutesConfig() {

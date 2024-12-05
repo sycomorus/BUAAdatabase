@@ -35,5 +35,6 @@ module.exports = {
   GET_ALL_STUDENTS: `${BASE_URL}/getAllStudents/`,
   MAKE_ANNOUNCEMENT: `${BASE_URL}/makeAnnouncement/`,
   DELETE_USER: `${BASE_URL}/deleteUser/`,
-  GET_ANNOUNCEMENTS: `${BASE_URL}/getAnnouncements/`
+  GET_ANNOUNCEMENTS: `${BASE_URL}/getAnnouncements/`,
+  RESET_PASSWORD: `${BASE_URL}/resetPassword/`
 };

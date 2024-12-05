@@ -4,15 +4,18 @@
       <span class="name">{{ user.name }}</span>
     </div>
     <a-menu :class="['avatar-menu']" slot="overlay">
-      <a-menu-item @click="toPersonalPage">
-        <a-icon type="user" />
-        <span>个人主页</span>
-      </a-menu-item>
-      <a-menu-item @click="toEditPersonalPage">
-        <a-icon type="edit" />
-        <span>编辑个人主页</span>
-      </a-menu-item>
-      <a-menu-divider />
+      <!-- 条件渲染：仅当用户角色为 student 或 teacher 时显示 -->
+      <template v-if="isStudentOrTeacher">
+        <a-menu-item @click="toPersonalPage">
+          <a-icon type="user" />
+          <span>个人主页</span>
+        </a-menu-item>
+        <a-menu-item @click="toEditPersonalPage">
+          <a-icon type="edit" />
+          <span>编辑个人主页</span>
+        </a-menu-item>
+        <a-menu-divider />
+      </template>
       <a-menu-item @click="logout">
         <a-icon style="margin-right: 8px;" type="poweroff" />
         <span>退出登录</span>
@@ -31,6 +34,9 @@ export default {
   computed: {
     ...mapGetters('account', ['user']),
     ...mapState('account', { currRoles: 'roles' }),
+    isStudentOrTeacher() {
+      return this.currRoles.some(role => role.id === 'student' || role.id === 'teacher');
+    }
   },
   methods: {
     logout() {
