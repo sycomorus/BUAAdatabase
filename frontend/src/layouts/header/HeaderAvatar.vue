@@ -96,6 +96,7 @@ export default {
               const data = res.data;
               if (data.code === 0) {
                 this.$message.success('修改密码成功');
+                this.passwordForm.resetFields();
                 this.isModalVisible = false; // 隐藏 a-modal
                 logout();
                 this.$router.push('/login')
@@ -108,6 +109,7 @@ export default {
       });
     },
     handleCancel() {
+      this.passwordForm.resetFields();
       this.isModalVisible = false; // 隐藏 a-modal
     },
 
