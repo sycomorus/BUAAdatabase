@@ -106,7 +106,7 @@ export default {
           const { title, startDate, endDate, subjects, location, fullLocation, telephoneNumber, emailAddress, content } = resdata.data;
           this.postForm.setFieldsValue({
             title,
-            dateRange: [startDate ? startDate : '', endDate ? endDate : ''],
+            dateRange: [startDate ? moment(startDate) : "", endDate ? moment(endDate) : ""],
             subjects,
             location,
             fullLocation,
