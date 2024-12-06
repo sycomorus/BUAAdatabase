@@ -77,6 +77,7 @@ class Post(models.Model):
         return self.title
     
     class Meta:
+        ordering = ['-postDate']
         indexes = [
             models.Index(fields=['post_id']),
             models.Index(fields=['title']),

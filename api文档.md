@@ -68,7 +68,7 @@
 ```json
 {
 	"id":""   // 当前用户id
-	"oldPassword":""    // 旧密码
+	"oldpassword":""    // 旧密码
 	"password":""     // 新密码
 }
 ```

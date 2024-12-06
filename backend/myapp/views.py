@@ -280,30 +280,27 @@ def getPosts(request):
                 else:
                     posts=Post.objects.filter(is_completed=True,is_approved=False)
             else:
-                subjectsLine=PostSubject.objects.filter(subject=request_query)
-                subjectsFits=set([subject.post_id for subject in subjectsLine])
-                userLine=User.objects.filter(username=request_query)
-                userFits=Post.objects.filter(user_id__in=userLine)
-                OtherFits=Post.objects.filter(
-                    models.Q(title=request_query)|
-                    models.Q(content=request_query)
-                )
-                locationFits = []
-                for post in Post.objects.all():
-                    location = post.location.strip('"')
-                    location = json.loads(location.replace("'", '"'))
-                    if any(request_query in loc for loc in location):
-                        locationFits.append(post)
-
-                all_posts=list(set(list(subjectsFits)+list(userFits)+list(OtherFits)+list(locationFits)))
-                posts=[]
+                all_posts = Post.objects.all()
+                matching_posts = []
                 for post in all_posts:
-                    if user.identity!=0:
-                        if post.is_completed and post.user_id.identity==filter_id and post.is_approved:
-                            posts.append(post)
-                    else:
-                        if post.is_completed and not post.is_approved:
-                            posts.append(post)
+                    subjects=PostSubject.objects.filter(post_id=post).values_list('subject', flat=True)
+                    subjects_str = ' '.join(subjects)
+                    username_str = post.user_id.username
+                    title_str = post.title
+                    content_str = post.content
+                    location_str = post.location.strip('"')
+                    location_list = json.loads(location_str.replace("'", '"'))
+                    location_str = ' '.join(location_list) if isinstance(location_list, list) else location_str
+                    long_str = f"{subjects_str} {username_str} {title_str} {content_str} {location_str}".lower()
+                    
+                    request_query = request_query.lower()
+                    if request_query in long_str:
+                        matching_posts.append(post)
+                if user.identity != 0:
+                    print(post.user_id.identity)
+                    posts = [post for post in matching_posts if post.is_completed and post.user_id.identity == filter_id and post.is_approved]
+                else:
+                    posts = [post for post in matching_posts if post.is_completed and not post.is_approved]
             
             return_posts=[]
             for post in posts:
@@ -709,6 +706,16 @@ def submitComment(request):
         comment=body.get('comment')
         user=User.objects.get(user_id=student_id)
         tutor=User.objects.get(user_id=tutor_id)
+        teacher=Tutor.objects.get(user_id=tutor)
+        if teacher.rateNum!=0:
+            rate_sum=teacher.rate*teacher.rateNum
+        else:
+            rate_sum=0
+        old_review=Review.objects.filter(student_id=user,tutor_id=tutor)
+        if old_review:
+            teacher.rateNum-=1
+            rate_sum-=old_review.rating  
+            old_review.delete()
         review=Review(
             student_id=user,
             tutor_id=tutor,
@@ -719,9 +726,9 @@ def submitComment(request):
         review.save()
 
         sendNotice(tutor,"收到新评价",f"您收到了来自{user.username}的新评价")
-        teacher=Tutor.objects.get(user_id=tutor)
         teacher.rateNum+=1
-        teacher.rate=(teacher.rate*(teacher.rateNum-1)+rating)/teacher.rateNum
+        rate_sum+=rating
+        teacher.rate=rate_sum/teacher.rateNum
         teacher.save()
         
         result={'data':{}}
@@ -954,6 +961,23 @@ def getAnnouncements(request):
             raise Exception("用户不存在")
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
+    
+@csrf_exempt
+def resetPassword(request):
+    if request.method == 'POST':
+        body = json.loads(request.body)
+        user_id=int(body.get('id'))
+        user=User.objects.get(user_id=user_id)
+        old_password=body.get('oldpassword')
+        new_password=body.get('password')
+        if user.password!=old_password:
+            return JsonResponse({'code': -1, 'message': '密码错误'})
+        user.password=new_password
+        user.save()
+        return JsonResponse({'code': 0})
+    else:
+        return JsonResponse({'code': -1, 'message': '仅支持POST请求'})
+
 
 @csrf_exempt
 def get_routes_config(request):
