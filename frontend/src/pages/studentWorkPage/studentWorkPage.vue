@@ -107,7 +107,7 @@
           <a-rate v-model=rate allow-half />
         </a-form-item>
         <a-form-item label="评价">
-          <a-textarea v-model=comment placeholder="Autosize height based on content lines" auto-size />
+          <a-textarea v-model=comment placeholder="请输入你的评价" auto-size />
         </a-form-item>
         <a-form-item>
           <a-button type="primary" html-type="submit">提交</a-button>
