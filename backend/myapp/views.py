@@ -16,7 +16,7 @@ def home(request):
 def login(request):
     if request.method == 'POST':
         body = json.loads(request.body)
-        username = body.get('name')  # 使用 username 而不是 name
+        username = body.get('name') 
         password = body.get('password')
         result = {'data': {}}
         try:
