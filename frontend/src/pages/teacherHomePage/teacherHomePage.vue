@@ -48,7 +48,7 @@
             </a-row>
         </a-card>
         <a-card v-if="userComments.length > 0" :bordered="false" class="user-bio-card">
-            <div class="user-info-label">学生评论:</div>
+            <div class="user-info-label">用户评论:</div>
             <div v-for="(comment, index) in userComments" :key="index">
                 <a-comment>
                     <div slot="author" class="author-rating">
