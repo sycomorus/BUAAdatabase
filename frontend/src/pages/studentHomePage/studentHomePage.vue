@@ -60,7 +60,7 @@ export default {
             userFullAddress: '',
             userPersonalSignature: '',
             userIntro: '',
-            userAge: 0,
+            userAge: '',
             userGender: '',
             userGrade: ''
         }
@@ -81,7 +81,7 @@ export default {
                         this.userAddress = res.data.address || '这个人很懒，还什么都没有写';
                         this.userPersonalSignature = res.data.personalSignature|| '这个人很懒，还什么都没有写';
                         this.userIntro = res.data.intro || '这个人很懒，还什么都没有写';
-                        this.userAge = res.data.age || 0;
+                        this.userAge = res.data.age || '';
                         this.userGender = res.data.gender;
                         this.userGrade = res.data.grade;
                         console.log('获取用户信息成功:', res.data);

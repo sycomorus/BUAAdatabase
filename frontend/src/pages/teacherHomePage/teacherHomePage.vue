@@ -86,7 +86,7 @@ export default {
             userFullAddress: '',
             userPersonalSignature: '',
             userIntro: '',
-            userAge: 0,
+            userAge: '',
             userGender: '',
             userDegree: '',
             userRate: 0,
@@ -109,13 +109,14 @@ export default {
                         this.userAddress = res.data.address || '这个人很懒，还什么都没有写';
                         this.userPersonalSignature = res.data.personalSignature|| '这个人很懒，还什么都没有写';
                         this.userIntro = res.data.intro || '这个人很懒，还什么都没有写';
-                        this.userAge = res.data.age || 0;
+                        this.userAge = res.data.age || '';
                         this.userGender = res.data.gender;
                         this.userDegree = res.data.degree;
                         this.userRate = res.data.rate;
                         this.userRateNum = res.data.rateNum;
                         this.userComments = res.data.comments;
                         console.log('获取用户信息成功:', res.data);
+                        console.log('获取用户评论成功:', res.data.comments);
                     } else {
                         console.error('获取用户信息失败:', res.msg);
                     }
