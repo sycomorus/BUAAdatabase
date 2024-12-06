@@ -494,14 +494,14 @@ def getTeacherInfo(request):
         result['data']['gender']=tutor.gender
         result['data']['age']=tutor.age
         result['data']['degree']=tutor.degree
-        result['data']['rate']=tutor.rate
+        result['data']['rate']=round(tutor.rate,1)
         result['data']['rateNum']=tutor.rateNum
         comments=Review.objects.filter(tutor_id=user)
         return_comments=[]
         for comment in comments:
             return_comments.append({
                 'id':str(comment.review_id),
-                'studentName':comment.student_id.username,
+                'authorName':comment.student_id.username,
                 'rating':comment.rating,
                 'content':comment.content,
                 'date':comment.date,
