@@ -514,7 +514,7 @@ def getUserPosts(request):
     if request.method == 'GET':
         request_id=int(request.GET.get('id'))
         user=User.objects.get(user_id=request_id)
-        posts=Post.objects.filter(user_id=user,is_completed=True,is_approved=True)
+        posts=Post.objects.filter(user_id=user,is_completed=True)
 
         return_posts=[]
         result={}
@@ -711,7 +711,7 @@ def submitComment(request):
             rate_sum=teacher.rate*teacher.rateNum
         else:
             rate_sum=0
-        old_review=Review.objects.filter(student_id=user,tutor_id=tutor)
+        old_review=Review.objects.get(student_id=user,tutor_id=tutor)
         if old_review:
             teacher.rateNum-=1
             rate_sum-=old_review.rating  
