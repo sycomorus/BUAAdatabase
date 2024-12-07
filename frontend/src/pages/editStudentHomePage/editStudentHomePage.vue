@@ -92,7 +92,7 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
-import { getStudentInfo, updateStudentInfo, uploadAvatar, getAvatar, logout } from '@/services/user'
+import { getStudentInfo, updateStudentInfo, uploadAvatar, getAvatar } from '@/services/user'
 import { mapState } from 'vuex'
 
 export default {
@@ -197,8 +197,6 @@ export default {
             uploadAvatar(formData).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('上传头像成功');
-                    logout();
-                    this.$router.push('/login');
                 } else {
                     this.$message.error(response.data.message);
                 }
