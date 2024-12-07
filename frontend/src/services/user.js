@@ -381,7 +381,7 @@ export async function getAllStudents(id) {
   * @param comment 评论
   * @returns {Promise<AxiosResponse<T>>}
 */
-export async function submitComment(studentId, studentName, teacherId, rate, comment) {
+export async function submitComment(form) {
   return request(SUBMIT_COMMENT, METHOD.POST, {
     studentId: studentId,
     studentName: studentName,

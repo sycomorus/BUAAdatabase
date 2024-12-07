@@ -1004,10 +1004,8 @@ def get_routes_config(request):
 @csrf_exempt
 def uploadAvatar(request):
     if request.method == 'POST':
-        str=json.loads(request.POST.get('data'))
         # 使用 request.POST 和 request.FILES 解析 FormData 对象
-        user_id = int(str.get('id'))
-        print(user_id)
+        user_id = int(request.POST.get('data').get('id'))
         file = request.FILES['file']  # 获取上传的文件
         file_name = file.name
         file_type = file_name.split('.')[-1]
@@ -1020,7 +1018,6 @@ def uploadAvatar(request):
         # 使用 MinioClient 上传文件并获取下载链接
         minio_client = MinioClient()
         file_data = file.read()
-        print(file_data)
         try:
             minio_client.upload_file(file_data, file_name, file_type)
             download_link = get_download_url(file_name, file_type)
