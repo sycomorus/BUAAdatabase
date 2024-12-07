@@ -318,9 +318,7 @@ export async function unlink(id, studentId) {
   * @returns {Promise<AxiosResponse<T>>}
 */
 export async function submitLearningMaterial(form) {
-  return request(SUBMIT_LEARNING_MATERIAL, METHOD.POST, {
-    form: form
-  })
+  return request(SUBMIT_LEARNING_MATERIAL, METHOD.POST, form)
 }
 
 /*
@@ -445,9 +443,7 @@ export async function getAvatar(id) {
 }
 
 export async function uploadAvatar(form) {
-  return request(UPLOAD_AVATAR, METHOD.POST, {
-    form: form
-  })
+  return request(UPLOAD_AVATAR, METHOD.POST,form)
 }
 
 export async function getRoutesConfig() {

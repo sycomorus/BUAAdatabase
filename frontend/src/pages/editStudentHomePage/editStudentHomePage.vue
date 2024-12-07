@@ -177,7 +177,7 @@ export default {
             if (!isLt2M) {
                 this.$message.error('图片必须小于 2MB!');
             }
-            if(isJpgOrPng && isLt2M) {
+            if (isJpgOrPng && isLt2M) {
                 this.fileList = [file];
             }
             return false;
@@ -193,10 +193,15 @@ export default {
             }
             const formData = new FormData();
             formData.append('file', this.fileList[0]);
-            formData.append('id', this.userId);
+            const jsonData = {
+                id: this.userId,
+            };
+            formData.append('data', JSON.stringify(jsonData));
             uploadAvatar(formData).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('上传头像成功');
+                    logout();
+                    this.$router.push('/login');
                 } else {
                     this.$message.error(response.data.message);
                 }
