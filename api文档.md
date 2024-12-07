@@ -364,6 +364,7 @@
     			"rating": "" // 评分
     			"content": "" // 评论内容
     			"date": "" // 日期
+    			"avatar": url  // 头像
             }]
     }
 }
@@ -532,11 +533,12 @@
 
 ```json
 {
-	"teacherId": "" // 家教id
-    "teacherName": "" // 家教名
-	"studentId": "" // 学生id
-	"filename": "" // 文件名
-	"downloadLink": "" // 下载链接
+    "form": {   // 一个FormData对象，需要特殊解析方式
+		"teacherId": "" // 家教id
+    	"teacherName": "" // 家教名
+		"studentId": "" // 学生id
+		"file": File // 一个File类型的对象
+    }
 }
 ```
 
@@ -544,7 +546,8 @@
 
 ```json
 {
-	"code": 0
+	"code": 0,
+    "message": ""  // 错误信息，成功时返回空即可
 }
 ```
 
@@ -898,6 +901,57 @@
 ```json
 {
 	"code": 0  // 0表示成功，-1表示失败
+}
+```
+
+## 文件相关
+
+### getAvatar
+
+**描述**：获取用户头像
+
+**类型**：POST
+
+**参数**：
+
+```json
+{
+	"id": ""   // 用户id
+}
+```
+
+**返回**
+
+```json
+{
+	"code": 0,    // 0表示成功
+	"avatar": url    // 图片的url
+}
+```
+
+### uploadAvatar
+
+**描述**：上传用户头像
+
+**类型**：POST
+
+**参数**：
+
+```json
+{  
+    "form": { // 注意，这个字典包装在FormData中，解析方式可能不同
+        "id": "", // 用户id
+        "file"：File   // 一个对象类型为File的玩意，可以查一查后端怎么解析
+    }
+}
+```
+
+**返回**
+
+```json
+{
+	"code": 0  // 成功返回0，失败（比如文件过大，文件类型不匹配）返回1
+	"message": ""  // 失败时的返回信息，成功时返回空即可
 }
 ```
 
