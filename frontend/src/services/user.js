@@ -317,13 +317,9 @@ export async function unlink(id, studentId) {
   * @param downloadLink 下载链接
   * @returns {Promise<AxiosResponse<T>>}
 */
-export async function submitLearningMaterial(teacherId, teacherName, studentId, filename, downloadLink) {
+export async function submitLearningMaterial(form) {
   return request(SUBMIT_LEARNING_MATERIAL, METHOD.POST, {
-    teacherId: teacherId,
-    studentId: studentId,
-    teacherName: teacherName,
-    filename: filename,
-    downloadLink: downloadLink
+    form: form
   })
 }
 
@@ -448,10 +444,9 @@ export async function getAvatar(id) {
   return request(`${GET_AVATAR}?id=${id}`, METHOD.GET);
 }
 
-export async function uploadAvatar(id, avatar_rb) {
+export async function uploadAvatar(form) {
   return request(UPLOAD_AVATAR, METHOD.POST, {
-    id: id,
-    avatar: avatar_rb
+    form: form
   })
 }
 

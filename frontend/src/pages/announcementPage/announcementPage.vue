@@ -1,7 +1,8 @@
 <template>
-  <page-layout :avatar="currUser.avatar">
+  <page-layout :avatar="userAvatar">
     <div slot="headerContent">
-      <div class="title">{{ '您好' }}，{{ currUser.name }}，{{ '欢迎来到家教综合服务平台' }}</div>
+      <div class="title">{{ '您好' }}，{{ currUser.name }}</div>
+      <div>{{ '欢迎来到家教综合服务平台' }}</div>
     </div>
     <a-card :bordered="false" class = "announcement_card">
       <a-collapse :bordered="false" class="custom-collapse">
@@ -25,7 +26,7 @@
 <script>
 import PageLayout from '@/layouts/PageLayout'
 import { mapState } from 'vuex'
-import { getAnnouncements } from '@/services/user'
+import { getAnnouncements, getAvatar } from '@/services/user'
 
 export default {
   name: 'announcementPage',
@@ -33,6 +34,7 @@ export default {
   data() {
     return {
       announcements: [],
+      userAvatar: ''
     }
   },
   computed: {
@@ -50,9 +52,13 @@ export default {
       }
     }).catch(error => {
       console.error('获取公告失败:', error);
-      this.loading = false;
     });
-
+    getAvatar(this.currUser.id).then(res => {
+      const data = res.data;
+      if (data.code === 0) {
+        this.userAvatar = data.avatar;
+      }
+    });
   }
 }
 </script>

@@ -2,6 +2,7 @@
   <div>
     <a-dropdown>
       <div class="header-avatar" style="cursor: pointer">
+        <a-avatar class="avatar" size="middle" shape="circle" :src="user.avatar" />
         <span class="name">{{ user.name }}</span>
       </div>
       <a-menu :class="['avatar-menu']" slot="overlay">
@@ -56,7 +57,6 @@ export default {
   computed: {
     ...mapGetters('account', ['user']),
     ...mapState('account', { currRoles: 'roles' }),
-    ...mapState('account', { currUser: 'user' }),
     isStudentOrTeacher() {
       return this.currRoles.some(role => role.id === 'student' || role.id === 'teacher');
     }
@@ -98,7 +98,7 @@ export default {
           if (newPassword !== confirmedPassword) {
             this.$message.error('两次输入的密码不一致');
           } else {
-            resetPassword(this.currUser.id, oldPassword, newPassword).then(res => {
+            resetPassword(this.user.id, oldPassword, newPassword).then(res => {
               const data = res.data;
               if (data.code === 0) {
                 this.$message.success('修改密码成功');

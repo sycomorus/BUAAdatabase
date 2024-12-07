@@ -1,12 +1,12 @@
 <template>
-    <page-layout>
+    <page-layout :desc='userPersonalSignature' :avatar="userAvatar">
         <div slot="headerContent">
             <div class="title">{{ userName }}</div>
-            <div class="sub-title">{{userPersonalSignature}}</div>
+            <div>{{ userPersonalSignature }}</div>
         </div>
         <template slot="extra">
-            <head-info class="split-right" title="评分" :content="userRate"/>
-            <head-info class="split-right" title="评分人数" :content="userRateNum"/>
+            <head-info class="split-right" title="评分" :content="userRate" />
+            <head-info class="split-right" title="评分人数" :content="userRateNum" />
         </template>
         <a-card :bordered="false" class="user-info-card">
             <a-row :gutter="16">
@@ -55,6 +55,9 @@
                         <span class="author-name">{{ comment.authorName }}</span>
                         <a-rate :value="comment.rating" disabled allow-half class="rating"></a-rate>
                     </div>
+                    <div slot="avatar">
+                        <a-avatar :src="comment.avatar"/>
+                    </div>
                     <div slot="content" class="comment-content">
                         <p>{{ comment.content }}</p>
                     </div>
@@ -70,12 +73,12 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
-import { getTeacherInfo } from '@/services/user'
+import { getTeacherInfo, getAvatar } from '@/services/user'
 import HeadInfo from '@/components/tool/HeadInfo'
 
 export default {
     name: 'teacherHomePage',
-    components: { PageLayout, HeadInfo},
+    components: { PageLayout, HeadInfo },
     data() {
         return {
             userId: this.$route.params.id, // 获取路由参数中的id
@@ -91,11 +94,13 @@ export default {
             userDegree: '',
             userRate: 0,
             userRateNum: 0,
-            userComments: []
+            userComments: [],
+            userAvatar: ''
         }
     },
     created() {
         this.fetchUserInfo();
+        this.fetchUserAvatar();
     },
     methods: {
         fetchUserInfo() {
@@ -107,7 +112,7 @@ export default {
                         this.userEmail = res.data.email || '这个人很懒，还什么都没有写';
                         this.userTelephone = res.data.telephone || '这个人很懒，还什么都没有写';
                         this.userAddress = res.data.address || '这个人很懒，还什么都没有写';
-                        this.userPersonalSignature = res.data.personalSignature|| '这个人很懒，还什么都没有写';
+                        this.userPersonalSignature = res.data.personalSignature || '这个人很懒，还什么都没有写';
                         this.userIntro = res.data.intro || '这个人很懒，还什么都没有写';
                         this.userAge = res.data.age || '';
                         this.userGender = res.data.gender;
@@ -124,6 +129,21 @@ export default {
                 .catch(error => {
                     console.error('获取用户信息失败:', error);
                 });
+        },
+        fetchUserAvatar() {
+            getAvatar(this.userId)
+                .then(response => {
+                    const res = response.data;
+                    if (res.code >= 0) {
+                        this.userAvatar = res.avatar;
+                        console.log('获取用户头像成功');
+                    } else {
+                        console.error('获取用户头像失败:', res.msg);
+                    }
+                })
+                .catch(error => {
+                    console.error('获取用户头像失败:', error);
+                });
         }
     }
 }
@@ -135,7 +155,8 @@ export default {
 }
 
 
-.user-info-card, .user-bio-card {
+.user-info-card,
+.user-bio-card {
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -155,30 +176,47 @@ export default {
 }
 
 .custom-divider {
-    border-top: 2px solid #e8e8e8; /* 改变分割线的粗细和颜色 */
-    margin: 16px 0; /* 调整上下间距 */
+    border-top: 2px solid #e8e8e8;
+    /* 改变分割线的粗细和颜色 */
+    margin: 16px 0;
+    /* 调整上下间距 */
 }
 
 .author-rating {
     display: flex;
     align-items: center;
-    margin-bottom: 8px; /* 底部间距 */
+    margin-bottom: 8px;
+    /* 底部间距 */
 }
 
 .author-name {
     font-weight: bold;
-    font-size: 16px; /* 字体大小 */
-    color: #333; /* 字体颜色 */
-    margin-right: 8px; /* 名字与评分之间的间距 */
+    font-size: 16px;
+    /* 字体大小 */
+    color: #333;
+    /* 字体颜色 */
+    margin-right: 8px;
+    /* 名字与评分之间的间距 */
 }
 
 .rating {
-    color: #fadb14; /* 评分的颜色 */
+    color: #fadb14;
+    /* 评分的颜色 */
 }
 
 .comment-content p {
-    font-size: 14px; /* 字体大小 */
-    line-height: 1.5; /* 行高 */
-    color: #555; /* 字体颜色 */
+    font-size: 14px;
+    /* 字体大小 */
+    line-height: 1.5;
+    /* 行高 */
+    color: #555;
+    /* 字体颜色 */
+}
+
+.title {
+    // 字号变大
+    font-size: 24px;
+    // 字体加粗
+    font-weight: bold;
 }
 </style>

@@ -54,8 +54,7 @@
               </a-input>
             </a-form-item>
             <a-form-item>
-              <a-radio-group
-                v-decorator="['role', { rules: [{ required: true, message: '请选择身份角色' }] }]">
+              <a-radio-group v-decorator="['role', { rules: [{ required: true, message: '请选择身份角色' }] }]">
                 <a-radio value="teacher">我是老师</a-radio>
                 <a-radio value="student">我是学生</a-radio>
               </a-radio-group>
@@ -73,7 +72,7 @@
 
 <script>
 import CommonLayout from '@/layouts/CommonLayout'
-import { login, register} from '@/services/user'
+import { login, register, getAvatar } from '@/services/user'
 import { setAuthorization } from '@/utils/request'
 import { mapMutations } from 'vuex'
 
@@ -136,12 +135,20 @@ export default {
       const loginRes = res.data
       if (loginRes.code >= 0) {
         const roles = loginRes.data.roles
-        this.setRoles(roles)
-        const user = { name: this.name, id: loginRes.data.id}
-        this.setUser(user)
-        setAuthorization({ token: loginRes.data.token})
-        this.$router.push('/announcementPage')
-        this.$message.success("欢迎回来", 3)
+        getAvatar(loginRes.data.id).then(response => {
+          if (response.data.code >= 0) {
+            const avatar = response.data.avatar
+            console.log(avatar)
+            this.setRoles(roles)
+            const user = { name: this.name, id: loginRes.data.id, avatar: avatar }
+            this.setUser(user)
+            setAuthorization({ token: loginRes.data.token })
+            this.$router.push('/announcementPage')
+            this.$message.success("欢迎回来", 3)
+          } else {
+            this.$error("未知错误")
+          }
+        })
       } else {
         this.errorLogin = '用户名或密码错误'
       }
@@ -152,9 +159,9 @@ export default {
       if (registerRes.code >= 0) {
         const roles = registerRes.data.roles
         this.setRoles(roles)
-        const user = { name: this.name, id: registerRes.data.id}
+        const user = { name: this.name, id: registerRes.data.id }
         this.setUser(user)
-        setAuthorization({ token: registerRes.data.token})
+        setAuthorization({ token: registerRes.data.token })
         this.$router.push('/announcementPage')
         this.$message.success("欢迎加入家教综合服务平台", 3)
       } else {

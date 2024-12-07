@@ -2,36 +2,54 @@
     <page-layout :title="'编辑家教主页'" :desc="'在这里你可以修改你的个人信息'">
         <a-card :bordered="false" class="edit-user-info-card">
             <a-form @submit.prevent="submitForm">
-                <a-row gutter="32">
-                    <a-col span="8">
-                        <div class="user-info-label">学历</div>
-                        <a-input v-model="editUserDegree" placeholder="请输入学历" />
+                <a-row gutter="0">
+                    <a-col span="4">
+                        <a-avatar :src="userAvatar" shape="square" :size="120" />
+                        <a-upload class="avatar-uploader" :file-list="fileList" :before-upload="beforeUpload"
+                            :remove="handleRemove">
+                            <a-button>
+                                <upload-outlined></upload-outlined>
+                                Select File
+                            </a-button>
+                        </a-upload>
+                        <a-button type="primary" :disabled="fileList.length === 0" style="margin-top: 16px"
+                            @click="handleUpload">
+                            {{ uploading ? 'Uploading' : 'Start Upload' }}
+                        </a-button>
                     </a-col>
-                    <a-col span="8">
-                        <div class="user-info-label">性别</div>
-                        <a-select v-model="editUserGender" placeholder="请选择性别">
-                            <a-select-option value="男">男</a-select-option>
-                            <a-select-option value="女">女</a-select-option>
-                        </a-select>
-                    </a-col>
-                    <a-col span="8">
-                        <div class="user-info-label">年龄</div>
-                        <a-input-number v-model="editUserAge" min="0" placeholder="请输入年龄" />
-                    </a-col>
-                </a-row>
-                <a-divider class="custom-divider" />
-                <a-row gutter="32">
-                    <a-col span="8">
-                        <div class="user-info-label">邮箱</div>
-                        <a-input v-model="editUserEmail" placeholder="请输入邮箱" />
-                    </a-col>
-                    <a-col span="8">
-                        <div class="user-info-label">电话</div>
-                        <a-input v-model="editUserTelephone" placeholder="请输入电话" />
-                    </a-col>
-                    <a-col span="8">
-                        <div class="user-info-label">地址</div>
-                        <a-input v-model="editUserAddress" placeholder="请输入地址" />
+                    <a-col span="20">
+                        <a-row gutter="10">
+                            <a-col span="8">
+                                <div class="user-info-label">学历</div>
+                                <a-input v-model="editUserDegree" placeholder="请输入学历" />
+                            </a-col>
+                            <a-col span="8">
+                                <div class="user-info-label">性别</div>
+                                <a-select v-model="editUserGender" placeholder="请选择性别">
+                                    <a-select-option value="男">男</a-select-option>
+                                    <a-select-option value="女">女</a-select-option>
+                                </a-select>
+                            </a-col>
+                            <a-col span="8">
+                                <div class="user-info-label">年龄</div>
+                                <a-input-number v-model="editUserAge" min="0" placeholder="请输入年龄" />
+                            </a-col>
+                        </a-row>
+                        <a-divider class="custom-divider1" />
+                        <a-row gutter="10">
+                            <a-col span="8">
+                                <div class="user-info-label">邮箱</div>
+                                <a-input v-model="editUserEmail" placeholder="请输入邮箱" />
+                            </a-col>
+                            <a-col span="8">
+                                <div class="user-info-label">电话</div>
+                                <a-input v-model="editUserTelephone" placeholder="请输入电话" />
+                            </a-col>
+                            <a-col span="8">
+                                <div class="user-info-label">地址</div>
+                                <a-input v-model="editUserAddress" placeholder="请输入地址" />
+                            </a-col>
+                        </a-row>
                     </a-col>
                 </a-row>
                 <a-divider class="custom-divider" />
@@ -59,15 +77,15 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
-import { getTeacherInfo, updateTeacherInfo } from '@/services/user'
+import { getTeacherInfo, updateTeacherInfo, uploadAvatar, getAvatar, logout } from '@/services/user'
 import { mapState } from 'vuex'
 
 export default {
     name: 'editTeacherHomePage',
-    computed: {
-    ...mapState('account', { currUser: 'user' }),
-    },
     components: { PageLayout },
+    computed: {
+        ...mapState('account', { currUser: 'user' }),
+    },
     data() {
         return {
             userId: this.$route.params.id, // 获取用户ID
@@ -79,6 +97,8 @@ export default {
             editUserAddress: '',
             editUserIntro: '',
             editUserSignature: '', // 新增个性签名字段
+            userAvatar: '',
+            fileList: [],
         };
     },
     created() {
@@ -86,6 +106,7 @@ export default {
             this.$router.push('/404');
         }
         this.fetchUserInfo(); // 页面加载时获取用户信息
+        this.fetchUserAvatar(); // 获取用户头像
     },
     methods: {
         fetchUserInfo() {
@@ -131,6 +152,54 @@ export default {
                 this.$message.error('提交失败，请稍后重试');
                 console.error('提交用户信息失败:', error);
             });
+        },
+        beforeUpload(file) {
+            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            if (!isJpgOrPng) {
+                this.$message.error('你只能上传 JPG/PNG 文件!');
+            }
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isLt2M) {
+                this.$message.error('图片必须小于 2MB!');
+            }
+            if (isJpgOrPng && isLt2M) {
+                this.fileList = [file];
+            }
+            return false;
+        },
+        handleRemove() {
+            this.fileList = [];
+            return false;
+        },
+        handleUpload() {
+            if (this.fileList.length === 0) {
+                this.$message.error('请选择一个文件');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', this.fileList[0]);
+            formData.append('id', this.userId);
+            uploadAvatar(formData).then(response => {
+                if (response.data.code >= 0) {
+                    this.$message.success('上传头像成功');
+                    logout();
+                    this.$router.push('/login');
+                } else {
+                    this.$message.error('上传头像失败');
+                }
+            }).catch(error => {
+                this.$message.error('上传头像失败');
+                console.error('上传头像失败:', error);
+            });
+        },
+        fetchUserAvatar() {
+            getAvatar(this.userId).then(response => {
+                const res = response.data;
+                if (res.code >= 0) {
+                    this.userAvatar = res.avatar;
+                    console.log('获取用户头像成功');
+                }
+            });
         }
     }
 }
@@ -152,6 +221,12 @@ export default {
     margin: 16px 0;
 }
 
+.custom-divider1 {
+    border-top: 2px solid #e8e8e8;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
 .user-info-label {
     font-weight: bold;
     color: #555;
@@ -162,5 +237,10 @@ export default {
     color: #333;
     font-size: 16px;
     white-space: pre-line;
+}
+
+.avatar-uploader {
+    display: inline-block;
+    margin-top: 8px;
 }
 </style>
