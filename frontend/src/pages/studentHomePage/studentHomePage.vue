@@ -1,5 +1,9 @@
 <template>
-    <page-layout :title='userName' :desc='userPersonalSignature'>
+    <page-layout :desc='userPersonalSignature' :avatar="userAvatar">
+        <div slot="headerContent">
+            <div class="title">{{ userName }}</div>
+            <div>{{ userPersonalSignature }}</div>
+        </div>
         <a-card :bordered="false" class="user-info-card">
             <a-row :gutter="16">
                 <a-col :span="8">
@@ -45,11 +49,11 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
-import { getStudentInfo } from '@/services/user'
+import { getStudentInfo, getAvatar } from '@/services/user'
 
 export default {
     name: 'studentHomePage',
-    components: { PageLayout},
+    components: { PageLayout },
     data() {
         return {
             userId: this.$route.params.id, // 获取路由参数中的id
@@ -62,11 +66,13 @@ export default {
             userIntro: '',
             userAge: '',
             userGender: '',
-            userGrade: ''
+            userGrade: '',
+            userAvatar: ''
         }
     },
     created() {
         this.fetchUserInfo();
+        this.fetchUserAvatar();
     },
     methods: {
         fetchUserInfo() {
@@ -79,7 +85,7 @@ export default {
                         this.userEmail = res.data.email || '这个人很懒，还什么都没有写';
                         this.userTelephone = res.data.telephone || '这个人很懒，还什么都没有写';
                         this.userAddress = res.data.address || '这个人很懒，还什么都没有写';
-                        this.userPersonalSignature = res.data.personalSignature|| '这个人很懒，还什么都没有写';
+                        this.userPersonalSignature = res.data.personalSignature || '这个人很懒，还什么都没有写';
                         this.userIntro = res.data.intro || '这个人很懒，还什么都没有写';
                         this.userAge = res.data.age || '';
                         this.userGender = res.data.gender;
@@ -92,6 +98,16 @@ export default {
                 .catch(error => {
                     console.error('获取用户信息失败:', error);
                 });
+        },
+        fetchUserAvatar() {
+            getAvatar(this.userId)
+                .then(response => {
+                    const res = response.data;
+                    if (res.code >= 0) {
+                        this.userAvatar = res.avatar;
+                        console.log('获取用户头像成功');
+                    }
+                })
         }
     }
 }
@@ -101,8 +117,8 @@ export default {
 .page-layout {
     padding: 20px;
 }
-
-.user-info-card, .user-bio-card {
+.user-info-card,
+.user-bio-card {
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -125,7 +141,16 @@ export default {
 }
 
 .custom-divider {
-    border-top: 2px solid #e8e8e8; /* 改变分割线的粗细和颜色 */
-    margin: 16px 0; /* 调整上下间距 */
+    border-top: 2px solid #e8e8e8;
+    /* 改变分割线的粗细和颜色 */
+    margin: 16px 0;
+    /* 调整上下间距 */
+}
+
+.title {
+    // 字号变大
+    font-size: 24px;
+    // 字体加粗
+    font-weight: bold;
 }
 </style>

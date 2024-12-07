@@ -56,9 +56,9 @@
                                     您发布的求聘帖
                                     <router-link
                                         :to="{ name: '帖子详情', params: { id: todo.postId, showAccept: false } }">“{{
-                                        todo.postTitle }}”</router-link>
-                                    被用户<router-link
-                                        :to="{ name: '学生主页', params: { id: todo.accepterId } }">“{{ todo.accepterName }}”</router-link>
+                                            todo.postTitle }}”</router-link>
+                                    被用户<router-link :to="{ name: '学生主页', params: { id: todo.accepterId } }">“{{
+                                        todo.accepterName }}”</router-link>
                                     所接受
                                 </div>
                                 <div slot="actions">
@@ -92,17 +92,16 @@
         <!-- 发布学习资料抽屉 -->
         <a-drawer :visible="drawerOpen" class="custom-class" root-class-name="root-class-name"
             :root-style="{ color: 'blue' }" style="color: red" title="发布学习资料" placement="right" @close="closeDrawer">
-            <form @submit.prevent="submitLearningMaterial">
-                <a-form-item label="文件名">
-                    <a-input v-model="fileName" placeholder="请输入文件名" />
-                </a-form-item>
-                <a-form-item label="下载链接">
-                    <a-input v-model="downloadLink" placeholder="请输入下载链接" />
-                </a-form-item>
-                <a-form-item>
-                    <a-button type="primary" html-type="submit">提交</a-button>
-                </a-form-item>
-            </form>
+            <a-upload class="avatar-uploader" :file-list="fileList" :before-upload="beforeUpload"
+                :remove="handleRemove">
+                <a-button>
+                    <upload-outlined></upload-outlined>
+                    选择文件
+                </a-button>
+            </a-upload>
+            <a-button type="primary" :disabled="fileList.length === 0" style="margin-top: 16px" @click="submitLearningMaterial">
+                {{ uploading ? 'Uploading' : '开始上传' }}
+            </a-button>
         </a-drawer>
     </page-layout>
 </template>
@@ -140,7 +139,8 @@ export default {
             curAccepterId: null,
             curRefuseId: null,
             acceptOpen: false,
-            refuseOpen: false
+            refuseOpen: false,
+            fileList: [],
         }
     },
     methods: {
@@ -236,21 +236,20 @@ export default {
             this.curStudentId = id;
         },
         submitLearningMaterial() {
-            if (!this.fileName || !this.downloadLink) {
-                this.$message.error('文件名或下载链接不能为空！');
-                return;
-            }
-            console.log('文件名:', this.fileName);
-            console.log('下载链接:', this.downloadLink);
+            const formData = new FormData();
+            formData.append('file', this.fileList[0]);
+            formData.append('teacherId', this.currUser.id);
+            formData.append('teacherName', this.currUser.name);
+            formData.append('studentId', this.curStudentId);
+
             // 这里可以添加实际的提交逻辑
-            submitLearningMaterial(this.currUser.id, this.currUser.name, this.curStudentId, this.fileName, this.downloadLink).then(res => {
+            submitLearningMaterial(formData).then(res => {
                 if (res.data.code >= 0) {
                     this.$message.success('发布学习资料成功');
+                    this.fileList = [];
                     this.closeDrawer(); // 提交后关闭抽屉
-                    this.fileName = ''; // 重置输入
-                    this.downloadLink = ''; // 重置输入
                 } else {
-                    console.error('发布学习资料失败');
+                    console.error('发布学习资料失败', res.data.message);
                 }
             }).catch(error => {
                 console.error('发布学习资料失败:', error);
@@ -297,7 +296,19 @@ export default {
         },
         handleRefuseCancel() {
             this.refuseOpen = false;
-        }
+        },
+        beforeUpload(file) {
+            if (file.size / 1024 / 1024 > 5) {
+                this.$message.error('文件必须小于 5MB!');
+            } else {
+                this.fileList = [file];
+            }
+            return false;
+        },
+        handleRemove() {
+            this.fileList = [];
+            return false;
+        },
     },
 }
 </script>
