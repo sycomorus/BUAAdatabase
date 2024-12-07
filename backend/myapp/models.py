@@ -9,6 +9,7 @@ class User(models.Model):
     password = models.CharField(max_length=255)
     identity = models.IntegerField()  # 0: 管理员,1: 家教, 2: 学生
     registration_date = models.DateField()
+    avatar = models.CharField(max_length=255,blank=True,null=True,default='http://120.46.1.4:9000/zxb/png/Akkarin.png')
 
     def __str__(self):
         return self.username
@@ -123,6 +124,7 @@ class StudyMaterial(models.Model):
     file_name = models.CharField(max_length=255)
     download_link = models.CharField(max_length=255)
     upload_date = models.DateField()
+    file = models.FileField(upload_to='materials/',default='',blank=True,null=True)
 
     def __str__(self):
         return f"Material {self.material_id}"

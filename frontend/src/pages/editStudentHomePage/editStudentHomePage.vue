@@ -193,7 +193,10 @@ export default {
             }
             const formData = new FormData();
             formData.append('file', this.fileList[0]);
-            formData.append('id', this.userId);
+            const jsonData = {
+                id: this.userId,
+            };
+            formData.append('data', JSON.stringify(jsonData));
             uploadAvatar(formData).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('上传头像成功');
