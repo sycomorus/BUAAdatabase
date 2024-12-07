@@ -36,5 +36,7 @@ module.exports = {
   MAKE_ANNOUNCEMENT: `${BASE_URL}/makeAnnouncement/`,
   DELETE_USER: `${BASE_URL}/deleteUser/`,
   GET_ANNOUNCEMENTS: `${BASE_URL}/getAnnouncements/`,
-  RESET_PASSWORD: `${BASE_URL}/resetPassword/`
+  RESET_PASSWORD: `${BASE_URL}/resetPassword/`,
+  GET_AVATAR: `${BASE_URL}/getAvatar/`,
+  UPLOAD_AVATAR: `${BASE_URL}/uploadAvatar/`,
 };

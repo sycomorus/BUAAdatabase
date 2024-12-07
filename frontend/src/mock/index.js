@@ -21,6 +21,8 @@ import "@/mock/user/getTeacherInfo"
 import "@/mock/user/getNotices"
 import "@/mock/user/getAnnouncements"
 import "@/mock/user/resetPassword"
+import "@/mock/user/getAvatar"
+import "@/mock/user/uploadAvatar"
 
 // 设置全局延时
 Mock.setup({

@@ -32,7 +32,9 @@ import {
   MAKE_ANNOUNCEMENT,
   DELETE_USER,
   GET_ANNOUNCEMENTS,
-  RESET_PASSWORD
+  RESET_PASSWORD,
+  GET_AVATAR,
+  UPLOAD_AVATAR,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -434,6 +436,22 @@ export async function resetPassword(id, oldpassword, password) {
     id: id,
     oldpassword: oldpassword,
     password: password
+  })
+}
+
+/*
+  * 获取头像
+  * @param id 用户id
+  * @returns {Promise<AxiosResponse<T>>}
+*/
+export async function getAvatar(id) {
+  return request(`${GET_AVATAR}?id=${id}`, METHOD.GET);
+}
+
+export async function uploadAvatar(id, avatar_rb) {
+  return request(UPLOAD_AVATAR, METHOD.POST, {
+    id: id,
+    avatar: avatar_rb
   })
 }
 
