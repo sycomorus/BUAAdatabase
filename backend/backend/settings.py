@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +27,9 @@ SECRET_KEY = "django-insecure-hqqu_1g5=v=dn9(x546+s7ej@^m-gpy+p#4qk-^3(lw8^84e-@
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Application definition
@@ -79,17 +83,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db22373089',
-        'USER': 'u22373089', 
-        'PASSWORD': 'Aa367463', 
-        'HOST': '120.46.3.97', 
-        'PORT': '3306', 
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'",
-        },
-    },       
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },   
     'db1': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tutor_hiring',
@@ -101,10 +98,17 @@ DATABASES = {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'",
         },
     },                 
-    "db2": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    'db2': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db22373089',
+        'USER': 'u22373089', 
+        'PASSWORD': 'Aa367463', 
+        'HOST': '120.46.3.97', 
+        'PORT': '3306', 
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'",
+        },
+    },       
 }
 
 

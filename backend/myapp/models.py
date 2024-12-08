@@ -9,6 +9,7 @@ class User(models.Model):
     password = models.CharField(max_length=255)
     identity = models.IntegerField()  # 0: 管理员,1: 家教, 2: 学生
     registration_date = models.DateField()
+    avatar = models.CharField(max_length=255,blank=True,null=True,default='http://120.46.1.4:9000/zxb/png/Akkarin.png')
 
     def __str__(self):
         return self.username

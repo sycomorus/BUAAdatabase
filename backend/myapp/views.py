@@ -7,6 +7,10 @@ import random
 import pytz
 from datetime import datetime, timedelta
 from .models import User, Student,Tutor,Post,PostSubject,Link,Notification,Review,StudyMaterial,Todo,Announcement
+from .minio import MinioClient
+from .minio import get_download_url
+import uuid
+
 
 @csrf_exempt
 def home(request):
@@ -740,13 +744,22 @@ def submitComment(request):
 @csrf_exempt
 def submitLearningMaterial(request):
     if request.method == 'POST':
-        body = json.loads(request.body)
-        tutor_id=int(body.get('teacherId'))
-        student_id=int(body.get('studentId'))
-        file_name=body.get('filename')
-        download_link=body.get('downloadLink')
+        body = json.loads(request.POST.get('data'))
+        tutor_id = int(body.get('id'))
+        student_id = int(body.get('studentId'))
+        file = request.FILES['file']  # 获取上传的文件
+        file_name = file.name
+        file_type = file_name.split('.')[-1]
         user=User.objects.get(user_id=student_id)
         tutor=User.objects.get(user_id=tutor_id)
+
+        unique_file_name = f"{uuid.uuid4()}.{file_type}"
+
+        minio = MinioClient()
+        file_data = file.read()
+        minio.upload_file(file_data, unique_file_name, file_type)
+        download_link = get_download_url(unique_file_name, file_type)
+
         material=StudyMaterial(
             tutor_id=tutor,
             student_id=user,
@@ -778,7 +791,7 @@ def getLearningMaterials(request):
                 'filename':material.file_name,
                 'publisher':material.tutor_id.username,
                 'downloadLink':material.download_link,
-                'uploadDate':material.upload_date,
+                'date':material.upload_date,
             })
         result['materials']=return_materials
         return JsonResponse(result)
@@ -990,3 +1003,55 @@ def get_routes_config(request):
         return JsonResponse({'code': 0, 'data': routes_config})
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
+    
+
+@csrf_exempt
+def uploadAvatar(request):
+    if request.method == 'POST':
+        id_request=json.loads(request.POST.get('data'))
+        # 使用 request.POST 和 request.FILES 解析 FormData 对象
+        user_id = int(id_request.get('id'))
+        file = request.FILES['file']  # 获取上传的文件
+        file_name = file.name
+        file_type = file_name.split('.')[-1]
+
+        unique_file_name = f"{uuid.uuid4()}.{file_type}"
+
+        try:
+            user = User.objects.get(user_id=user_id)
+        except User.DoesNotExist:
+            return JsonResponse({'code': 1, 'message': '用户不存在'})
+
+        # 使用 MinioClient 上传文件并获取下载链接
+        minio_client = MinioClient()
+        file_data = file.read()
+        try:
+            minio_client.upload_file(file_data, unique_file_name, file_type)
+            download_link = get_download_url(unique_file_name, file_type)
+        except ValueError as e:
+            return JsonResponse({'code': 1, 'message': str(e)})
+
+        # 更新用户头像链接
+        user.avatar = download_link
+        user.save()
+
+        result = {'code': 0, 'message': ''}
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': 1, 'message': '仅支持POST请求'})
+    
+@csrf_exempt
+def getAvatar(request):
+    if request.method == 'GET':
+        user_id = int(request.GET.get('id'))
+        try:
+            user = User.objects.get(user_id=user_id)
+        except User.DoesNotExist:
+            return JsonResponse({'code': 1, 'message': '用户不存在'})
+
+        avatar_url = user.avatar
+        result = {'code': 0, 'avatar': avatar_url}
+        print(result)
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': 1, 'message': '仅支持GET请求'})
