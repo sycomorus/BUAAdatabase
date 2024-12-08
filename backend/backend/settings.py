@@ -83,22 +83,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },   
-    'db1': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tutor_hiring',
-        'USER': 'root', 
-        'PASSWORD': 'tony761102', 
-        'HOST': '127.0.0.1', 
-        'PORT': '3306', 
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'",
-        },
-    },                 
-    'db2': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'db22373089',
         'USER': 'u22373089', 
@@ -109,6 +94,21 @@ DATABASES = {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'",
         },
     },       
+    'db1': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tutor_hiring',
+        'USER': 'root', 
+        'PASSWORD': 'tony761102', 
+        'HOST': '127.0.0.1', 
+        'PORT': '3306', 
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'",
+        },
+    },
+    "db2": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },                
 }
 
 
