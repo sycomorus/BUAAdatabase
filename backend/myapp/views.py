@@ -1049,7 +1049,11 @@ def getAvatar(request):
         except User.DoesNotExist:
             return JsonResponse({'code': 1, 'message': '用户不存在'})
 
-        avatar_url = user.avatar
+        if user.avatar:
+            avatar_url = user.avatar
+        else:
+            avatar_url = 'http://120.46.1.4:9000/zxb/png/Akkarin.png'
+        print(avatar_url)
         result = {'code': 0, 'avatar': avatar_url}
         print(result)
         return JsonResponse(result)
