@@ -124,7 +124,6 @@ class StudyMaterial(models.Model):
     file_name = models.CharField(max_length=255)
     download_link = models.CharField(max_length=255)
     upload_date = models.DateField()
-    file = models.FileField(upload_to='materials/',default='',blank=True,null=True)
 
     def __str__(self):
         return f"Material {self.material_id}"
