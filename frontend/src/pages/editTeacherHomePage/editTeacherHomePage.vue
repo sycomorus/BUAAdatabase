@@ -184,8 +184,6 @@ export default {
             formData.append('data', JSON.stringify(jsonData));
             uploadAvatar(formData).then(response => {
                 if (response.data.code >= 0) {
-                    this.$message.success('上传头像成功');
-                    logout();
                     this.$router.push('/login');
                 } else {
                     this.$message.error(response.data.message);
