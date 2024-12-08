@@ -532,12 +532,12 @@
 **参数**：
 
 ```json
-{
-    "form": {   // 一个FormData对象，需要特殊解析方式
-		"teacherId": "" // 家教id
-    	"teacherName": "" // 家教名
-		"studentId": "" // 学生id
-		"file": File // 一个File类型的对象
+{   // 这是FormData
+    "file":FILE
+    "data": {
+        id: ""
+        teacher: "",
+        studentId: "",
     }
 }
 ```
@@ -938,12 +938,10 @@
 **参数**：
 
 ```json
-{  
-    "form": { // 注意，这个字典包装在FormData中，解析方式可能不同
-        "data": {
-			"id": "" // 用户id
-		},
-        "file"：File   // 一个对象类型为File的玩意，可以查一查后端怎么解析
+{  // FormData
+    "file":FILE,
+    "data":{
+        "id": ""
     }
 }
 ```

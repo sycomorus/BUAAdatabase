@@ -238,9 +238,12 @@ export default {
         submitLearningMaterial() {
             const formData = new FormData();
             formData.append('file', this.fileList[0]);
-            formData.append('teacherId', this.currUser.id);
-            formData.append('teacherName', this.currUser.name);
-            formData.append('studentId', this.curStudentId);
+            const jsonData = {
+                id: this.currUser.id,
+                teacher: this.currUser.name,
+                studentId: this.curStudentId,
+            };
+            formData.append('data', JSON.stringify(jsonData));
 
             // 这里可以添加实际的提交逻辑
             submitLearningMaterial(formData).then(res => {

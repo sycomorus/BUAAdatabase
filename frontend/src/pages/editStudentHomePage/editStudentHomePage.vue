@@ -177,7 +177,7 @@ export default {
             if (!isLt2M) {
                 this.$message.error('图片必须小于 2MB!');
             }
-            if(isJpgOrPng && isLt2M) {
+            if (isJpgOrPng && isLt2M) {
                 this.fileList = [file];
             }
             return false;
@@ -200,6 +200,8 @@ export default {
             uploadAvatar(formData).then(response => {
                 if (response.data.code >= 0) {
                     this.$message.success('上传头像成功');
+                    logout();
+                    this.$router.push('/login');
                 } else {
                     this.$message.error(response.data.message);
                 }
