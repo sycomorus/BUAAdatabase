@@ -116,7 +116,7 @@ export default {
                     const userData = res.data;
                     this.editUserDegree = userData.degree || '';
                     this.editUserGender = userData.gender || '';
-                    this.editUserAge = userData.age || 0;
+                    this.editUserAge = userData.age || '';
                     this.editUserEmail = userData.email || '';
                     this.editUserTelephone = userData.telephone || '';
                     this.editUserAddress = userData.address || '';
