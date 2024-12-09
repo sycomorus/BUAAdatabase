@@ -220,12 +220,12 @@ export default {
       });
     },
     afterPost(res) {
-      const resdate = res.data;
-      if (resdate.code >= 0) {
+      const resdata = res.data;
+      if (resdata.code >= 0) {
         this.$message.success("发布成功");
         this.postForm.resetFields(); // 清空表单
       } else {
-        this.$message.error("发布失败，可能出现了网络波动");
+        this.$message.error(resdata.message);
       }
     },
     // 保存表单数据到草稿
@@ -267,7 +267,7 @@ export default {
       if (resdata.code >= 0) {
         this.$message.success("保存成功");
       } else {
-        this.$message.error("保存失败，可能出现了网络波动");
+        this.$message.error(resdata.message);
       }
     },
     validateDateRange(rule, value, callback) {

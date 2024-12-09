@@ -23,6 +23,7 @@ import "@/mock/user/getAnnouncements"
 import "@/mock/user/resetPassword"
 import "@/mock/user/getAvatar"
 import "@/mock/user/uploadAvatar"
+import "@/mock/user/getUploadedLearningMaterials"
 
 // 设置全局延时
 Mock.setup({

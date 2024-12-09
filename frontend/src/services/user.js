@@ -35,6 +35,7 @@ import {
   RESET_PASSWORD,
   GET_AVATAR,
   UPLOAD_AVATAR,
+  GET_UPLOADED_LEARNING_MATERIALS,
 } from "@/services/api";
 import { request, METHOD, removeAuthorization } from "@/utils/request";
 
@@ -444,6 +445,10 @@ export async function getAvatar(id) {
 
 export async function uploadAvatar(form) {
   return request(UPLOAD_AVATAR, METHOD.POST,form)
+}
+
+export async function getUploadedLearningMaterials(id) {
+  return request(`${GET_UPLOADED_LEARNING_MATERIALS}?id=${id}`, METHOD.GET);
 }
 
 export async function getRoutesConfig() {

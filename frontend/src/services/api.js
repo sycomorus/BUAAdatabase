@@ -39,4 +39,5 @@ module.exports = {
   RESET_PASSWORD: `${BASE_URL}/resetPassword/`,
   GET_AVATAR: `${BASE_URL}/getAvatar/`,
   UPLOAD_AVATAR: `${BASE_URL}/uploadAvatar/`,
+  GET_UPLOADED_LEARNING_MATERIALS: `${BASE_URL}/getUploadedLearningMaterials/`,
 };

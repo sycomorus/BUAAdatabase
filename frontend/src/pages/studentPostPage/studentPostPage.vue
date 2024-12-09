@@ -147,7 +147,7 @@ export default {
         this.$message.success('发布成功');
         this.postForm.resetFields();
       } else {
-        this.$message.error('发布失败，可能出现了网络波动');
+        this.$message.error(resdata.message);
       }
     },
     handleSave() {
@@ -172,7 +172,7 @@ export default {
       if (resdata.code >= 0) {
         this.$message.success('保存成功');
       } else {
-        this.$message.error('保存失败，可能出现了网络波动');
+        this.$message.error(resdata.message);
       }
     },
     validateDateRange(rule, value, callback) {
