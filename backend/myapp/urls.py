@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import login, register, get_routes_config, sendPost, savePost, getSavedPost,getPosts,getPost,agreePostRequest,updateStudentInfo,getStudentInfo,updateTeacherInfo,getTeacherInfo,getUserPosts,deletePost,link,unlink,refuseLink,getStudents,getTeachers,sendNotice,getNotices,submitComment,submitLearningMaterial,getLearningMaterials,sendTodo,getTodos,getUserRole,approvePost,rejectPost,getAllStudents,getAllTeachers,makeAnnouncement,deleteUser,getAnnouncements,resetPassword,uploadAvatar,getAvatar
+from .views import login, register, get_routes_config, sendPost, savePost, getSavedPost,getPosts,getPost,agreePostRequest,updateStudentInfo,getStudentInfo,updateTeacherInfo,getTeacherInfo,getUserPosts,deletePost,link,unlink,refuseLink,getStudents,getTeachers,sendNotice,getNotices,submitComment,submitLearningMaterial,getLearningMaterials,sendTodo,getTodos,getUserRole,approvePost,rejectPost,getAllStudents,getAllTeachers,makeAnnouncement,deleteUser,getAnnouncements,resetPassword,uploadAvatar,getAvatar,getUploadedLearningMaterials
 
 urlpatterns = [
     path('login/', login, name='login'),
@@ -43,6 +43,7 @@ urlpatterns = [
     path('resetPassword/',resetPassword,name="resetPassword"),
     path('uploadAvatar/',uploadAvatar,name="uploadAvatar"),
     path('getAvatar/',getAvatar,name="getAvatar"),
+    path('getUploadedLearningMaterials/',getUploadedLearningMaterials,name="getUploadedLearningMaterials"),
 ]
 
 if settings.DEBUG:

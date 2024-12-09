@@ -309,6 +309,7 @@ def getPosts(request):
             return_posts=[]
             for post in posts:
                 user=post.user_id
+                avatar=user.avatar if user.avatar else 'http://120.46.1.4:9000/zxb/png/Akkarin.png'
                 now = datetime.now(pytz.timezone('Asia/Shanghai'))
                 post_date = post.postDate.astimezone(pytz.timezone('Asia/Shanghai'))
                 time_diff = now - post_date
@@ -334,6 +335,7 @@ def getPosts(request):
                     'authorId':user.user_id,
                     'date':date_display,
                     'location':location,
+                    'avatar':avatar,
                 })
             result={'posts':return_posts[start:end],'total':len(posts)}
             return JsonResponse(result)
@@ -367,6 +369,7 @@ def getPost(request):
                 subjects.append(subject.subject)
             result['data']['subjects']=subjects
             result['data']['content']=post.content
+            result['data']['avatar']=post.user_id.avatar if post.user_id.avatar else 'http://120.46.1.4:9000/zxb/png/Akkarin.png'
             return JsonResponse(result)
             
         except Post.DoesNotExist:
@@ -1060,6 +1063,27 @@ def getAvatar(request):
         print(avatar_url)
         result = {'code': 0, 'avatar': avatar_url}
         print(result)
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'code': 1, 'message': '仅支持GET请求'})
+
+@csrf_exempt
+def getUploadedLearningMaterials(request):
+    if request.method == 'GET':
+        request_id = int(request.GET.get('id'))
+        user = User.objects.get(user_id=request_id)
+        materials = StudyMaterial.objects.filter(tutor_id=user)
+
+        return_materials = []
+        result = {'code': 0}
+        for material in materials:
+            return_materials.append({
+                'fileName': material.file_name,
+                'downloadLink': material.download_link,
+                'target': material.student_id.username,
+                'date': material.upload_date,
+            })
+        result['data'] = return_materials
         return JsonResponse(result)
     else:
         return JsonResponse({'code': 1, 'message': '仅支持GET请求'})
