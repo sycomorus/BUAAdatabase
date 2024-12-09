@@ -31,6 +31,7 @@
                 <a @click="showFullContent = null">收起</a>
               </div>
               <div class="author" @click.stop>
+                <a-avatar :src="post.avatar" :size="24" />
                 <router-link :to="{ name: '学生主页', params: { id: post.authorId } }">
                   {{ post.author }}
                 </router-link>

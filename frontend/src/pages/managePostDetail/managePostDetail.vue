@@ -5,6 +5,7 @@
                 <h2>{{ post.title }}</h2>
                 <div class="post-meta">
                     <span class="author">
+                        <a-avatar :src="post.avatar" :size="24" />
                         {{ post.author }}
                     </span>
                     <span class="date">{{ post.startDate }} - {{ post.endDate }}</span>

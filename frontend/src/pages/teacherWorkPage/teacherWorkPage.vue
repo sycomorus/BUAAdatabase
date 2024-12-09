@@ -68,6 +68,23 @@
                             </a-list-item>
                         </a-list>
                     </a-tab-pane>
+                    <a-tab-pane key="4" tab="已上传学习文件">
+                        <a-list item-layout="horizontal">
+                            <a-list-item v-for="(learningMaterial, index) in uploadedLearningMaterials" :key="index">
+                                <a-list-item-meta :title="learningMaterial.fileName">
+                                    <div slot="description">
+                                        <div>于<strong>{{ learningMaterial.date }}</strong>上传给<strong>{{
+                                                learningMaterial.target }}</strong></div>
+                                    </div>
+                                </a-list-item-meta>
+                                <div slot="actions">
+                                    <a :href=learningMaterial.downloadLink tatget="_blank">
+                                        <a-button type="link">下载</a-button>
+                                    </a>
+                                </div>
+                            </a-list-item>
+                        </a-list>
+                    </a-tab-pane>
                 </a-tabs>
             </div>
         </a-card>
@@ -99,7 +116,8 @@
                     选择文件
                 </a-button>
             </a-upload>
-            <a-button type="primary" :disabled="fileList.length === 0" style="margin-top: 16px" @click="submitLearningMaterial">
+            <a-button type="primary" :disabled="fileList.length === 0" style="margin-top: 16px"
+                @click="submitLearningMaterial">
                 {{ uploading ? 'Uploading' : '开始上传' }}
             </a-button>
         </a-drawer>
@@ -109,7 +127,7 @@
 <script>
 import { mapState } from 'vuex'
 import PageLayout from '@/layouts/PageLayout'
-import { getUserPosts, deletePost, getStudents, unlink, submitLearningMaterial, getTodos, link, refuseLink } from '@/services/user'
+import { getUserPosts, deletePost, getStudents, unlink, submitLearningMaterial, getTodos, link, refuseLink, getUploadedLearningMaterials } from '@/services/user'
 
 export default {
     name: 'teacherWorkPage',
@@ -121,6 +139,7 @@ export default {
         this.fetchUserPosts();
         this.fetchStudents();
         this.fetchTodos();
+        this.fetchUploadedLearningMaterial();
     },
     data() {
         return {
@@ -141,6 +160,7 @@ export default {
             acceptOpen: false,
             refuseOpen: false,
             fileList: [],
+            uploadedLearningMaterials: []
         }
     },
     methods: {
@@ -312,6 +332,18 @@ export default {
             this.fileList = [];
             return false;
         },
+        fetchUploadedLearningMaterial() {
+            getUploadedLearningMaterials(this.currUser.id).then(res => {
+                if (res.data.code >= 0) {
+                    this.uploadedLearningMaterials = res.data.data;
+                    console.log('获取已上传学习文件成功:', this.uploadedLearningMaterials);
+                } else {
+                    console.error('获取已上传学习文件失败');
+                }
+            }).catch(error => {
+                console.error('获取已上传学习文件失败:', error);
+            });
+        }
     },
 }
 </script>
