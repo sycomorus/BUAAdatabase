@@ -409,7 +409,7 @@ def updateStudentInfo(request):
         student=Student.objects.get(user_id=user)
         student.grade=grade
         student.gender=gender
-        student.age=age
+        student.age=age if age else None
         student.email=email
         student.telephone=telephone
         student.address=address
@@ -716,7 +716,10 @@ def submitComment(request):
             rate_sum=teacher.rate*teacher.rateNum
         else:
             rate_sum=0
-        old_review=Review.objects.get(student_id=user,tutor_id=tutor)
+        try:
+            old_review=Review.objects.get(student_id=user,tutor_id=tutor)
+        except Review.DoesNotExist:
+            old_review=None
         if old_review:
             teacher.rateNum-=1
             rate_sum-=old_review.rating  
