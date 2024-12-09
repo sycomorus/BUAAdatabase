@@ -506,6 +506,7 @@ def getTeacherInfo(request):
                 'rating':comment.rating,
                 'content':comment.content,
                 'date':comment.date,
+                'avatar':comment.student_id.avatar if comment.student_id.avatar else 'http://120.46.1.4:9000/zxb/png/Akkarin.png',
             })
         result['data']['comments']=return_comments
         print(result)
