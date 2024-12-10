@@ -258,7 +258,9 @@ export default {
 }
 
 .avatar-uploader {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     margin-top: 8px;
 }
 
