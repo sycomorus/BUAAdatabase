@@ -4,18 +4,20 @@
             <a-form @submit.prevent="submitForm">
                 <a-row gutter="0">
                     <a-col span="4">
-                        <a-avatar :src="userAvatar" shape="square" :size="120" />
-                        <a-upload class="avatar-uploader" :file-list="fileList" :before-upload="beforeUpload"
-                            :remove="handleRemove">
-                            <a-button>
-                                <upload-outlined></upload-outlined>
-                                Select File
+                        <div class="container">
+                            <a-avatar :src="userAvatar" shape="square" :size="120" />
+                            <a-upload class="avatar-uploader" :file-list="fileList" :before-upload="beforeUpload"
+                                :remove="handleRemove">
+                                <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    Select File
+                                </a-button>
+                            </a-upload>
+                            <a-button type="primary" :disabled="fileList.length === 0" style="margin-top: 16px"
+                                @click="handleUpload">
+                                {{ uploading ? 'Uploading' : 'Start Upload' }}
                             </a-button>
-                        </a-upload>
-                        <a-button type="primary" :disabled="fileList.length === 0" style="margin-top: 16px"
-                            @click="handleUpload">
-                            {{ uploading ? 'Uploading' : 'Start Upload' }}
-                        </a-button>
+                        </div>
                     </a-col>
                     <a-col span="20">
                         <a-row gutter="10">
@@ -258,5 +260,11 @@ export default {
 .avatar-uploader {
     display: inline-block;
     margin-top: 8px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 </style>
