@@ -641,11 +641,13 @@ def getStudents(request):
         return_students=[]
         result={}
         result['code'] = 0
+        result_students=[]
         for student in students:
             return_students.append({
                 'id':str(student.student_id.user_id),
                 'name':student.student_id.username,
             })
+        result_students.reverse()
         result['students']=return_students
         return JsonResponse(result)
     else:
@@ -833,8 +835,8 @@ def getTodos(request):
                 'accepterName':todo.accepter_id.username,
                 'accepterId':str(todo.accepter_id.user_id),
             })
+        return_todos.reverse()
         result['todos']=return_todos
-        print(result)
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})

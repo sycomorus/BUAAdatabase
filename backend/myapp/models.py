@@ -8,7 +8,7 @@ class User(models.Model):
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     identity = models.IntegerField()  # 0: 管理员,1: 家教, 2: 学生
-    registration_date = models.DateField()
+    registration_date = models.DateTimeField()
     avatar = models.CharField(max_length=255,blank=True,null=True)
 
     def __str__(self):
@@ -123,7 +123,7 @@ class StudyMaterial(models.Model):
     student_id = models.ForeignKey(User, on_delete=models.CASCADE,related_name='student_id_material')
     file_name = models.CharField(max_length=255)
     download_link = models.CharField(max_length=255)
-    upload_date = models.DateField()
+    upload_date = models.DateTimeField()
 
     def __str__(self):
         return f"Material {self.material_id}"
@@ -141,7 +141,7 @@ class Review(models.Model):
     tutor_id = models.ForeignKey(User, on_delete=models.CASCADE,related_name='tutor_id_review')
     rating = models.FloatField(blank=True,null=True)
     content = models.TextField(blank=True,null=True)
-    date= models.DateField(blank=True,null=True)
+    date= models.DateTimeField(blank=True,null=True)
 
     def __str__(self):
         return f"Review {self.review_id}"
