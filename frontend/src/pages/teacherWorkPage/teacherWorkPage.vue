@@ -271,6 +271,7 @@ export default {
                     this.$message.success('发布学习资料成功');
                     this.fileList = [];
                     this.closeDrawer(); // 提交后关闭抽屉
+                    this.fetchUploadedLearningMaterial(); // 刷新已上传学习文件
                 } else {
                     console.error('发布学习资料失败', res.data.message);
                 }
