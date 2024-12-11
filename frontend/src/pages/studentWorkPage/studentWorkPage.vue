@@ -288,6 +288,7 @@ export default {
       link(this.curAccepterId, this.currUser.id).then(res => {
         if (res.data.code >= 0) {
           this.fetchTodos(); // 刷新待办事项
+          this.fetchTeachers(); // 刷新家教列表
           console.log('接受学生求职请求成功:', this.curAccepterId);
         } else {
           console.error('接受学生求职请求失败');
