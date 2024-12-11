@@ -466,7 +466,7 @@ def updateTeacherInfo(request):
         tutor=Tutor.objects.get(user_id=user)
         tutor.degree=degree
         tutor.gender=gender
-        tutor.age=age
+        tutor.age=age if age else None
         tutor.email=email
         tutor.telephone=telephone
         tutor.address=address
