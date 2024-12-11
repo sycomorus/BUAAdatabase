@@ -508,11 +508,10 @@ def getTeacherInfo(request):
                 'authorName':comment.student_id.username,
                 'rating':comment.rating,
                 'content':comment.content,
-                'date':comment.date,
+                'date':comment.date.strftime("%Y-%m-%d"),
                 'avatar':comment.student_id.avatar if comment.student_id.avatar else 'http://120.46.1.4:9000/zxb/png/Akkarin.png',
             })
         result['data']['comments']=return_comments
-        print(result)
         return JsonResponse(result)
     else:
         return JsonResponse({'code': -1, 'message': '仅支持GET请求'})
@@ -641,13 +640,12 @@ def getStudents(request):
         return_students=[]
         result={}
         result['code'] = 0
-        result_students=[]
         for student in students:
             return_students.append({
                 'id':str(student.student_id.user_id),
                 'name':student.student_id.username,
             })
-        result_students.reverse()
+        return_students.reverse()
         result['students']=return_students
         return JsonResponse(result)
     else:
@@ -666,6 +664,7 @@ def getTeachers(request):
                 'id':str(teacher.tutor_id.user_id),
                 'name':teacher.tutor_id.username,
             })
+        return_teachers.reverse()
         result['teachers']=return_teachers
         return JsonResponse(result)
     else:
@@ -800,7 +799,7 @@ def getLearningMaterials(request):
                 'filename':material.file_name,
                 'publisher':material.tutor_id.username,
                 'downloadLink':material.download_link,
-                'date':material.upload_date,
+                'date':material.upload_date.strftime('%Y-%m-%d'),
             })
         result['materials']=return_materials
         return JsonResponse(result)
@@ -1083,7 +1082,7 @@ def getUploadedLearningMaterials(request):
                 'fileName': material.file_name,
                 'downloadLink': material.download_link,
                 'target': material.student_id.username,
-                'date': material.upload_date,
+                'date': material.upload_date.strftime('%Y-%m-%d'),
             })
         result['data'] = return_materials
         return JsonResponse(result)
